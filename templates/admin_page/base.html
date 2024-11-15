@@ -2,117 +2,113 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Tigray Data Repository</title>
-    <link rel="shortcut icon" href="{% static 'img/output-onlinepngtools.png' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'img/Tigray_logo2.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typicons/2.1.2/typicons.min.css">
     <link rel="stylesheet" href="{% static 'admin_static/css/azia.css' %}">
-  </head>
-  <body class="d-flex flex-column min-vh-100">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
     <div class="az-header">
-      <div class="container">
-        <div class="az-header-left">
-          <a class="az-logo">
-            <img src="{% static 'img/output-onlinepngtools.png' %}" style="width: 30%;">
-        </a>
-          <a href="" id="azMenuShow" class="az-header-menu-icon d-lg-none"><span></span></a>
-        </div>
-        <div class="az-header-menu">
-          <div class="az-header-menu-header">
-            <a class="az-logo"><span></span>  <img src="{% static 'img/output-onlinepngtools.png' %}" style="width: 100%;"></a>
-            <a href="" class="close">&times;</a>
-          </div>
-          <ul class="nav">
-            <li class="nav-item">
-              <a href="form-elements.html" class="nav-link"><i class="typcn typcn-chart-bar-outline"></i> Forms</a>
-            </li>
-            <li class="nav-item">
-              <a href="form-elements.html" class="nav-link"><i class="typcn typcn-chart-bar-outline"></i> Forms</a>
-            </li>
-            <li class="nav-item">
-              <a href="" class="nav-link with-sub"><i class="typcn typcn-book"></i> Components</a>
-              <div class="az-menu-sub">
-                <div class="container">
-                  <div>
-                    <nav class="nav">
-                      <a href="elem-buttons.html" class="nav-link">Buttons</a>
-                      <a href="elem-dropdown.html" class="nav-link">Dropdown</a>
-                      <a href="elem-icons.html" class="nav-link">Icons</a>
-                      <a href="table-basic.html" class="nav-link">Table</a>
-                    </nav>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="az-header-right">
-          <div class="dropdown az-header-notification">
-            <a href="" class="new"><i class="typcn typcn-bell"></i></a>
-            <div class="dropdown-menu">
-              <div class="az-dropdown-header mg-b-20 d-sm-none">
-                <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
-              </div>
-              <h6 class="az-notification-title">Notifications</h6>
-              <p class="az-notification-text">You have 2 unread notification</p>
-              <div class="az-notification-list">
-                <div class="media new">
-                  <div class="az-img-user"><img src="../img/faces/face2.jpg" alt=""></div>
-                  <div class="media-body">
-                    <p>Congratulate <strong>Socrates Itumay</strong> for work anniversaries</p>
-                    <span>Mar 15 12:32pm</span>
-                  </div>
-                </div>
-                <div class="media new">
-                  <div class="az-img-user online"><img src="../img/faces/face3.jpg" alt=""></div>
-                  <div class="media-body">
-                    <p><strong>Joyce Chua</strong> just created a new blog post</p>
-                    <span>Mar 13 04:16am</span>
-                  </div>
-                </div>
-                <div class="media">
-                  <div class="az-img-user"><img src="../img/faces/face4.jpg" alt=""></div> 
-                  <div class="media-body">
-                    <p><strong>Althea Cabardo</strong> just created a new blog post</p>
-                    <span>Mar 13 02:56am</span>
-                  </div>
-                </div>
-                <div class="media">
-                  <div class="az-img-user"><img src="../img/faces/face5.jpg" alt=""></div>
-                  <div class="media-body">
-                    <p><strong>Adrian Monino</strong> added new comment on your photo</p>
-                    <span>Mar 12 10:40pm</span>
-                  </div>
-                </div>
-              </div>
-              <div class="dropdown-footer"><a href="">View All Notifications</a></div>
+        <div class="container">
+            <div class="az-header-left">
+                <a href="{% url 'index' %}" class="az-logo" style="position: fixed;">
+                    <img src="{% static 'img/output-onlinepngtools.png' %}" style="width: 35%;">
+                </a>
+                <a href="" id="azMenuShow" class="az-header-menu-icon d-lg-none"><span></span></a>
             </div>
-          </div>
-          <div class="dropdown az-profile-menu">
-            <a href="" class="az-img-user"><img src="../img/faces/face1.jpg" alt=""></a>
-            <div class="dropdown-menu">
-              <div class="az-dropdown-header d-sm-none">
-                <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
-              </div>
-              <div class="az-header-profile">
-                <div class="az-img-user">
-                  <img src="../img/faces/face1.jpg" alt="">
+            <div class="az-header-menu">
+                <div class="az-header-menu-header">
+                    <a href="{% url 'index' %}" class="az-logo"><span></span> <img
+                            src="{% static 'img/output-onlinepngtools.png' %}" style="width: 100%;"></a>
+                    <a href="" class="close">&times;</a>
                 </div>
-                <h6>Aziana Pechon</h6>
-                <span>Premium Member</span>
-              </div>
-              <a href="" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
-              <a href="" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
-              <a href="" class="dropdown-item"><i class="typcn typcn-time"></i> Activity Logs</a>
-              <a href="" class="dropdown-item"><i class="typcn typcn-cog-outline"></i> Account Settings</a>
-              <a href="page-signin.html" class="dropdown-item"><i class="typcn typcn-power-outline"></i> Sign Out</a>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard-page' %}" class="nav-link"><i class="typcn typcn-home"></i>
+                            Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="form-elements.html" class="nav-link"><i class="typcn typcn-folder"></i>
+                            Datasets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="form-elements.html" class="nav-link"><i class="typcn typcn-group"></i>
+                            initiatives</a>
+                    </li>
+                </ul>
             </div>
-          </div>
+            <div class="az-header-right">
+                <div class="dropdown az-header-notification">
+                    <a href="" class="new"><i class="typcn typcn-bell"></i></a>
+                    <div class="dropdown-menu">
+                        <div class="az-dropdown-header mg-b-20 d-sm-none">
+                            <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
+                        </div>
+                        <h6 class="az-notification-title">Notifications</h6>
+                        <p class="az-notification-text">You have 2 unread notification</p>
+                        <div class="az-notification-list">
+                            <div class="media new">
+                                <div class="az-img-user"><img src="{{ request.user.AdminPic.profile_pic.url }}" alt="">
+                                </div>
+                                <div class="media-body">
+                                    <p>Congratulate <strong>Socrates Itumay</strong> for work anniversaries</p>
+                                    <span>Mar 15 12:32pm</span>
+                                </div>
+                            </div>
+                            <div class="media new">
+                                <div class="az-img-user online"><img src="../img/faces/face3.jpg" alt=""></div>
+                                <div class="media-body">
+                                    <p><strong>Joyce Chua</strong> just created a new blog post</p>
+                                    <span>Mar 13 04:16am</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="az-img-user"><img src="../img/faces/face4.jpg" alt=""></div>
+                                <div class="media-body">
+                                    <p><strong>Althea Cabardo</strong> just created a new blog post</p>
+                                    <span>Mar 13 02:56am</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="az-img-user"><img src="../img/faces/face5.jpg" alt=""></div>
+                                <div class="media-body">
+                                    <p><strong>Adrian Monino</strong> added new comment on your photo</p>
+                                    <span>Mar 12 10:40pm</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-footer"><a href="">View All Notifications</a></div>
+                    </div>
+                </div>
+                <div class="dropdown az-profile-menu">
+                    <a href="" class="az-img-user"><img src="{{ request.user.adminpic.profile_pic.url }}" alt=""></a>
+                    <div class="dropdown-menu">
+                        <div class="az-dropdown-header d-sm-none">
+                            <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
+                        </div>
+                        <div class="az-header-profile">
+                            <div class="az-img-user">
+                                <img src="{{ request.user.adminpic.profile_pic.url }}" alt="">
+                            </div>
+                            <h6 style="font-size: 14px;">{{ request.user.first_name }} {{ request.user.last_name }}</h6>
+                            <span>System Admin</span>
+                        </div>
+                        <a href="" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
+                        <a href="" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
+                        <a href="" class="dropdown-item"><i class="typcn typcn-time"></i> Activity Logs</a>
+                        <a href="" class="dropdown-item"><i class="typcn typcn-cog-outline"></i> Account Settings</a>
+                        <a href="{% url 'logout' %}" class="dropdown-item"><i class="typcn typcn-power-outline"></i>
+                            Sign Out</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     {% block content %}
@@ -121,21 +117,25 @@
 
     <footer class="az-footer mt-auto">
         <div class="container">
-          <div class="az-footer-left">
-            <p>&copy; 2024 Azia Dashboard</p>
-          </div>
-          <div class="az-footer-right">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-          </div>
+            <div class="az-footer-left">
+                <p>&copy; <span id="current-year"></span> 
+                <a href="{% url 'index' %}" target="_blank">
+                    Tigray Data Repository
+                </a>
+                </p>
+            </div>
+            <script>
+                document.getElementById('current-year').textContent = new Date().getFullYear();
+            </script>
         </div>
-      </footer>
-  
-  
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-      <script src="{% static 'admin_static/js/azia.js' %}"></script>
-  
-    </body>
-  </html>
+    </footer>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="{% static 'admin_static/js/azia.js' %}"></script>
+
+</body>
+
+</html>
