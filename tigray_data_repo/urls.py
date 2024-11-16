@@ -18,13 +18,15 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from App.views import IndexView, ViewDataRepositoryView, SignInView, DashboardView, LogoutView
+from App.views import IndexView, ViewDataRepositoryView, SignInView, DashboardView, DatasetGroup, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", IndexView.as_view(), name='index'),
     path("view-repository", ViewDataRepositoryView.as_view(), name='view_repo'),
+    # Admin related urls
     path("admin-login", SignInView.as_view(), name='sign-in'),
     path("dashboard/", DashboardView.as_view(), name='dashboard-page'),
+    path("dataset-groups/", DatasetGroup.as_view(), name = 'dataset-groups'),
     path('logout/', LogoutView.as_view(), name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load custom_filters %}
+
 {% block 'main-section' %}
 <section class="hero-wrap js-fullheight">
     <div class="container-fluid px-0">
@@ -36,173 +38,34 @@
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled treeview">
+                                <li class="mb-3">
+                                    <i class="fa fa-angle-right toggle-icon text-dark me-2" data-bs-toggle="collapse"
+                                        data-bs-target="#dataset1_2" aria-expanded="false"
+                                        style="cursor: pointer; font-size: 1rem;"></i>
+                                    <i class="fa fa-folder me-2" aria-hidden="true"
+                                        style="font-size: 1.3rem; color: #428bca;"></i>
+                                    <strong class="align-middle text-dark" style="font-size: 1rem;">{{ repo.name }}</strong>
+                                    <ul id="dataset1_2" class="collapse ms-4 mt-2">
+                                        {% for file_name in files.root %}
+                                        <li class="py-1 d-flex align-items-center">
+                                            <i class="fa {{ file_name|file_icon }} me-2" aria-hidden="true"
+                                                style="font-size: 1rem;"></i>
+                                            <span style="font-size: 0.95rem;">{{ file_name|slice:":50" }}{% if file_name|length > 50 %}...{% endif %}</span>
+                                            <div class="ms-auto">
+                                                <a href="" class="badge bg-info text-white me-1">
+                                                    <i class="fa fa-eye"></i> View
+                                                </a>
+                                                <a href="" class="badge bg-success text-white">
+                                                    <i class="fa fa-download"></i> Download
+                                                </a>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
 
-                                <li class="mb-3">
-                                    <i class="fa fa-angle-right toggle-icon text-dark me-2" data-bs-toggle="collapse"
-                                        data-bs-target="#dataset1_2" aria-expanded="false"
-                                        style="cursor: pointer; font-size: 1rem;"></i>
-                                    <i class="fa fa-folder me-2" aria-hidden="true"
-                                        style="font-size: 1.3rem; color: #428bca;"></i>
-                                    <strong class="align-middle text-dark" style="font-size: 1rem;">Ashenda
-                                        Tigray</strong>
-                                    <ul id="dataset1_2" class="collapse ms-4 mt-2">
-                                        <li class="py-1 d-flex align-items-center">
-                                            <i class="fa fa-file text-secondary me-2" aria-hidden="true"
-                                                style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">File 2-1.csv</span>
-                                            <div class="ms-auto">
-                                                <a href="view_link_for_file2-1.txt"
-                                                    class="badge bg-info text-white me-1">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                                <a href="download_link_for_file2-1.txt"
-                                                    class="badge bg-success text-white">
-                                                    <i class="fa fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="py-1 d-flex align-items-center">
-                                            <i class="fa fa-file text-secondary me-2" aria-hidden="true"
-                                                style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">File 2-2.csv</span>
-                                            <div class="ms-auto">
-                                                <a href="view_link_for_file2-2.txt"
-                                                    class="badge bg-info text-white me-1">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                                <a href="download_link_for_file2-2.txt"
-                                                    class="badge bg-success text-white">
-                                                    <i class="fa fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="mb-3">
-                                    <i class="fa fa-angle-right toggle-icon text-dark me-2" data-bs-toggle="collapse"
-                                        data-bs-target="#dataset1_2" aria-expanded="false"
-                                        style="cursor: pointer; font-size: 1rem;"></i>
-                                    <i class="fa fa-folder me-2" aria-hidden="true"
-                                        style="font-size: 1.3rem; color: #428bca;"></i>
-                                    <strong class="align-middle text-dark" style="font-size: 1rem;">
-                                        Diaspora Tigray Initiatives and Organizations
-                                    </strong>
-                                    <ul id="dataset1_2" class="collapse ms-4 mt-2">
-                                        <li class="py-1 d-flex align-items-center">
-                                            <i class="fa fa-file text-secondary me-2" aria-hidden="true"
-                                                style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">File 2-1.csv</span>
-                                            <div class="ms-auto">
-                                                <a href="view_link_for_file2-1.txt"
-                                                    class="badge bg-info text-white me-1">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                                <a href="download_link_for_file2-1.txt"
-                                                    class="badge bg-success text-white">
-                                                    <i class="fa fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="py-1 d-flex align-items-center">
-                                            <i class="fa fa-file text-secondary me-2" aria-hidden="true"
-                                                style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">File 2-2.csv</span>
-                                            <div class="ms-auto">
-                                                <a href="view_link_for_file2-2.txt"
-                                                    class="badge bg-info text-white me-1">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                                <a href="download_link_for_file2-2.txt"
-                                                    class="badge bg-success text-white">
-                                                    <i class="fa fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="mb-3">
-                                    <i class="fa fa-angle-right toggle-icon text-dark me-2" data-bs-toggle="collapse"
-                                        data-bs-target="#dataset1_1" aria-expanded="false"
-                                        style="cursor: pointer; font-size: 1rem;"></i>
-                                    <i class="fa fa-folder me-2" aria-hidden="true"
-                                        style="font-size: 1.3rem; color: #428bca;"></i>
-                                    <strong class="align-middle text-dark" style="font-size: 1rem;">
-                                        Pro-Tigray Digital Advocacy</strong>
-                                    <ul id="dataset1_1" class="collapse ms-4 mt-2">
-                                        <li class="py-1 d-flex align-items-center">
-                                            <i class="fa fa-file text-secondary me-2" aria-hidden="true"
-                                                style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">File 1-1.csv</span>
-                                            <div class="ms-auto">
-                                                <a href="view_link_for_file1-1.txt"
-                                                    class="badge bg-info text-white me-1">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                                <a href="download_link_for_file1-1.txt"
-                                                    class="badge bg-success text-white">
-                                                    <i class="fa fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="py-1 d-flex align-items-center">
-                                            <i class="fa fa-file text-secondary me-2" aria-hidden="true"
-                                                style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">File 1-2.csv</span>
-                                            <div class="ms-auto">
-                                                <a href="view_link_for_file1-2.txt"
-                                                    class="badge bg-info text-white me-1">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                                <a href="download_link_for_file1-2.txt"
-                                                    class="badge bg-success text-white">
-                                                    <i class="fa fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="mb-3">
-                                    <i class="fa fa-angle-right toggle-icon text-dark me-2" data-bs-toggle="collapse"
-                                        data-bs-target="#dataset1_3" aria-expanded="false"
-                                        style="cursor: pointer; font-size: 1rem;"></i>
-                                    <i class="fa fa-folder me-2" aria-hidden="true"
-                                        style="font-size: 1.3rem; color: #428bca;"></i>
-                                    <strong class="align-middle text-dark" style="font-size: 1rem;">Tigray Genocide
-                                        Victims</strong>
-                                    <ul id="dataset1_3" class="collapse ms-4 mt-2">
-                                        <li class="py-1 d-flex align-items-center">
-                                            <i class="fa fa-file text-secondary me-2" aria-hidden="true"
-                                                style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">File 3-1.txt</span>
-                                            <div class="ms-auto">
-                                                <a href="view_link_for_file3-1.txt"
-                                                    class="badge bg-info text-white me-1">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                                <a href="download_link_for_file3-1.txt"
-                                                    class="badge bg-success text-white">
-                                                    <i class="fa fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="py-1 d-flex align-items-center">
-                                            <i class="fa fa-file text-secondary me-2" aria-hidden="true"
-                                                style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">File 3-2.txt</span>
-                                            <div class="ms-auto">
-                                                <a href="view_link_for_file3-2.txt"
-                                                    class="badge bg-info text-white me-1">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                                <a href="download_link_for_file3-2.txt"
-                                                    class="badge bg-success text-white">
-                                                    <i class="fa fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </li>
                                     </ul>
                                 </li>
                             </ul>
+
                         </div>
                     </div>
                 </div>
