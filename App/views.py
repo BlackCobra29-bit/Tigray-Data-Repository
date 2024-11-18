@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView
@@ -164,6 +164,13 @@ class DatasetManagement(LoginRequiredMixin, TemplateView):
     template_name = 'admin_page/dataset_groups.html'
     login_url = 'sign-in'
     redirect_field_name = 'next'
+
+class DatasetDeleteGroup(LoginRequiredMixin, TemplateView):
+    
+    def post(self, request, pk):
+        FetchedRepository = get_object_or_404(RepositoryGroup, pk=pk)
+        FetchedRepository.delete()
+        return JsonResponse({"success": True, "message": "Repository removed successfully!"}, status=200)
 
 class LogoutView(View):
     def get(self, request, *args, **kwargs):

@@ -41,16 +41,20 @@
                                 <li class="mb-3">
                                     <i class="fa fa-angle-right toggle-icon text-dark me-2" data-bs-toggle="collapse"
                                         data-bs-target="#dataset1_2" aria-expanded="false"
-                                        style="cursor: pointer; font-size: 1rem;"></i>
-                                    <i class="fa fa-folder me-2" aria-hidden="true"
-                                        style="font-size: 1.3rem; color: #428bca;"></i>
-                                    <strong class="align-middle text-dark" style="font-size: 1rem;">{{ repo.name }}</strong>
+                                        style="cursor: pointer; font-size: 1rem;">&nbsp
+                                        <i class="fa fa-folder me-2" aria-hidden="true"
+                                            style="font-size: 1.3rem; color: #428bca;"></i>
+                                        <strong class="align-middle text-dark" style="font-size: 1rem;">
+                                            {{ repo.name }}</strong>
+                                    </i>
                                     <ul id="dataset1_2" class="collapse ms-4 mt-2">
                                         {% for file_name in files.root %}
                                         <li class="py-1 d-flex align-items-center">
                                             <i class="fa {{ file_name|file_icon }} me-2" aria-hidden="true"
                                                 style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">{{ file_name|slice:":50" }}{% if file_name|length > 50 %}...{% endif %}</span>
+                                            <span style="font-size: 0.95rem;">
+                                                {{ file_name|slice:":50" }}
+                                                {% if file_name|length > 50 %}...{% endif %}</span>
                                             <div class="ms-auto">
                                                 <a href="" class="badge bg-info text-white me-1">
                                                     <i class="fa fa-eye"></i> View
