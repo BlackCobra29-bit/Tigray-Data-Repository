@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from App.views import IndexView, ViewDataRepositoryView, SignInView, DashboardView, DatasetGroup, DatasetDeleteGroup, LogoutView
+from App.views import IndexView, ViewDataRepositoryView, SignInView, DashboardView, DatasetGroup, DatasetUpdateGroup, DatasetDeleteGroup, AdminAccountSettings, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +28,8 @@ urlpatterns = [
     path("admin-login", SignInView.as_view(), name='sign-in'),
     path("dashboard/", DashboardView.as_view(), name='dashboard-page'),
     path("dataset-groups/", DatasetGroup.as_view(), name = 'dataset-groups'),
+    path("dataset-update-group/<int:pk>", DatasetUpdateGroup.as_view(), name = 'dataset-update-group'),
     path("dataset-delete-group/<int:pk>", DatasetDeleteGroup.as_view(), name = 'dataset-delete-group'),
+    path("account-settings/", AdminAccountSettings.as_view(), name = "account-settings"),
     path('logout/', LogoutView.as_view(), name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

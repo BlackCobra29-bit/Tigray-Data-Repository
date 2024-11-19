@@ -94,13 +94,14 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="gallery.html" class="nav-link">
+              <a href="{% url 'account-settings' %}"
+                class="nav-link {% if request.resolver_match.url_name == 'account-settings' %}active{% endif %}">
                 <i class="nav-icon fa fa-gear"></i>
                 <p>Account Settings</p>
               </a>
             </li>
             <li class="nav-item">
-              <a data-toggle="modal" data-target="#modal-sm" class="nav-link">
+              <a onclick="confirmLogout()" class="nav-link">
                 <i class="nav-icon fa fa-sign-out"></i>
                 <p>Sign out</p>
               </a>
@@ -130,6 +131,28 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
   <script src="{% static 'admin_static/js/adminlte.min.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    function confirmLogout() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Are you sure you want to signout?`,
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, logout!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const form = document.createElement('form');
+          form.action = `/logout`;
+          form.innerHTML = `{% csrf_token %}`;
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    }
+  </script>
 
   <script>
     $(function () {
@@ -165,13 +188,13 @@
     });
   </script>
 
-<script>
-  // Initialize tooltips
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  <script>
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-</script>
+    })
+  </script>
 </body>
 
 </html>

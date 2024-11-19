@@ -7,6 +7,7 @@ import zipfile
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
@@ -37,10 +38,8 @@ class IndexView(TemplateView):
     def get_files_from_zip(self, zip_path):
         file_names = []
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            # Get all file names from the zip
             file_names = zip_ref.namelist()
 
-        # Filter out directories (those with a trailing slash or without a file extension)
         file_hierarchy = {
             'root': [
                 os.path.basename(file_name) for file_name in file_names
@@ -95,11 +94,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         }
 
         fig_initiative = go.Figure(
-            data=[go.Pie(labels=data_initiative['labels'], values=data_initiative['values'], hole=0.3)]
-        )
-        fig_initiative.update_layout(
-            title="Type of Initiative or Organisation",
-            title_x=0.5,
+            data=[go.Pie(labels=data_initiative['labels'], values=data_initiative['values'])]
         )
         pie_chart_initiative = json.dumps(fig_initiative, cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -118,11 +113,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         }
 
         fig_geo = go.Figure(
-            data=[go.Pie(labels=data_geo['labels'], values=data_geo['values'], hole=0.3)]
-        )
-        fig_geo.update_layout(
-            title="Geographic Origin of the Initiative or Organisation",
-            title_x=0.5,
+            data=[go.Pie(labels=data_geo['labels'], values=data_geo['values'], hole=0.2)]
         )
         pie_chart_geo = json.dumps(fig_geo, cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -155,6 +146,7 @@ class DatasetGroup(LoginRequiredMixin, TemplateView):
         return JsonResponse({"success": True, "message": "Monthly amount updated successfully!"})
 
 
+# Dataset Group Views
 class AddDatasets(LoginRequiredMixin, TemplateView):
     template_name = 'add_dataset.html'
     login_url = 'sign-in'
@@ -165,14 +157,49 @@ class DatasetManagement(LoginRequiredMixin, TemplateView):
     login_url = 'sign-in'
     redirect_field_name = 'next'
 
+class DatasetUpdateGroup(LoginRequiredMixin, TemplateView):
+
+    def post(self, request, pk):
+        FetchedRepository = get_object_or_404(RepositoryGroup, pk=pk)
+        FetchedRepository.name = request.POST["UpdateRepositoryName"]
+        FetchedRepository.description = request.POST["UpdateRepositoryDescription"]
+        FetchedRepository.save()
+
+        messages.success(request,"Repository Updated successfully!")
+
+        return redirect('dataset-groups')
+
 class DatasetDeleteGroup(LoginRequiredMixin, TemplateView):
     
     def post(self, request, pk):
         FetchedRepository = get_object_or_404(RepositoryGroup, pk=pk)
         FetchedRepository.delete()
-        return JsonResponse({"success": True, "message": "Repository removed successfully!"}, status=200)
 
-class LogoutView(View):
+        messages.success(request, "Repository removed successfully!")
+
+        return redirect('dataset-groups')
+    
+# Admin Account Settings Views
+class AdminAccountSettings(LoginRequiredMixin, TemplateView):
+    template_name = 'admin_page/account_settings.html'
+    login_url = 'sign-in'
+    redirect_field_name = 'next'
+
+class AdminAccountUpdate(LoginRequiredMixin, TemplateView):
+
+    def post(self, request, pk):
+        LoggedInAccount = User.objects.get(user = request.user)
+        LoggedInAccount.first_name = request.POST["UpdateFirstName"]
+        LoggedInAccount.last_name = request.POST["UpdateLastName"]
+        LoggedInAccount.username = request.POST["UpdateUsername"]
+        FetchedRepository.save()
+
+        messages.success(request,"Repository Updated successfully!")
+
+        return redirect('dataset-groups')
+        
+# Logout View
+class LogoutView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect('sign-in')

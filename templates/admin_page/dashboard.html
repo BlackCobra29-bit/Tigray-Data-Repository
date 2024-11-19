@@ -2,8 +2,6 @@
 
 {% block content %}
 
-{% include 'admin_page/modal-logout.html' %}
-
 <div class="content-wrapper">
 
   <!-- Content Header -->
@@ -77,7 +75,10 @@
       <div class="row">
         <!-- Pie Chart 1 -->
         <div class="col-lg-6">
-          <div class="card">
+          <div class="card card-primary">
+            <div class="card-header">
+              Type of Initiative or Organisation
+            </div>
             <div class="card-body">
               <div id="pie-chart-initiative"></div>
             </div>
@@ -86,7 +87,10 @@
 
         <!-- Pie Chart 2 -->
         <div class="col-lg-6">
-          <div class="card">
+          <div class="card card-primary">
+            <div class="card-header">
+              Geographic Origin of the Initiative or Organisation
+            </div>
             <div class="card-body">
               <div id="pie-chart-geo"></div>
             </div>

@@ -2,7 +2,6 @@
 
 {% block content %}
 
-<!-- Include SweetAlert2 Library -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="content-wrapper">
@@ -22,8 +21,15 @@
         <div class="container-fluid">
             <div class="row">
 
-                <div class="aler">
-
+                <div class="col-md-12">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <span class="fa fa-check-circle"></span> {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
                 </div>
 
                 <!-- Left Column -->
@@ -83,11 +89,12 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <a href="#" onclick="confirmDelete('{{ item.id }}', '{{ item.name }}')">
-                                                <i class="fa fa-trash text-danger text-sm" title="Delete Item"></i>
-                                            </a>
                                             <a href="#" data-toggle="modal" data-target="#editModal{{ item.id }}">
                                                 <i class="fa fa-pencil text-warning text-sm" title="Edit Item"></i>
+                                            </a>
+                                            &nbsp
+                                            <a href="#" onclick="confirmDelete('{{ item.id }}', '{{ item.name }}')">
+                                                <i class="fa fa-trash text-danger text-sm" title="Delete Item"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -101,29 +108,28 @@
                                                         <small>{{ item.name }} Repository</small>
                                                     </h4>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <label for="">Repository Name:</label>
-                                                        <input type="text" name="UpdateRepositoryName"
-                                                            class="form-control" value="{{ item.name }}" required>
+                                                <form method="POST" action="{% url 'dataset-update-group' item.id %}">
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="">Repository Name:</label>
+                                                            <input type="text" name="UpdateRepositoryName"
+                                                                class="form-control" value="{{ item.name }}" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="">Repository Description:</label>
+                                                            <textarea class="form-control"
+                                                                name="UpdateRepositoryDescription" rows="3"
+                                                                placeholder="Short description..."
+                                                                required>{{ item.description }}</textarea>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="">Repository Description:</label>
-                                                        <textarea class="form-control"
-                                                            name="UpdateRepositoryDescription" rows="3"
-                                                            placeholder="Short description..."
-                                                            required>{{ item.description }}</textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Cancel</button>
-                                                    <form method="POST"
-                                                        action="">
+                                                    <div class="modal-footer justify-content-between">
+                                                        <button type="button" class="btn btn-default"
+                                                            data-dismiss="modal">Cancel</button>
                                                         {% csrf_token %}
                                                         <button class="btn btn-dark" type="submit">Update</button>
-                                                    </form>
-                                                </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +149,7 @@
         Swal.fire({
             title: 'Are you sure?',
             text: `Do you want to delete the "${itemName}" repository?`,
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
