@@ -14,22 +14,43 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from App.views import IndexView, ViewDataRepositoryView, SignInView, DashboardView, DatasetGroup, DatasetUpdateGroup, DatasetDeleteGroup, AdminAccountSettings, LogoutView
+from App.views import (
+    IndexView,
+    ViewDataRepositoryView,
+    SignInView,
+    DashboardView,
+    DatasetGroup,
+    DatasetUpdateGroup,
+    DatasetDeleteGroup,
+    AdminAccountSettings,
+    AdminAccountUpdate,
+    LogoutView,
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("", IndexView.as_view(), name='index'),
-    path("view-repository", ViewDataRepositoryView.as_view(), name='view_repo'),
+    path("admin/", admin.site.urls),
+    path("", IndexView.as_view(), name="index"),
+    path("view-repository", ViewDataRepositoryView.as_view(), name="view_repo"),
     # Admin related urls
-    path("admin-login", SignInView.as_view(), name='sign-in'),
-    path("dashboard/", DashboardView.as_view(), name='dashboard-page'),
-    path("dataset-groups/", DatasetGroup.as_view(), name = 'dataset-groups'),
-    path("dataset-update-group/<int:pk>", DatasetUpdateGroup.as_view(), name = 'dataset-update-group'),
-    path("dataset-delete-group/<int:pk>", DatasetDeleteGroup.as_view(), name = 'dataset-delete-group'),
-    path("account-settings/", AdminAccountSettings.as_view(), name = "account-settings"),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path("admin-login", SignInView.as_view(), name="sign-in"),
+    path("dashboard/", DashboardView.as_view(), name="dashboard-page"),
+    path("dataset-groups/", DatasetGroup.as_view(), name="dataset-groups"),
+    path(
+        "dataset-update-group/<int:pk>",
+        DatasetUpdateGroup.as_view(),
+        name="dataset-update-group",
+    ),
+    path(
+        "dataset-delete-group/<int:pk>",
+        DatasetDeleteGroup.as_view(),
+        name="dataset-delete-group",
+    ),
+    path("account-settings/", AdminAccountSettings.as_view(), name="account-settings"),
+    path('admin-account-update/', AdminAccountUpdate.as_view(), name = 'admin-account-update'),
+    path("logout/", LogoutView.as_view(), name="logout"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

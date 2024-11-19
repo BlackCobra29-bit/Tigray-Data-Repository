@@ -19,6 +19,20 @@
     <section class="content">
         <div class="container-fluid">
 
+            {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {% if message.tags == "success" %}
+                <span class="fa fa-check-circle"></span>
+            {% elif message.tags == "error" %}
+                <span class="fa fa-times-circle"></span>
+            {% endif %}
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 
             <div class="card card-primary">
                 <div class="card-header">
@@ -39,47 +53,72 @@
                                 <li class="nav-item">
                                     <a class="nav-link" id="custom-content-above-profile-tab" data-toggle="pill"
                                         href="#custom-content-above-profile" role="tab"
-                                        aria-controls="custom-content-above-profile" aria-selected="false">Password Settings</a>
+                                        aria-controls="custom-content-above-profile" aria-selected="false">Password
+                                        Settings</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="custom-content-above-tabContent">
                                 <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel"
                                     aria-labelledby="custom-content-above-home-tab">
                                     <br>
-                                    <form action="" method="">
+                                    <form action="{% url 'admin-account-update' %}" method="POST">
+                                        {% csrf_token %}
                                         <div class="form-group">
                                             <label>First Name:</label>
-                                            <input type="text" class="form-control" value="{{ request.user.first_name }}" name="UpdatedFirstName" id="">
+                                            <input type="text" class="form-control"
+                                                value="{{ request.user.first_name }}" name="UpdatedFirstName" id="">
                                         </div>
                                         <div class="form-group">
                                             <label>Last Name:</label>
-                                            <input type="text" class="form-control" value="{{request.user.last_name }}" name="UpdatedLastName" id="">
+                                            <input type="text" class="form-control" value="{{request.user.last_name }}"
+                                                name="UpdatedLastName" id="">
                                         </div>
                                         <div class="form-group">
                                             <label>Username:</label>
-                                            <input type="text" class="form-control" value="{{ request.user.username }}" name="UpdatedUserName" id="">
+                                            <input type="text" class="form-control" value="{{ request.user.username }}"
+                                                name="UpdatedUserName" id="">
                                         </div>
                                         <div class="form-group">
                                             <label>Email:</label>
-                                            <input type="email" class="form-control" value="{{ request.user.email }}" name="UpdatedEmail" id="">
+                                            <input type="email" class="form-control" value="{{ request.user.email }}"
+                                                name="UpdatedEmail" id="">
                                         </div>
                                         <divc class="form-group float-right">
                                             <button class="btn btn-dark">
                                                 Update
                                             </button>
-                                        </div>
-                                    </form>
                                 </div>
-                                <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel"
-                                    aria-labelledby="custom-content-above-profile-tab">
-                                    <!-- data goes here -->
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel"
+                                aria-labelledby="custom-content-above-profile-tab">
+                                <br>
+                                <form action="" method="POST"">
+                                <div class="form-group">
+                                    <label>Current Password:</label>
+                                    <input type="text" class="form-control" name="OldPassword" id="">
                                 </div>
+                                <div class="form-group">
+                                    <label>New Password:</label>
+                                    <input type="text" class="form-control" name="OldPassword">
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm Password:</label>
+                                    <input type="text" class="form-control" name="ConfirmPassword">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-dark">
+                                        Update
+                                    </button>
+                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
+        </div>
     </section>
 
 </div>
