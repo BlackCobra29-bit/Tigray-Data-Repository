@@ -20,15 +20,19 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from App.views import (
+    # User page url map
     IndexView,
     ViewDataRepositoryView,
     SignInView,
+    # Admin page url map
     DashboardView,
     DatasetGroup,
     DatasetUpdateGroup,
     DatasetDeleteGroup,
+    DatasetAddItem,
     AdminAccountSettings,
     AdminAccountUpdate,
+    AdminUpdatePassword,
     LogoutView,
 )
 
@@ -50,7 +54,9 @@ urlpatterns = [
         DatasetDeleteGroup.as_view(),
         name="dataset-delete-group",
     ),
+    path("add-dataset-item/", DatasetAddItem.as_view(), name = 'add-dataset-item'),
     path("account-settings/", AdminAccountSettings.as_view(), name="account-settings"),
     path('admin-account-update/', AdminAccountUpdate.as_view(), name = 'admin-account-update'),
+    path('admin-password-update/', AdminUpdatePassword.as_view(), name = 'admin-password-update'),
     path("logout/", LogoutView.as_view(), name="logout"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

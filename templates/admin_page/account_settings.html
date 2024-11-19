@@ -20,18 +20,20 @@
         <div class="container-fluid">
 
             {% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {% for message in messages %}
             {% if message.tags == "success" %}
-                <span class="fa fa-check-circle"></span>
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <span class="fa fa-check-circle"></span> {{ message }}
+            </div>
             {% elif message.tags == "error" %}
-                <span class="fa fa-times-circle"></span>
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <span class="fa fa-times-circle"></span> {{ message }}
+            </div>
             {% endif %}
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
+            {% endfor %}
+            {% endif %}
 
 
             <div class="card card-primary">
@@ -87,38 +89,38 @@
                                             <button class="btn btn-dark">
                                                 Update
                                             </button>
+                                    </form>
                                 </div>
-                                </form>
-                            </div>
-                            <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel"
-                                aria-labelledby="custom-content-above-profile-tab">
-                                <br>
-                                <form action="" method="POST"">
-                                <div class="form-group">
-                                    <label>Current Password:</label>
-                                    <input type="text" class="form-control" name="OldPassword" id="">
+                                <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel"
+                                    aria-labelledby="custom-content-above-profile-tab">
+                                    <br>
+                                    <form action="{% url 'admin-password-update' %}" method="POST" id="PasswordValidation">
+                                        {% csrf_token %}
+                                        <div class=" form-group">
+                                            <label>Current Password:</label>
+                                            <input type="text" class="form-control" name="CurrentPassword" id="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>New Password:</label>
+                                            <input type="text" class="form-control" id="NewPassword" name="NewPassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Confirm Password:</label>
+                                            <input type="text" class="form-control" name="ConfirmNewPassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-dark float-right">
+                                                Update
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="form-group">
-                                    <label>New Password:</label>
-                                    <input type="text" class="form-control" name="OldPassword">
-                                </div>
-                                <div class="form-group">
-                                    <label>Confirm Password:</label>
-                                    <input type="text" class="form-control" name="ConfirmPassword">
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-dark">
-                                        Update
-                                    </button>
-                                </div>
-                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
+            </div>
     </section>
 
 </div>

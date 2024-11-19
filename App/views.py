@@ -12,6 +12,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.hashers import check_password
 from django.views import View
 from django.views.generic import TemplateView
 import plotly
@@ -179,6 +181,12 @@ class DatasetDeleteGroup(LoginRequiredMixin, TemplateView):
 
         return redirect('dataset-groups')
     
+# Dataset Item Views
+class DatasetAddItem(LoginRequiredMixin, TemplateView):
+    template_name  = 'admin_page/dataset_items.html'
+    login_url = 'sign-in'
+    redirect_field_name = 'next'
+    
 # Admin Account Settings Views
 class AdminAccountSettings(LoginRequiredMixin, TemplateView):
     template_name = 'admin_page/account_settings.html'
@@ -201,6 +209,32 @@ class AdminAccountUpdate(LoginRequiredMixin, TemplateView):
         except Exception as e:
             messages.error(request, f"An error occurred: {e}")
         
+        return redirect('account-settings')
+    
+class AdminUpdatePassword(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        current_password = request.POST.get('CurrentPassword')
+        new_password = request.POST.get('NewPassword')
+        confirm_password = request.POST.get('ConfirmNewPassword')
+
+        if not current_password or not new_password or not confirm_password:
+            messages.error(request, "All fields are required.")
+            return redirect('account-settings')
+        
+        if not check_password(current_password, request.user.password):
+            messages.error(request, "Current password is incorrect.")
+            return redirect('account-settings')
+
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect('account-settings')
+
+        request.user.set_password(new_password)
+        request.user.save()
+
+        update_session_auth_hash(request, request.user)
+
+        messages.success(request, "Password updated successfully.")
         return redirect('account-settings')
         
 # Logout View
