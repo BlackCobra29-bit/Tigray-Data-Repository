@@ -187,15 +187,20 @@ class AdminAccountSettings(LoginRequiredMixin, TemplateView):
 
 class AdminAccountUpdate(LoginRequiredMixin, TemplateView):
 
-    def post(self, request, pk):
-        LoggedInAccount = User.objects.get(user = request.user)
-        LoggedInAccount.first_name = request.POST["UpdateFirstName"]
-        LoggedInAccount.last_name = request.POST["UpdateLastName"]
-        LoggedInAccount.username = request.POST["UpdateUsername"]
-        FetchedRepository.save()
-
-        messages.success(request,"Repository Updated successfully!")
-
+    def post(self, request):
+        try:
+            logged_in_account = request.user
+            logged_in_account.first_name = request.POST.get("UpdateFirstName")
+            logged_in_account.last_name = request.POST.get("UpdateLastName")
+            logged_in_account.username = request.POST.get("UpdateUsername")
+            logged_in_account.email = request.POST.get("UpdateEmail")
+            logged_in_account.save()
+            messages.success(request, "Repository updated successfully!")
+        except User.DoesNotExist:
+            messages.error(request, "User not found!")
+        except Exception as e:
+            messages.error(request, f"An error occurred: {e}")
+        
         return redirect('dataset-groups')
         
 # Logout View
