@@ -233,6 +233,20 @@ class DatasetItemDelete(LoginRequiredMixin, TemplateView):
     login_url = "sign-in"
     redirect_field_name = "next"
 
+    def post(self, request, *args, **kwargs):
+        
+        item_id = kwargs.get("pk")
+
+        item = get_object_or_404(RepositoryItem, id=item_id)
+        
+        item_file_name = os.path.basename(item.file.name)
+
+        item.delete()
+
+        messages.success(request, f"Repository item '{item_file_name}' deleted successfully!")
+        
+        return redirect("add-dataset-item")
+
 # Admin Account Settings Views
 class AdminAccountSettings(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/account_settings.html"

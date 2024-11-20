@@ -38,7 +38,7 @@ from App.views import (
     AdminAccountSettings,
     AdminAccountUpdate,
     AdminUpdatePassword,
-    # Session Logout URL Map
+    # Logout Session URL Map
     LogoutView,
 )
 
@@ -46,17 +46,21 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", IndexView.as_view(), name="index"),
     path("view-repository", ViewDataRepositoryView.as_view(), name="view_repo"),
-    # Admin related urls
+    # Admin Dashboard URL Maps
     path("admin-login", SignInView.as_view(), name="sign-in"),
     path("dashboard/", DashboardView.as_view(), name="dashboard-page"),
+    # Dataset Groups URL Maps
     path("dataset-groups/", DatasetGroup.as_view(), name="dataset-groups"),
     path("dataset-update-group/<int:pk>", DatasetUpdateGroup.as_view(), name="dataset-update-group"),
     path("dataset-delete-group/<int:pk>", DatasetDeleteGroup.as_view(), name="dataset-delete-group"),
+    # Dataset Items URL Maps
     path("add-dataset-item/", DatasetAddItem.as_view(), name = 'add-dataset-item'),
     path("dataset-update-item/<int:pk>", DatasetItemUpdate.as_view(), name = "dataset-update-item"),
     path("dataset-delete-item/<int:pk>", DatasetItemDelete.as_view(), name = "dataset-delete-item"),
+    # Admin's Account Settings URL Maps
     path("account-settings/", AdminAccountSettings.as_view(), name="account-settings"),
     path('admin-account-update/', AdminAccountUpdate.as_view(), name = 'admin-account-update'),
     path('admin-password-update/', AdminUpdatePassword.as_view(), name = 'admin-password-update'),
+    # Logout Session URL Map
     path("logout/", LogoutView.as_view(), name="logout"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

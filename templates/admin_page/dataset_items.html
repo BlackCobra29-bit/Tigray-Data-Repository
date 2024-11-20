@@ -194,8 +194,7 @@
     function confirmDelete(itemId, itemTitle, itemFile) {
         Swal.fire({
             title: 'Are you sure?',
-            html: `Do you want to delete the "<strong>${itemTitle}</strong>" 
-               File: <a href="">${itemFile}</a>?`,
+            html: `Do you want to delete <a href="">${itemFile}</a>?`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#d33',
