@@ -233,12 +233,6 @@ class DatasetItemDelete(LoginRequiredMixin, TemplateView):
     login_url = "sign-in"
     redirect_field_name = "next"
 
-    def get_context_data(self, **kwargs: reverse_lazy) -> dict[str, Any]:
-
-        context = super().get_context_data(**kwargs)
-
-        return context
-
 # Admin Account Settings Views
 class AdminAccountSettings(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/account_settings.html"

@@ -24,16 +24,21 @@ from App.views import (
     IndexView,
     ViewDataRepositoryView,
     SignInView,
-    # Admin page url map
+    # Admin Dashboard URL Map
     DashboardView,
+    # Dataset Group URL Maps
     DatasetGroup,
     DatasetUpdateGroup,
     DatasetDeleteGroup,
+    # Dataset Items Url Maps
     DatasetAddItem,
     DatasetItemUpdate,
+    DatasetItemDelete,
+    # Admin's Account Settings Url Maps
     AdminAccountSettings,
     AdminAccountUpdate,
     AdminUpdatePassword,
+    # Session Logout URL Map
     LogoutView,
 )
 
@@ -49,6 +54,7 @@ urlpatterns = [
     path("dataset-delete-group/<int:pk>", DatasetDeleteGroup.as_view(), name="dataset-delete-group"),
     path("add-dataset-item/", DatasetAddItem.as_view(), name = 'add-dataset-item'),
     path("dataset-update-item/<int:pk>", DatasetItemUpdate.as_view(), name = "dataset-update-item"),
+    path("dataset-delete-item/<int:pk>", DatasetItemDelete.as_view(), name = "dataset-delete-item"),
     path("account-settings/", AdminAccountSettings.as_view(), name="account-settings"),
     path('admin-account-update/', AdminAccountUpdate.as_view(), name = 'admin-account-update'),
     path('admin-password-update/', AdminUpdatePassword.as_view(), name = 'admin-password-update'),

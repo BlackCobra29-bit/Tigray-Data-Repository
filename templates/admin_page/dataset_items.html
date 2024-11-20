@@ -115,7 +115,7 @@
                                             </a>
                                             &nbsp;
                                             <!-- Delete Button -->
-                                            <a href="#" onclick="confirmDelete('{{ item.id }}', '{{ item.title }}')">
+                                            <a href="#" onclick="confirmDelete('{{ item.id }}', '{{ item.title }}', '{{ item.file.name|basename }}')">
                                                 <i class="fa fa-trash text-danger text-sm" title="Delete Item"></i>
                                             </a>
                                         </td>
@@ -191,19 +191,26 @@
 </div>
 
 <script>
-    function confirmDelete(id, title) {
+    function confirmDelete(itemId, itemTitle, itemFile) {
         Swal.fire({
             title: 'Are you sure?',
-            text: `You are about to delete the item "${title}".`,
-            icon: 'warning',
+            html: `Do you want to delete the "<strong>${itemTitle}</strong>" 
+               File: <a href="">${itemFile}</a>?`,
+            icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Perform the delete action (implement backend logic)
-                console.log(`Delete item with ID: ${id}`);
+                // Submit the form programmatically
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/dataset-delete-item/${itemId}`;
+                form.innerHTML = `{% csrf_token %}`;
+                document.body.appendChild(form);
+                form.submit();
             }
         });
     }
