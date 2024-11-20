@@ -13,6 +13,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bs-custom-file-input@1.4.1/dist/bs-custom-file-input.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'admin_static/css/adminlte.min.css' %}">
 </head>
 
@@ -132,6 +134,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
   <script src="{% static 'admin_static/js/adminlte.min.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+  
 
   <script>
     function confirmLogout() {
@@ -235,6 +240,47 @@
     });
   </script>
 
+  <!--  Password update form validation with jquery validatio -->
+  <script>
+    $(function () {
+      $('#RepositoryItemForm').validate({
+        rules: {
+          ItemGroup: {
+            required: true,
+          },
+          ItemTitle: {
+            required: true,
+          },
+          ItemFile: {
+            required: true,
+          },
+        },
+        messages: {
+          ItemGroup: {
+            required: "Please select a repositoy",
+          },
+          ItemTitle: {
+            required: "Please provide a title",
+          },
+          ItemFile: {
+            required: "Please browse and upload a file"
+          },
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).removeClass('is-invalid');
+        }
+      });
+    });
+  </script>
+
   <script>
     // Initialize tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -242,6 +288,25 @@
       return new bootstrap.Tooltip(tooltipTriggerEl)
     })
   </script>
+
+  <script>
+    $(function () {
+      //Initialize Select2 Elements
+      $('.select2').select2()
+      
+      $('.select2bs4').select2({
+        theme: 'bootstrap4'
+      })
+    });
+  </script>
+
+<script>
+  // Initialize bsCustomFileInput
+  $(document).ready(function () {
+    bsCustomFileInput.init();
+  });
+</script>
+
 </body>
 
 </html>

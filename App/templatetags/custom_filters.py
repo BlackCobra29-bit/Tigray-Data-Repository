@@ -80,3 +80,8 @@ ICON_MAP = {
 def file_icon(file_name):
     _, ext = os.path.splitext(file_name)
     return ICON_MAP.get(ext.lower(), 'fa-file')
+
+@register.filter
+def basename(value):
+    
+    return os.path.basename(value)
