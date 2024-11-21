@@ -11,6 +11,7 @@ from django.views import View
 from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.db.models import Count
 from django.core.mail import send_mail
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login, logout
@@ -73,6 +74,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     redirect_field_name = "next"
 
     def get_context_data(self, **kwargs):
+        top_groups = RepositoryGroup.objects.annotate(num_items=Count('repositories')).order_by('-num_items')[:4]
+
         data_initiative = {
             "labels": [
                 "Community Service Organisation (CSO)",
@@ -88,15 +91,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         }
 
         fig_initiative = go.Figure(
-            data=[
-                go.Pie(
-                    labels=data_initiative["labels"], values=data_initiative["values"]
-                )
-            ]
+            data=[go.Pie(labels=data_initiative["labels"], values=data_initiative["values"])]
         )
-        pie_chart_initiative = json.dumps(
-            fig_initiative, cls=plotly.utils.PlotlyJSONEncoder
-        )
+        pie_chart_initiative = json.dumps(fig_initiative, cls=plotly.utils.PlotlyJSONEncoder)
 
         data_geo = {
             "labels": [
@@ -113,15 +110,14 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         }
 
         fig_geo = go.Figure(
-            data=[
-                go.Pie(labels=data_geo["labels"], values=data_geo["values"], hole=0.2)
-            ]
+            data=[go.Pie(labels=data_geo["labels"], values=data_geo["values"], hole=0.2)]
         )
         pie_chart_geo = json.dumps(fig_geo, cls=plotly.utils.PlotlyJSONEncoder)
 
         context = super().get_context_data(**kwargs)
         context["pie_chart_initiative"] = pie_chart_initiative
         context["pie_chart_geo"] = pie_chart_geo
+        context["top_groups"] = top_groups
         return context
 
 

@@ -1,5 +1,6 @@
 {% extends 'admin_page/base.html' %} {% block content %}
 
+{% if request.user.is_superuser %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="content-wrapper">
@@ -156,5 +157,36 @@
         });
     }
 </script>
+{% else %}
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1></h1>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+<!-- Main content -->
+<section class="content">
+  <div class="error-page">
+
+    <div class="error-content">
+      <h3><i class="fas fa-exclamation-triangle text-danger"></i> Oops! Something went wrong.</h3>
+
+      <p>
+        You don't have permission to access this page!
+      </p>
+    </div>
+  </div>
+  <!-- /.error-page -->
+
+</section>
+<!-- /.content -->
+ </div>
+{% endif %}
 
 {% endblock %}
