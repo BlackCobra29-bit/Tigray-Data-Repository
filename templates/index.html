@@ -34,44 +34,53 @@
                 <div class="col-md-8">
                     <div class="card" id="slideFromLeft">
                         <div class="card-header bg-default text-white">
-                            <h4 class="mb-0"><strong>Available Datasets</strong></h4>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled treeview">
-                                <li class="mb-3">
-                                    <i class="fa fa-angle-right toggle-icon text-dark me-2" data-bs-toggle="collapse"
-                                        data-bs-target="#dataset1_2" aria-expanded="false"
-                                        style="cursor: pointer; font-size: 1rem;">&nbsp
-                                        <i class="fa fa-folder me-2" aria-hidden="true"
-                                            style="font-size: 1.3rem; color: #428bca;"></i>
-                                        <strong class="align-middle text-dark" style="font-size: 1rem;">
-                                            {{ repo.name }}</strong>
-                                    </i>
-                                    <ul id="dataset1_2" class="collapse ms-4 mt-2">
-                                        {% for file_name in files.root %}
-                                        <li class="py-1 d-flex align-items-center">
-                                            <i class="fa {{ file_name|file_icon }} me-2" aria-hidden="true"
-                                                style="font-size: 1rem;"></i>
-                                            <span style="font-size: 0.95rem;">
-                                                {{ file_name|slice:":50" }}
-                                                {% if file_name|length > 50 %}...{% endif %}</span>
-                                            <div class="ms-auto">
-                                                <a href="" class="badge bg-info text-white me-1">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                                <a href="" class="badge bg-success text-white">
-                                                    <i class="fa fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </li>
-                                        {% endfor %}
-
-                                    </ul>
-                                </li>
-                            </ul>
-
-                        </div>
+                        <h4 class="mb-0"><strong>Available Datasets</strong></h4>
                     </div>
+                        <div class="card-body p-0">
+                            <table class="table table-hover">
+                                <tbody>
+                                    {% for group in repository_groups %}
+                                    <tr data-widget="expandable-table" aria-expanded="false">
+                                        <td>
+                                            <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
+                                            <i class="fa fa-folder me-2" aria-hidden="true" style="font-size: 1.1rem; color: #428bca;"></i> 
+                                            {{ group.name }}
+                                        </td>
+                                    </tr>
+                                    <tr class="expandable-body">
+                                        <td>
+                                            <div class="p-0">
+                                                <table class="table table-hover">
+                                                    <tbody>
+                                                        {% for item in group.repositories.all %}
+                                                        <tr>
+                                                            <td class="text-sm">
+                                                                <i class="fa fa-file me-2" aria-hidden="true" style="color: #666;"></i> 
+                                                                {{ item.file.name|basename }}
+                                                            </td>
+                                                            <td class="text-sm float-right">
+                                                                <a href="" class="badge badge-warning">View</a>
+                                                                <a href="" class="badge badge-success">Download</a>
+                                                            </td>
+                                                        </tr>
+                                                        {% empty %}
+                                                        <tr>
+                                                            <td>No datasets available for this repository.</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                                                      
+                        </div>
+                        <!-- /.card-body -->
+                      </div>
+                      <!-- /.card -->
                 </div>
 
                 <div class="col-md-4">

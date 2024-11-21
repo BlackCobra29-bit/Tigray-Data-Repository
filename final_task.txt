@@ -1,0 +1,2 @@
+* the Email Service will be changed the host and password
+* replace the login url for the email sent to the created admin account email

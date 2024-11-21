@@ -34,6 +34,9 @@ from App.views import (
     DatasetAddItem,
     DatasetItemUpdate,
     DatasetItemDelete,
+    # User Admin Management
+    AdminManagement,
+    RemoveAdminAccount,
     # Admin's Account Settings Url Maps
     AdminAccountSettings,
     AdminAccountUpdate,
@@ -57,6 +60,9 @@ urlpatterns = [
     path("add-dataset-item/", DatasetAddItem.as_view(), name = 'add-dataset-item'),
     path("dataset-update-item/<int:pk>", DatasetItemUpdate.as_view(), name = "dataset-update-item"),
     path("dataset-delete-item/<int:pk>", DatasetItemDelete.as_view(), name = "dataset-delete-item"),
+    # User Admin Account Management
+    path("admin-management/", AdminManagement.as_view(), name = "admin-management"),
+    path("remove-admin-account/<int:pk>", RemoveAdminAccount.as_view(), name = "remove-admin-account"),
     # Admin's Account Settings URL Maps
     path("account-settings/", AdminAccountSettings.as_view(), name="account-settings"),
     path('admin-account-update/', AdminAccountUpdate.as_view(), name = 'admin-account-update'),

@@ -1,30 +1,43 @@
 # Standard Library Imports
 import json
 import os
-import zipfile
-
-# Third-Party Imports
-from django.conf import settings
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse_lazy
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.hashers import check_password
-from django.views import View
-from django.views.generic import TemplateView
+import random
+import string
 import plotly
 import plotly.graph_objects as go
 
+# Third-Party Imports
+from django.views import View
+from django.conf import settings
+from django.contrib import messages
+from django.urls import reverse_lazy
+from django.core.mail import send_mail
+from django.views.generic import TemplateView
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.hashers import make_password
+from django.http import HttpResponseRedirect
+from django.template.loader import render_to_string
+from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.hashers import check_password
+
 # Local Application Imports
-from .models import RepositoryGroup, RepositoryItem
+from .models import RepositoryGroup, RepositoryItem, AdminPic
 
 
 class IndexView(TemplateView):
     template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["repository_groups"] = RepositoryGroup.objects.prefetch_related(
+            "repositories"
+        )
+
+        return context
 
 
 class ViewDataRepositoryView(TemplateView):
@@ -209,12 +222,14 @@ class DatasetItemUpdate(LoginRequiredMixin, TemplateView):
     redirect_field_name = "next"
 
     def post(self, request, *args, **kwargs):
-        
+
         item_id = kwargs.get("pk")
         item = get_object_or_404(RepositoryItem, id=item_id)
 
         if "ItemGroup" in request.POST:
-            item.repository = get_object_or_404(RepositoryGroup, id=request.POST["ItemGroup"])
+            item.repository = get_object_or_404(
+                RepositoryGroup, id=request.POST["ItemGroup"]
+            )
 
         if "UpdateRepositoryName" in request.POST:
             item.title = request.POST["UpdateRepositoryName"]
@@ -224,28 +239,134 @@ class DatasetItemUpdate(LoginRequiredMixin, TemplateView):
 
         item.save()
 
-        messages.success(request, f"Repository item '{item.title}' updated successfully!")
+        messages.success(
+            request, f"Repository item '{item.title}' updated successfully!"
+        )
 
         return redirect("add-dataset-item")
-    
+
+
 class DatasetItemDelete(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/dataset_items.html"
     login_url = "sign-in"
     redirect_field_name = "next"
 
     def post(self, request, *args, **kwargs):
-        
+
         item_id = kwargs.get("pk")
 
         item = get_object_or_404(RepositoryItem, id=item_id)
-        
+
         item_file_name = os.path.basename(item.file.name)
 
         item.delete()
 
-        messages.success(request, f"Repository item '{item_file_name}' deleted successfully!")
-        
+        messages.success(
+            request, f"Repository item '{item_file_name}' deleted successfully!"
+        )
+
         return redirect("add-dataset-item")
+
+
+class AdminManagement(LoginRequiredMixin, TemplateView):
+    template_name = "admin_page/admin_management.html"
+    login_url = "sign-in"
+    redirect_field_name = "next"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["UserAdminList"] = User.objects.all()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        while True:
+            username = "admin_" + "".join(
+                random.choices(string.ascii_letters + string.digits, k=8)
+            )
+            if not User.objects.filter(username=username).exists():
+                break
+
+        while True:
+            password = "".join(
+                random.choices(
+                    string.ascii_letters + string.digits + string.punctuation, k=12
+                )
+            )
+
+            if not User.objects.filter(password=make_password(password)).exists():
+                break
+
+        first_name = request.POST.get("FirstName")
+        last_name = request.POST.get("LastName")
+        email = request.POST.get("UserEmail")
+        profile_pic = request.FILES.get("UserProfile")
+
+        if not email:
+            messages.error(request, "Email is required")
+            return render(request, self.template_name)
+
+        if User.objects.filter(email=email).exists():
+            messages.error(
+                request, "Email is already taken. Please choose another one."
+            )
+
+            return render(request, self.template_name)
+
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+        )
+
+        admin_pic = AdminPic(user=user, profile_pic=profile_pic)
+        admin_pic.save()
+
+        subject = "New Admin Account Created"
+        message = render_to_string(
+            "admin_page/admin_email_template.html",
+            {
+                "first_name": first_name,
+                "last_name": last_name,
+                "username": username,
+                "password": password,
+            },
+        )
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [email],
+            fail_silently=False,
+            html_message=message,
+        )
+
+        messages.success(request, "Admin account created successfully!")
+
+        return redirect("admin-management")
+    
+class RemoveAdminAccount(LoginRequiredMixin, TemplateView):
+    template_name = "admin_page/admin_management.html"
+    login_url = "sign-in"
+    redirect_field_name = "next"
+
+    def post(self, request, *args, **kwargs):
+        admin_id = kwargs.get("pk")
+        
+        try:
+            admin = User.objects.get(id=admin_id)
+            
+            if admin.is_superuser:
+                messages.error(request, "You cannot remove a superadmin.")
+            else:
+                admin.delete()
+                messages.success(request, "Admin removed successfully.")
+        except User.DoesNotExist:
+            messages.error(request, "Admin not found.")
+        
+        return redirect('admin-management')
 
 # Admin Account Settings Views
 class AdminAccountSettings(LoginRequiredMixin, TemplateView):
