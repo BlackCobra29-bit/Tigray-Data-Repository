@@ -64,23 +64,23 @@
                     <!-- Row for Pie Charts -->
                     <div class="row">
                         <!-- Pie Chart 1 -->
-                        <div class="col-lg-6">
-                            <div class="card card-dark">
-                                <div class="card-header">Type of Initiative or Organisation</div>
+                        <div class="col-lg-4">
+                            <div class="card card-default">
+                                <div class="card-header" class="text-center">Initiatives by Foundation Year</div>
                                 <div class="card-body">
-                                    <div id="doughnut-chart" style="width: 400px; height: 400px;"></div>
+                                    <div id="doughnut-chart" class="text-center" style="width: 300px; height: 300px;"></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Pie Chart 2 -->
-                        <div class="col-lg-6">
-                            <div class="card card-dark">
+                        <div class="col-lg-4">
+                            <div class="card card-default">
                                 <div class="card-header">
-                                    Geographic Origin of the Initiative or Organisation
+                                    Initiatives by Area of Focus
                                 </div>
                                 <div class="card-body">
-                                    <div id="pie-chart" style="width: 400px; height: 400px;"></div>
+                                    <div id="pie-chart" style="width: 300px; height: 300px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -113,4 +113,11 @@
     // Slide in the card from the right
     gsap.from("#slideFromRight", { x: 300, opacity: 0, duration: 1 });
 </script>
+
+<!-- remove plotly logo and modebar from the website -->
+<style>
+    .modebar-container{
+        display: none;
+    }
+</style>
 {% endblock %}

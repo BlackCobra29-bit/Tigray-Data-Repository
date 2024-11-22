@@ -81,4 +81,10 @@
   Plotly.newPlot('pie-chart-geo', pieChartGeo.data, pieChartGeo.layout);
 </script>
 
+<!-- remove plotly logo and modebar from the website -->
+<style>
+  .modebar-container{
+      display: none;
+  }
+</style>
 {% endblock %}

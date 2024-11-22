@@ -5,4 +5,3 @@ The Tigray Data Repository is a dedicated digital platform aimed at collecting, 
 - Python 3
 - Django Web Framework
 - AdminLTE Bootstrap Template
-- Jquery
