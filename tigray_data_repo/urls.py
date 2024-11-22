@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 from App.views import (
     # User page url map
     IndexView,
-    ViewDataRepositoryView,
+    InitiativesView,
     SignInView,
     # Admin Dashboard URL Map
     DashboardView,
@@ -34,10 +34,12 @@ from App.views import (
     DatasetAddItem,
     DatasetItemUpdate,
     DatasetItemDelete,
+    # Initiatives URL Map
+    InitiativesAdd,
     # User Admin Management
     AdminManagement,
     RemoveAdminAccount,
-    # Admin's Account Settings Url Maps
+    # Admin's Account Settings URL Maps
     AdminAccountSettings,
     AdminAccountUpdate,
     AdminUpdatePassword,
@@ -48,7 +50,7 @@ from App.views import (
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", IndexView.as_view(), name="index"),
-    path("view-repository", ViewDataRepositoryView.as_view(), name="view_repo"),
+    path("initiatives/", InitiativesView.as_view(), name="initiatives"),
     # Admin Dashboard URL Maps
     path("admin-login", SignInView.as_view(), name="sign-in"),
     path("dashboard/", DashboardView.as_view(), name="dashboard-page"),
@@ -60,6 +62,8 @@ urlpatterns = [
     path("add-dataset-item/", DatasetAddItem.as_view(), name = 'add-dataset-item'),
     path("dataset-update-item/<int:pk>", DatasetItemUpdate.as_view(), name = "dataset-update-item"),
     path("dataset-delete-item/<int:pk>", DatasetItemDelete.as_view(), name = "dataset-delete-item"),
+    # Initiatives Management
+    path("add-initiative/", InitiativesAdd.as_view(), name = "add-initiative"),
     # User Admin Account Management
     path("admin-management/", AdminManagement.as_view(), name = "admin-management"),
     path("remove-admin-account/<int:pk>", RemoveAdminAccount.as_view(), name = "remove-admin-account"),

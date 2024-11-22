@@ -34,3 +34,17 @@ class RepositoryItem(models.Model):
 
     class Meta:
         ordering = ["-id"]
+
+class InitiativesModel(models.Model):
+    InitiativeName = models.CharField(max_length=255)
+    FoundationYear = models.IntegerField()
+    InitiativeType = models.CharField(max_length=255)
+    InitiativeOrigin = models.CharField(max_length=255)
+    AriaOfFocus = models.CharField(max_length=255)
+    OfficialLink = models.URLField(max_length=255)
+
+    def __str__(self):
+        return self.InitiativeName
+    
+    class Meta:
+        ordering = ["-id"]

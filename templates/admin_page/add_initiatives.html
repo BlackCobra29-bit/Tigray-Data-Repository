@@ -1,0 +1,103 @@
+{% extends 'admin_page/base.html' %}
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1></h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-12">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <span class="fa fa-check-circle"></span> {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Left Column -->
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><span class="fa fa-building"></span>
+                                <small>Add New Diaspora Initiative</small>
+                            </h3>
+                        </div>
+                        <!-- Form Start -->
+                        <form id="InitiativeAddForm" method="POST">
+                            {% csrf_token %}
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Initiative Name:</label>
+                                            <input type="text" name="InitiativeName" class="form-control"
+                                                placeholder="Enter initiative name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Foundation Year:</label>
+                                            <input type="date" name="FoundationYear" class="form-control"
+                                                placeholder="Enter initiative name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Type of Initiative:</label>
+                                            <input type="text" name="InitiativeType" class="form-control"
+                                                placeholder="Enter type of initiative">
+                                        </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Origin of The Initiative:</label>
+                                        <select class="form-control select2" name="InitiativeOrigin" style="width: 100%;">
+                                            <option selected="selected" disabled>Select origin</option>
+                                            <option>Ethiopia (Outside of Tigray)</option>
+                                            <option>Africa</option>
+                                            <option>North America</option>
+                                            <option>Central/South America</option>
+                                            <option>Asia</option>
+                                            <option>Europe</option>
+                                            <option>Middle East</option>
+                                            <option>Australia</option>
+                                          </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Aria of Focus:</label>
+                                        <input type="text" name="AriaOfFocus" class="form-control"
+                                            placeholder="Enter aria of focus">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Official Link:</label>
+                                        <input type="url" name="OfficialLink" class="form-control"
+                                            placeholder="Enter official link">
+                                    </div>
+                                </div>
+                                </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-dark float-right">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

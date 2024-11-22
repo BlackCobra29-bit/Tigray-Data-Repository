@@ -1,2 +1,6 @@
 * the Email Service will be changed the host and password
 * replace the login url for the email sent to the created admin account email
+
+display by region
+by year
+by focus area

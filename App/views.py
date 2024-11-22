@@ -12,6 +12,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.db.models import Count
+from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login, logout
@@ -25,7 +26,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.hashers import check_password
 
 # Local Application Imports
-from .models import RepositoryGroup, RepositoryItem, AdminPic
+from .models import RepositoryGroup, RepositoryItem, AdminPic, InitiativesModel
 
 
 class IndexView(TemplateView):
@@ -41,9 +42,74 @@ class IndexView(TemplateView):
         return context
 
 
-class ViewDataRepositoryView(TemplateView):
-    template_name = "render_repo.html"
+class InitiativesView(TemplateView):
+    template_name = "initiatives.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["diaspora_initiatives"] = InitiativesModel.objects.all()
+
+        # Get all initiatives from the model
+        initiatives = InitiativesModel.objects.all()
+
+        # Prepare data for charts
+        foundation_year_data = {}
+        origin_data = {}
+        focus_data = {}
+
+        for initiative in initiatives:
+            foundation_year_data[initiative.FoundationYear] = foundation_year_data.get(initiative.FoundationYear, 0) + 1
+            origin_data[initiative.InitiativeOrigin] = origin_data.get(initiative.InitiativeOrigin, 0) + 1
+            focus_data[initiative.AriaOfFocus] = focus_data.get(initiative.AriaOfFocus, 0) + 1
+
+        # Doughnut chart (by Foundation Year)
+        fig_doughnut = go.Figure(
+            data=[go.Pie(
+                labels=list(foundation_year_data.keys()),
+                values=list(foundation_year_data.values()),
+                hole=0.5
+            )]
+        )
+        fig_doughnut.update_layout(title_text="Initiatives by Foundation Year")
+
+        # Convert to JSON
+        doughnut_chart = json.dumps(fig_doughnut, cls=plotly.utils.PlotlyJSONEncoder)
+
+        # Bar chart (by Origin)
+        fig_bar = go.Figure(
+            data=[go.Bar(
+                x=list(origin_data.keys()),
+                y=list(origin_data.values())
+            )]
+        )
+        fig_bar.update_layout(title_text="Initiatives by Origin", xaxis_title="Origin", yaxis_title="Count")
+
+        # Convert to JSON
+        bar_chart = json.dumps(fig_bar, cls=plotly.utils.PlotlyJSONEncoder)
+
+        # Pie chart (by Area of Focus)
+        fig_pie = go.Figure(
+            data=[go.Pie(
+                labels=list(focus_data.keys()),
+                values=list(focus_data.values())
+            )]
+        )
+        fig_pie.update_layout(title_text="Initiatives by Area of Focus")
+
+        # Convert to JSON
+        pie_chart = json.dumps(fig_pie, cls=plotly.utils.PlotlyJSONEncoder)
+
+        # Pass the chart data to the template
+        context["doughnut_chart"] = doughnut_chart
+        context["bar_chart"] = bar_chart
+        context["pie_chart"] = pie_chart
+
+        return context
+
+"""
+Admin Views --> CBV --> Class Based Views
+"""
 
 class SignInView(TemplateView):
     template_name = "admin_page/sign_in.html"
@@ -61,11 +127,6 @@ class SignInView(TemplateView):
         else:
             messages.error(request, "Invalid username or password")
             return render(request, self.template_name)
-
-
-"""
-Admin Views --> CBV --> Class Based Views
-"""
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -91,8 +152,25 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         }
 
         fig_initiative = go.Figure(
-            data=[go.Pie(labels=data_initiative["labels"], values=data_initiative["values"])]
+                data=[go.Pie(labels=data_initiative["labels"], values=data_initiative["values"])]
+            )
+
+        fig_initiative.update_layout(
+            autosize=True,
+            margin=dict(l=0, r=0, t=30, b=0),
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=1.7,
+                xanchor="center",
+                x=0.5,
+                itemwidth=50,
+                traceorder="normal",
+                font=dict(size=12),
+                bgcolor="rgba(255, 255, 255, 0.7)",
+            ),
         )
+
         pie_chart_initiative = json.dumps(fig_initiative, cls=plotly.utils.PlotlyJSONEncoder)
 
         data_geo = {
@@ -112,6 +190,23 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         fig_geo = go.Figure(
             data=[go.Pie(labels=data_geo["labels"], values=data_geo["values"], hole=0.2)]
         )
+
+        fig_geo.update_layout(
+            autosize=True,
+            margin=dict(l=0, r=0, t=30, b=0),
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=1.7,
+                xanchor="center",
+                x=0.5,
+                itemwidth=50,
+                traceorder="normal",
+                font=dict(size=12),
+                bgcolor="rgba(255, 255, 255, 0.7)",
+            ),
+        )
+
         pie_chart_geo = json.dumps(fig_geo, cls=plotly.utils.PlotlyJSONEncoder)
 
         context = super().get_context_data(**kwargs)
@@ -262,8 +357,34 @@ class DatasetItemDelete(LoginRequiredMixin, TemplateView):
         )
 
         return redirect("add-dataset-item")
+    
+# Diaspora Initiatives and organizations management
+class InitiativesAdd(LoginRequiredMixin, TemplateView):
+    template_name = "admin_page/add_initiatives.html"
+    login_url = "sign-in"
+    redirect_field_name = "next"
 
+    def post(self, request, *args, **kwargs):
+        InitiativeName = request.POST.get("InitiativeName")
+        FoundationYear = request.POST.get("FoundationYear")[:4]
+        InitiativeType = request.POST.get("InitiativeType")
+        InitiativeOrigin = request.POST.get("InitiativeOrigin")
+        AriaOfFocus = request.POST.get("AriaOfFocus")
+        OfficialLink = request.POST.get("OfficialLink")
 
+        InitiativesModel.objects.create(
+            InitiativeName=InitiativeName,
+            FoundationYear=int(FoundationYear),
+            InitiativeType=InitiativeType,
+            InitiativeOrigin=InitiativeOrigin,
+            AriaOfFocus=AriaOfFocus,
+            OfficialLink=OfficialLink
+        )
+
+        messages.success(request, "Initiative has been successfully added!")
+        return self.render_to_response({"success": True})
+
+# User Admin Management
 class AdminManagement(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/admin_management.html"
     login_url = "sign-in"

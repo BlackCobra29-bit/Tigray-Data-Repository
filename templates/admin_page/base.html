@@ -131,16 +131,29 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="gallery.html" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="nav-icon fa fa-building"></i>
-                  <p>Initiatives and Orgs</p>
+                  <p>
+                    Diaspora Initiatives <i class="fas fa-angle-left right"></i>
+                  </p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="gallery.html" class="nav-link">
-                  <i class="nav-icon fa fa-envelope"></i>
-                  <p>Contact Messages <span class="badge badge-danger">3</span></p>
-                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a
+                      href="{% url 'add-initiative' %}"
+                      class="nav-link {% if request.resolver_match.url_name == 'add-initiative' %}active{% endif %}"
+                    >
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add Data</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="pages/tables/data.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Manage Data</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
               {% if request.user.is_superuser %}
               <li class="nav-item">
@@ -342,54 +355,115 @@
       });
     </script>
 
-<!--  User admin form validation with jquery validation -->
-<script>
-  $(function () {
-    $("#UserAdminAccount").validate({
-      rules: {
-        FirstName: {
-          required: true,
-        },
-        LastName: {
-          required: true,
-        },
-        UserEmail: {
-          required: true,
-          email: true,
-        },
-        UserProfile: {
-          required: true,
-        },
-      },
-      messages: {
-        FirstName: {
-          required: "Please eprovide a first name",
-        },
-        LastName: {
-          required: "Please provide a last name",
-        },
-        UserEmail: {
-          required: "Please provide a email address",
-          email: "Please enter a valid email address",
-        },
-        UserProfile: {
-          required: "Please upload a user profile picture",
-        },
-      },
-      errorElement: "span",
-      errorPlacement: function (error, element) {
-        error.addClass("invalid-feedback");
-        element.closest(".form-group").append(error);
-      },
-      highlight: function (element, errorClass, validClass) {
-        $(element).addClass("is-invalid");
-      },
-      unhighlight: function (element, errorClass, validClass) {
-        $(element).removeClass("is-invalid");
-      },
-    });
-  });
-</script>
+    <!--  User admin form validation with jquery validation -->
+    <script>
+      $(function () {
+        $("#UserAdminAccount").validate({
+          rules: {
+            FirstName: {
+              required: true,
+            },
+            LastName: {
+              required: true,
+            },
+            UserEmail: {
+              required: true,
+              email: true,
+            },
+            UserProfile: {
+              required: true,
+            },
+          },
+          messages: {
+            FirstName: {
+              required: "Please provide a first name",
+            },
+            LastName: {
+              required: "Please provide a last name",
+            },
+            UserEmail: {
+              required: "Please provide a email address",
+              email: "Please enter a valid email address",
+            },
+            UserProfile: {
+              required: "Please upload a user profile picture",
+            },
+          },
+          errorElement: "span",
+          errorPlacement: function (error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".form-group").append(error);
+          },
+          highlight: function (element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+          },
+          unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+          },
+        });
+      });
+    </script>
+
+    <!--  User admin form validation with jquery validation -->
+    <script>
+      $(function () {
+        $("#InitiativeAddForm").validate({
+          rules: {
+            InitiativeName: {
+              required: true,
+            },
+            FoundationYear: {
+              required: true,
+            },
+            InitiativeType: {
+              required: true,
+            },
+            InitiativeOrigin: {
+              required: true,
+            },
+            AriaOfFocus: {
+              required: true,
+            },
+            OfficialLink: {
+              required: true,
+              url: true,
+            },
+          },
+          messages: {
+            InitiativeName: {
+              required: "Please provide the name of the initiative",
+            },
+            FoundationYear: {
+              required: "Please provide the year of foundation",
+            },
+            InitiativeType: {
+              required: "Please provide the type of the initiative",
+            },
+            InitiativeOrigin: {
+              required: "Please provide the origin of the initiative",
+            },
+            AriaOfFocus: {
+              required: "Please provide the area of focus",
+            },
+            OfficialLink: {
+              required: "Please provide the official link",
+              url: "Please make sure it is a valid URL",
+            },
+          },
+          errorElement: "span",
+          errorPlacement: function (error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".form-group").append(error);
+          },
+          highlight: function (element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+          },
+          unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+          },
+        });
+      });
+    </script>
 
     <script>
       // Initialize tooltips

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load custom_filters %}
+
+{% block 'main-section' %}
+
+<section class="ftco-section ftco-no-pb ftco-no-pt" id="chapter-section">
+    <div class="container">
+        <div class="row justify-content-center py-5 mt-5">
+      <div class="col-md-12 heading-section text-center ftco-animate">
+      </div>
+    </div>
+        <div class="row">
+                <div class="col-md-12">
+                  <div id="page-1" class= "page bg-light one">
+                      <h2 class="heading text-center">Description</h2>
+                      <p>On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their.</p>
+                  </div>
+                  <div id="page-2" class= "page bg-light two">
+                      <h2 class="heading text-center">Diaspora Initiatives and Organisations</h2>
+                      <p>
+                        <table id="myTable" class="table table-bordered table-striped dt-responsive" style="width:100%">
+                            <thead>
+                                <tr> 
+                                <th>Index</th>
+                                <th>Initiative Name</th>
+                                <th>Foundation Year</th>
+                                <th>Type of initiative</th>
+                                <th>Origin of the initiative</th>
+                                <th>Area of focus</th>
+                                <th>official link</th>
+                            </tr>                              
+                            </thead>
+                            <tbody>
+                                {% for initiative in diaspora_initiatives %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ initiative.InitiativeName }}</td>
+                                    <td>{{ initiative.FoundationYear }}</td>
+                                    <td>{{ initiative.InitiativeType }}</td>
+                                    <td>{{ initiative.InitiativeOrigin }}</td>
+                                    <td>{{ initiative.AriaOfFocus }}</td>
+                                    <td><a href="{{ initiative.OfficialLink }}" target="_blank" class="text-sm"><strong><span class="fa fa-link"></span> Official Link</strong></a></td>
+                                </tr>
+                                {% endfor %}
+                                <!-- Add more rows as needed -->
+                            </tbody>
+                        </table>
+                      </p>
+                  </div>
+                  <div id="page-3" class="page bg-light three">
+                    <h2 class="heading text-center">Visualization</h2>
+                
+                    <!-- Doughnut Chart for Foundation Year -->
+                    <div id="doughnut-chart"></div>
+                
+                    <!-- Bar Chart for Initiative Origin -->
+                    <div id="bar-chart"></div>
+                
+                    <!-- Pie Chart for Area of Focus -->
+                    <div id="pie-chart"></div>
+                </div>
+                
+                <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                <script>
+                    // Render Doughnut Chart
+                    const doughnutData = {{ doughnut_chart|safe }};
+                    Plotly.newPlot('doughnut-chart', doughnutData.data, doughnutData.layout);
+                
+                    // Render Bar Chart
+                    const barData = {{ bar_chart|safe }};
+                    Plotly.newPlot('bar-chart', barData.data, barData.layout);
+                
+                    // Render Pie Chart
+                    const pieData = {{ pie_chart|safe }};
+                    Plotly.newPlot('pie-chart', pieData.data, pieData.layout);
+                </script>
+                
+                </div>
+          </div>
+    </div>
+</section>
+
+<!-- Page Specfic Animation Script -->
+<script>
+    // Slide in the card from the left
+    gsap.from("#slideFromLeft", { x: -300, opacity: 0, duration: 1 });
+
+    // Slide in the card from the right
+    gsap.from("#slideFromRight", { x: 300, opacity: 0, duration: 1 });
+</script>
+{% endblock %}
