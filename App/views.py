@@ -50,66 +50,105 @@ class InitiativesView(TemplateView):
 
         context["diaspora_initiatives"] = InitiativesModel.objects.all()
 
-        # Get all initiatives from the model
         initiatives = InitiativesModel.objects.all()
 
-        # Prepare data for charts
         foundation_year_data = {}
         origin_data = {}
         focus_data = {}
 
         for initiative in initiatives:
-            foundation_year_data[initiative.FoundationYear] = foundation_year_data.get(initiative.FoundationYear, 0) + 1
-            origin_data[initiative.InitiativeOrigin] = origin_data.get(initiative.InitiativeOrigin, 0) + 1
-            focus_data[initiative.AriaOfFocus] = focus_data.get(initiative.AriaOfFocus, 0) + 1
+            foundation_year_data[initiative.FoundationYear] = (
+                foundation_year_data.get(initiative.FoundationYear, 0) + 1
+            )
+            origin_data[initiative.InitiativeOrigin] = (
+                origin_data.get(initiative.InitiativeOrigin, 0) + 1
+            )
+            focus_data[initiative.AriaOfFocus] = (
+                focus_data.get(initiative.AriaOfFocus, 0) + 1
+            )
 
-        # Doughnut chart (by Foundation Year)
         fig_doughnut = go.Figure(
-            data=[go.Pie(
-                labels=list(foundation_year_data.keys()),
-                values=list(foundation_year_data.values()),
-                hole=0.5
-            )]
+            data=[
+                go.Pie(
+                    labels=list(foundation_year_data.keys()),
+                    values=list(foundation_year_data.values()),
+                    hole=0.2,
+                )
+            ]
         )
-        fig_doughnut.update_layout(title_text="Initiatives by Foundation Year")
+        fig_doughnut.update_layout(
+            margin=dict(l=0, r=0, t=30, b=0),
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=1.3,
+                xanchor="center",
+                x=0.5,
+                itemwidth=50,
+                traceorder="normal",
+                font=dict(size=12),
+                bgcolor="rgba(255, 255, 255, 0.7)",
+            ),
+        )
 
-        # Convert to JSON
         doughnut_chart = json.dumps(fig_doughnut, cls=plotly.utils.PlotlyJSONEncoder)
 
-        # Bar chart (by Origin)
         fig_bar = go.Figure(
-            data=[go.Bar(
-                x=list(origin_data.keys()),
-                y=list(origin_data.values())
-            )]
+            data=[go.Bar(x=list(origin_data.keys()), y=list(origin_data.values()))]
         )
-        fig_bar.update_layout(title_text="Initiatives by Origin", xaxis_title="Origin", yaxis_title="Count")
+        fig_bar.update_layout(
+            title_text="Initiatives by Origin",
+            xaxis_title="Origin",
+            yaxis_title="Count",
+            margin=dict(l=0, r=0, t=30, b=0),
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=1.5,
+                xanchor="center",
+                x=0.5,
+                itemwidth=50,
+                traceorder="normal",
+                font=dict(size=12),
+                bgcolor="rgba(255, 255, 255, 0.7)",
+            ),
+        )
 
-        # Convert to JSON
         bar_chart = json.dumps(fig_bar, cls=plotly.utils.PlotlyJSONEncoder)
 
-        # Pie chart (by Area of Focus)
         fig_pie = go.Figure(
-            data=[go.Pie(
-                labels=list(focus_data.keys()),
-                values=list(focus_data.values())
-            )]
+            data=[
+                go.Pie(labels=list(focus_data.keys()), values=list(focus_data.values()))
+            ]
         )
-        fig_pie.update_layout(title_text="Initiatives by Area of Focus")
+        fig_pie.update_layout(
+            margin=dict(l=0, r=0, t=30, b=0),
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=1.5,
+                xanchor="center",
+                x=0.5,
+                itemwidth=50,
+                traceorder="normal",
+                font=dict(size=12),
+                bgcolor="rgba(255, 255, 255, 0.7)",
+            ),
+        )
 
-        # Convert to JSON
         pie_chart = json.dumps(fig_pie, cls=plotly.utils.PlotlyJSONEncoder)
 
-        # Pass the chart data to the template
         context["doughnut_chart"] = doughnut_chart
         context["bar_chart"] = bar_chart
         context["pie_chart"] = pie_chart
 
         return context
 
+
 """
 Admin Views --> CBV --> Class Based Views
 """
+
 
 class SignInView(TemplateView):
     template_name = "admin_page/sign_in.html"
@@ -135,7 +174,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     redirect_field_name = "next"
 
     def get_context_data(self, **kwargs):
-        top_groups = RepositoryGroup.objects.annotate(num_items=Count('repositories')).order_by('-num_items')[:4]
+        top_groups = RepositoryGroup.objects.annotate(
+            num_items=Count("repositories")
+        ).order_by("-num_items")[:4]
 
         data_initiative = {
             "labels": [
@@ -152,11 +193,14 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         }
 
         fig_initiative = go.Figure(
-                data=[go.Pie(labels=data_initiative["labels"], values=data_initiative["values"])]
-            )
+            data=[
+                go.Pie(
+                    labels=data_initiative["labels"], values=data_initiative["values"]
+                )
+            ]
+        )
 
         fig_initiative.update_layout(
-            autosize=True,
             margin=dict(l=0, r=0, t=30, b=0),
             legend=dict(
                 orientation="h",
@@ -171,7 +215,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             ),
         )
 
-        pie_chart_initiative = json.dumps(fig_initiative, cls=plotly.utils.PlotlyJSONEncoder)
+        pie_chart_initiative = json.dumps(
+            fig_initiative, cls=plotly.utils.PlotlyJSONEncoder
+        )
 
         data_geo = {
             "labels": [
@@ -188,11 +234,12 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         }
 
         fig_geo = go.Figure(
-            data=[go.Pie(labels=data_geo["labels"], values=data_geo["values"], hole=0.2)]
+            data=[
+                go.Pie(labels=data_geo["labels"], values=data_geo["values"], hole=0.2)
+            ]
         )
 
         fig_geo.update_layout(
-            autosize=True,
             margin=dict(l=0, r=0, t=30, b=0),
             legend=dict(
                 orientation="h",
@@ -357,7 +404,8 @@ class DatasetItemDelete(LoginRequiredMixin, TemplateView):
         )
 
         return redirect("add-dataset-item")
-    
+
+
 # Diaspora Initiatives and organizations management
 class InitiativesAdd(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/add_initiatives.html"
@@ -378,11 +426,12 @@ class InitiativesAdd(LoginRequiredMixin, TemplateView):
             InitiativeType=InitiativeType,
             InitiativeOrigin=InitiativeOrigin,
             AriaOfFocus=AriaOfFocus,
-            OfficialLink=OfficialLink
+            OfficialLink=OfficialLink,
         )
 
         messages.success(request, "Initiative has been successfully added!")
         return self.render_to_response({"success": True})
+
 
 # User Admin Management
 class AdminManagement(LoginRequiredMixin, TemplateView):
@@ -463,7 +512,8 @@ class AdminManagement(LoginRequiredMixin, TemplateView):
         messages.success(request, "Admin account created successfully!")
 
         return redirect("admin-management")
-    
+
+
 class RemoveAdminAccount(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/admin_management.html"
     login_url = "sign-in"
@@ -471,10 +521,10 @@ class RemoveAdminAccount(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         admin_id = kwargs.get("pk")
-        
+
         try:
             admin = User.objects.get(id=admin_id)
-            
+
             if admin.is_superuser:
                 messages.error(request, "You cannot remove a superadmin.")
             else:
@@ -482,8 +532,9 @@ class RemoveAdminAccount(LoginRequiredMixin, TemplateView):
                 messages.success(request, "Admin removed successfully.")
         except User.DoesNotExist:
             messages.error(request, "Admin not found.")
-        
-        return redirect('admin-management')
+
+        return redirect("admin-management")
+
 
 # Admin Account Settings Views
 class AdminAccountSettings(LoginRequiredMixin, TemplateView):
