@@ -96,83 +96,91 @@
                 <script src="{% static 'js/canvas.js' %}"></script>
                 
                 <script>
-                    // Doughnut Chart Data (Foundation Year)
                     const doughnutData = {{ doughnut_data|safe }};
+                    const columnData = {{ column_data|safe }};
+                    const barData = {{ pie_data|safe }};
+                    
                     const totalFoundationYears = doughnutData.reduce((total, data) => total + data.y, 0);
+
                     const processedDoughnutData = doughnutData.map(item => ({
                         label: item.label,
                         y: item.y,
-                        percent: ((item.y / totalFoundationYears) * 100).toFixed(2) // Percentage
+                        percent: ((item.y / totalFoundationYears) * 100).toFixed(2)
                     }));
-                
-                    // Column Chart Data (Initiative Origin)
-                    const columnData = {{ column_data|safe }};
-                
-                    // Bar Chart Data (Area of Focus)
-                    const barData = {{ pie_data|safe }};
-                
-                    // Render Doughnut Chart (Foundation Year)
+
                     const doughnutChart = new CanvasJS.Chart("doughnut-chart", {
                         animationEnabled: true,
                         data: [{
                             type: "pie",
-                            showInLegend: true,
-                            toolTipContent: "{label}: {y} ({percent}%)",
-                            indexLabel: "{label}: {y} ({percent}%)",
+                            toolTipContent: "{label}: ({percent}%)",
+                            indexLabel: "{label}: ({percent}%)",
                             dataPoints: processedDoughnutData.map(item => ({
                                 label: item.label,
                                 y: item.y,
-                                legendText: `${item.label}: ${item.y} (${item.percent}%)`
+                                percent: item.percent,
                             }))
                         }]
                     });
+
                     doughnutChart.render();
-                
-                   // Render Area Chart (Initiative Origin)
+                    
                     const areaChart = new CanvasJS.Chart("column-chart", {
                         animationEnabled: true,
                         axisY: { title: "Number of initiatives", gridThickness: 0.1 },
-                        legend: { verticalAlign: "top" }, // Align legend to the top
+                        legend: { verticalAlign: "top" },
                         data: [{
-                            type: "area", // Change the type to "area"
-                            showInLegend: true,
-                            legendText: "Initiative Origin Count", // Legend for the whole dataset
-                            toolTipContent: "{label}: {y}", // Tooltip content
-                            dataPoints: columnData // Display the actual content
+                            type: "area",
+                            toolTipContent: "{label}: {y}",
+                            dataPoints: columnData
                         }]
                     });
                     areaChart.render();
-
-                
-                    // Render Bar Chart (Area of Focus)
+                    
                     const barChart = new CanvasJS.Chart("bar-chart", {
                         animationEnabled: true,
-                        axisY: { title: "Count", gridThickness: 0.3 },
+                        axisY: { 
+                            title: "Number of initiatives", 
+                            gridThickness: 0.3 
+                        },
                         legend: { verticalAlign: "top" },
                         data: [{
                             type: "bar",
-                            showInLegend: true,
-                            toolTipContent: "{label}: {y}",
-                            dataPoints: barData
+                            toolTipContent: "{label}: {y} ({percent}%)",
+                            indexLabel: "{percent}%",
+                            indexLabelFontSize: 14,
+                            indexLabelPlacement: "outside",
+                            markerColor: "red",
+                            markerType: "triangle",
+                            dataPoints: barData.map(item => ({
+                                label: item.label,
+                                y: item.y,
+                                percent: ((item.y / barData.reduce((sum, dp) => sum + dp.y, 0)) * 100).toFixed(2)
+                            }))
                         }]
                     });
                     barChart.render();
-
-                    // Pyramid Chart for Initiative Type
+                    
                     const pyramidData = {{ pyramid_data|safe }};
+                    const totalPyramidValue = pyramidData.reduce((total, data) => total + data.y, 0);
+                    
                     const pyramidChart = new CanvasJS.Chart("pyramid-chart", {
                         animationEnabled: true,
                         data: [{
                             type: "pyramid",
                             showInLegend: true,
                             legendText: "{label}",
-                            toolTipContent: "{label}: {y}",
-                            dataPoints: pyramidData
+                            toolTipContent: "{label}: {y} ({percent}%)",
+                            indexLabel: "{label}: {percent}%",
+                            indexLabelFontSize: 14,
+                            dataPoints: pyramidData.map(item => ({
+                                label: item.label,
+                                y: item.y,
+                                percent: ((item.y / totalPyramidValue) * 100).toFixed(2)
+                            }))
                         }]
                     });
                     pyramidChart.render();
-                </script>
-                    
+                    </script>                    
 
             </div>
         </div>
