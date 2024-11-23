@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-
 {% load custom_filters %}
 
 {% block 'main-section' %}
@@ -17,15 +16,10 @@
                 <div id="page-1" class="page bg-light one">
                     <h2 class="heading text-center">Description</h2>
                     <p>On her way she met a copy. The copy warned the Little Blind Text, that where it came from it
-                        would have been rewritten a thousand times and everything that was left from its origin would be
-                        the word "and" and the Little Blind Text should turn around and return to its own, safe country.
-                        But nothing the copy said could convince her and so it didn’t take long until a few insidious
-                        Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their
-                        agency, where they abused her for their.</p>
+                        would have been rewritten a thousand times...</p>
                 </div>
                 <div id="page-2" class="page bg-light two">
                     <h2 class="heading text-center">Diaspora Initiatives and Organisations</h2>
-                    <p>
                     <table id="myTable" class="table table-bordered table-striped dt-responsive" style="width:100%">
                         <thead>
                             <tr>
@@ -47,77 +41,142 @@
                                 <td>{{ initiative.InitiativeType }}</td>
                                 <td>{{ initiative.InitiativeOrigin }}</td>
                                 <td>{{ initiative.AriaOfFocus }}</td>
-                                <td><a href="{{ initiative.OfficialLink }}" target="_blank"
-                                        class="text-sm"><strong><span class="fa fa-link"></span> Official
-                                            Link</strong></a></td>
+                                <td><a href="{{ initiative.OfficialLink }}" target="_blank" class="text-sm"><strong><span class="fa fa-link"></span> Official Link</strong></a></td>
                             </tr>
                             {% endfor %}
-                            <!-- Add more rows as needed -->
                         </tbody>
                     </table>
-                    </p>
                 </div>
                 <div id="page-3" class="page three">
                     <h2 class="heading text-center">Visualization</h2>
-
-
-                    <!-- Row for Pie Charts -->
                     <div class="row">
-                        <!-- Pie Chart 1 -->
-                        <div class="col-lg-4">
+                        <!-- Pie Chart (CanvasJS) -->
+                        <div class="col-lg-6">
                             <div class="card card-default">
-                                <div class="card-header" class="text-center">Initiatives by Foundation Year</div>
+                                <div class="card-header text-center">Foundation Year</div>
                                 <div class="card-body">
-                                    <div id="doughnut-chart" class="text-center" style="width: 300px; height: 300px;"></div>
+                                    <div id="doughnut-chart" class="text-center" style="height: 300px;"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Pie Chart 2 -->
-                        <div class="col-lg-4">
+                        <!-- Column Chart (CanvasJS) -->
+                        <div class="col-lg-6">
                             <div class="card card-default">
-                                <div class="card-header">
-                                    Initiatives by Area of Focus
-                                </div>
+                                <div class="card-header text-center">Origin of Initiative</div>
                                 <div class="card-body">
-                                    <div id="pie-chart" style="width: 300px; height: 300px;"></div>
+                                    <div id="column-chart" style="height: 300px;"></div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Bar Chart (CanvasJS) -->
+                        <div class="col-lg-6">
+                            <div class="card card-default">
+                                <div class="card-header text-center">Area of Focus</div>
+                                <div class="card-body">
+                                    <div id="bar-chart" style="height: 300px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pyramid Chart (CanvasJS) -->
+                        <div class="col-lg-6">
+                            <div class="card card-default">
+                                <div class="card-header text-center">Type of Initiative</div>
+                                <div class="card-body">
+                                    <div id="pyramid-chart" style="height: 300px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-
                 </div>
 
-                <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                <script src="{% static 'js/canvas.js' %}"></script>
+                
                 <script>
-                    // Render Doughnut Chart
-                    const doughnutData = {{ doughnut_chart| safe }};
-                    Plotly.newPlot('doughnut-chart', doughnutData.data, doughnutData.layout);
+                    // Doughnut Chart Data (Foundation Year)
+                    const doughnutData = {{ doughnut_data|safe }};
+                    const totalFoundationYears = doughnutData.reduce((total, data) => total + data.y, 0);
+                    const processedDoughnutData = doughnutData.map(item => ({
+                        label: item.label,
+                        y: item.y,
+                        percent: ((item.y / totalFoundationYears) * 100).toFixed(2) // Percentage
+                    }));
+                
+                    // Column Chart Data (Initiative Origin)
+                    const columnData = {{ column_data|safe }};
+                
+                    // Bar Chart Data (Area of Focus)
+                    const barData = {{ pie_data|safe }};
+                
+                    // Render Doughnut Chart (Foundation Year)
+                    const doughnutChart = new CanvasJS.Chart("doughnut-chart", {
+                        animationEnabled: true,
+                        data: [{
+                            type: "pie",
+                            showInLegend: true,
+                            toolTipContent: "{label}: {y} ({percent}%)",
+                            indexLabel: "{label}: {y} ({percent}%)",
+                            dataPoints: processedDoughnutData.map(item => ({
+                                label: item.label,
+                                y: item.y,
+                                legendText: `${item.label}: ${item.y} (${item.percent}%)`
+                            }))
+                        }]
+                    });
+                    doughnutChart.render();
+                
+                   // Render Area Chart (Initiative Origin)
+                    const areaChart = new CanvasJS.Chart("column-chart", {
+                        animationEnabled: true,
+                        axisY: { title: "Number of initiatives", gridThickness: 0.1 },
+                        legend: { verticalAlign: "top" }, // Align legend to the top
+                        data: [{
+                            type: "area", // Change the type to "area"
+                            showInLegend: true,
+                            legendText: "Initiative Origin Count", // Legend for the whole dataset
+                            toolTipContent: "{label}: {y}", // Tooltip content
+                            dataPoints: columnData // Display the actual content
+                        }]
+                    });
+                    areaChart.render();
 
+                
+                    // Render Bar Chart (Area of Focus)
+                    const barChart = new CanvasJS.Chart("bar-chart", {
+                        animationEnabled: true,
+                        axisY: { title: "Count", gridThickness: 0.3 },
+                        legend: { verticalAlign: "top" },
+                        data: [{
+                            type: "bar",
+                            showInLegend: true,
+                            toolTipContent: "{label}: {y}",
+                            dataPoints: barData
+                        }]
+                    });
+                    barChart.render();
 
-                    // Render Pie Chart
-                    const pieData = {{ pie_chart| safe }};
-                    Plotly.newPlot('pie-chart', pieData.data, pieData.layout);
+                    // Pyramid Chart for Initiative Type
+                    const pyramidData = {{ pyramid_data|safe }};
+                    const pyramidChart = new CanvasJS.Chart("pyramid-chart", {
+                        animationEnabled: true,
+                        data: [{
+                            type: "pyramid",
+                            showInLegend: true,
+                            legendText: "{label}",
+                            toolTipContent: "{label}: {y}",
+                            dataPoints: pyramidData
+                        }]
+                    });
+                    pyramidChart.render();
                 </script>
+                    
 
             </div>
         </div>
     </div>
 </section>
 
-<!-- Page Specfic Animation Script -->
-<script>
-    // Slide in the card from the left
-    gsap.from("#slideFromLeft", { x: -300, opacity: 0, duration: 1 });
-
-    // Slide in the card from the right
-    gsap.from("#slideFromRight", { x: 300, opacity: 0, duration: 1 });
-</script>
-
-<!-- remove plotly logo and modebar from the website -->
-<style>
-    .modebar-container{
-        display: none;
-    }
-</style>
 {% endblock %}

@@ -47,103 +47,35 @@ class InitiativesView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context["diaspora_initiatives"] = InitiativesModel.objects.all()
-
+        
         initiatives = InitiativesModel.objects.all()
 
+        # Data dictionaries
         foundation_year_data = {}
         origin_data = {}
         focus_data = {}
+        initiative_type_data = {}
 
         for initiative in initiatives:
-            foundation_year_data[initiative.FoundationYear] = (
-                foundation_year_data.get(initiative.FoundationYear, 0) + 1
-            )
-            origin_data[initiative.InitiativeOrigin] = (
-                origin_data.get(initiative.InitiativeOrigin, 0) + 1
-            )
-            focus_data[initiative.AriaOfFocus] = (
-                focus_data.get(initiative.AriaOfFocus, 0) + 1
-            )
+            foundation_year_data[initiative.FoundationYear] = foundation_year_data.get(initiative.FoundationYear, 0) + 1
+            origin_data[initiative.InitiativeOrigin] = origin_data.get(initiative.InitiativeOrigin, 0) + 1
+            focus_data[initiative.AriaOfFocus] = focus_data.get(initiative.AriaOfFocus, 0) + 1
+            initiative_type_data[initiative.InitiativeType] = initiative_type_data.get(initiative.InitiativeType, 0) + 1
 
-        fig_doughnut = go.Figure(
-            data=[
-                go.Pie(
-                    labels=list(foundation_year_data.keys()),
-                    values=list(foundation_year_data.values()),
-                    hole=0.2,
-                )
-            ]
-        )
-        fig_doughnut.update_layout(
-            margin=dict(l=0, r=0, t=30, b=0),
-            legend=dict(
-                orientation="h",
-                yanchor="top",
-                y=1.3,
-                xanchor="center",
-                x=0.5,
-                itemwidth=50,
-                traceorder="normal",
-                font=dict(size=12),
-                bgcolor="rgba(255, 255, 255, 0.7)",
-            ),
-        )
+        # Convert dictionaries to CanvasJS-compatible data points
+        doughnut_data = [{"label": key, "y": value} for key, value in foundation_year_data.items()]
+        pie_data = [{"label": key, "y": value} for key, value in focus_data.items()]
+        column_data = [{"label": key, "y": value} for key, value in origin_data.items()]
+        pyramid_data = [{"label": key, "y": value} for key, value in initiative_type_data.items()]
 
-        doughnut_chart = json.dumps(fig_doughnut, cls=plotly.utils.PlotlyJSONEncoder)
-
-        fig_bar = go.Figure(
-            data=[go.Bar(x=list(origin_data.keys()), y=list(origin_data.values()))]
-        )
-        fig_bar.update_layout(
-            title_text="Initiatives by Origin",
-            xaxis_title="Origin",
-            yaxis_title="Count",
-            margin=dict(l=0, r=0, t=30, b=0),
-            legend=dict(
-                orientation="h",
-                yanchor="top",
-                y=1.5,
-                xanchor="center",
-                x=0.5,
-                itemwidth=50,
-                traceorder="normal",
-                font=dict(size=12),
-                bgcolor="rgba(255, 255, 255, 0.7)",
-            ),
-        )
-
-        bar_chart = json.dumps(fig_bar, cls=plotly.utils.PlotlyJSONEncoder)
-
-        fig_pie = go.Figure(
-            data=[
-                go.Pie(labels=list(focus_data.keys()), values=list(focus_data.values()))
-            ]
-        )
-        fig_pie.update_layout(
-            margin=dict(l=0, r=0, t=30, b=0),
-            legend=dict(
-                orientation="h",
-                yanchor="top",
-                y=1.5,
-                xanchor="center",
-                x=0.5,
-                itemwidth=50,
-                traceorder="normal",
-                font=dict(size=12),
-                bgcolor="rgba(255, 255, 255, 0.7)",
-            ),
-        )
-
-        pie_chart = json.dumps(fig_pie, cls=plotly.utils.PlotlyJSONEncoder)
-
-        context["doughnut_chart"] = doughnut_chart
-        context["bar_chart"] = bar_chart
-        context["pie_chart"] = pie_chart
+        # Pass data to context
+        context["diaspora_initiatives"] = initiatives
+        context["doughnut_data"] = doughnut_data
+        context["pie_data"] = pie_data
+        context["column_data"] = column_data
+        context["pyramid_data"] = pyramid_data
 
         return context
-
 
 """
 Admin Views --> CBV --> Class Based Views
