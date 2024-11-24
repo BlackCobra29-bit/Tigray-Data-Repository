@@ -20,16 +20,37 @@
                 </div>
                 <div id="page-2" class="page bg-light two">
                     <h2 class="heading text-center">Diaspora Initiatives and Organisations</h2>
+                    <div class="filters">
+                        <label for="filter-origin">Filter by Origin:</label>
+                        <select id="filter-origin" class="form-control">
+                            <option value="">All Origins</option>
+                            <option value="Ethiopia (Outside of Tigray)">Ethiopia (Outside of Tigray)</option>
+                            <option value="Africa">Africa</option>
+                            <option value="North America">North America</option>
+                            <option value="Central/South America">Central/South America</option>
+                            <option value="Asia">Asia</option>
+                            <option value="Europe">Europe</option>
+                            <option value="Middle East">Middle East</option>
+                            <option value="Australia">Australia</option>
+                        </select>
+                    
+                        <label for="filter-year">Filter by Foundation Year:</label>
+                        <input type="text" id="filter-year" class="form-control" placeholder="Enter Foundation Year">
+                    
+                        <label for="filter-focus">Filter by Area of Focus:</label>
+                        <input type="text" id="filter-focus" class="form-control" placeholder="Enter Area of Focus">
+                    </div>
+                    
                     <table id="myTable" class="table table-bordered table-striped dt-responsive" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Index</th>
                                 <th>Initiative Name</th>
                                 <th>Foundation Year</th>
-                                <th>Type of initiative</th>
-                                <th>Origin of the initiative</th>
-                                <th>Area of focus</th>
-                                <th>official link</th>
+                                <th>Type of Initiative</th>
+                                <th>Origin of the Initiative</th>
+                                <th>Area of Focus</th>
+                                <th>Official Link</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,6 +67,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    
                 </div>
                 <div id="page-3" class="page three">
                     <h2 class="heading text-center">Visualization</h2>
@@ -94,6 +116,31 @@
                 </div>
 
                 <script src="{% static 'js/canvas.js' %}"></script>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                <script>
+                    $(document).ready(function() {
+                        var table = $('#myTable').DataTable();
+                        
+                        $('#filter-input').on('keyup', function () {
+                            table.column(1).search(this.value).draw();
+                        });
+                        
+                        $('#filter-origin').on('change', function () {
+                            var searchTerm = '\\b' + this.value + '\\b';
+                            table.column(4).search(searchTerm, true, false).draw();
+                        });
+                        
+                        $('#filter-year').on('change', function () {
+                            table.column(2).search(this.value).draw();
+                        });
+                        
+                        $('#filter-focus').on('change', function () {
+                            var searchTerm = '\\b' + this.value + '\\b';
+                            table.column(5).search(searchTerm, true, false).draw();
+                        });
+                    });
+                </script>                
                 
                 <script>
                     const doughnutData = {{ doughnut_data|safe }};
@@ -186,5 +233,11 @@
         </div>
     </div>
 </section>
+
+<style>
+    .card{
+        box-shadow: 0 0 1px rgba(0,0,0,0),0 1px 1px rgba(0,0,0,.1);
+    }
+</style>
 
 {% endblock %}

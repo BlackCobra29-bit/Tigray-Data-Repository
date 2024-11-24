@@ -36,6 +36,13 @@
       rel="stylesheet"
       href="{% static 'admin_static/css/adminlte.min.css' %}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
   </head>
 
   <body class="hold-transition sidebar-mini layout-fixed">
@@ -131,7 +138,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'add-initiative' or request.resolver_match.url_name == 'display-initiatives' %}active{% endif %}">
                   <i class="nav-icon fa fa-building"></i>
                   <p>
                     Diaspora Initiatives <i class="fas fa-angle-left right"></i>
@@ -148,7 +155,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="pages/tables/data.html" class="nav-link">
+                    <a href="{% url 'display-initiatives' %}" class="nav-link {% if request.resolver_match.url_name == 'display-initiatives' %}active{% endif %}">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Manage Data</p>
                     </a>
@@ -209,6 +216,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+    <!-- DataTables Buttons JS -->
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
     <script>
       function confirmLogout() {
@@ -492,5 +509,24 @@
         bsCustomFileInput.init();
       });
     </script>
+
+    <script>
+      $(document).ready(function () {
+        $("#myTable").DataTable({
+          responsive: true,
+          paging: true,
+          searching: true,
+          ordering: true,
+          lengthChange: true,
+          info: true,
+          autoWidth: false,
+          dom: 'Bfrtip',
+          buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+          ]
+        });
+      });
+    </script>
+
   </body>
 </html>

@@ -363,6 +363,49 @@ class InitiativesAdd(LoginRequiredMixin, TemplateView):
 
         messages.success(request, "Initiative has been successfully added!")
         return self.render_to_response({"success": True})
+    
+class DisplayInitiatives(LoginRequiredMixin, TemplateView):
+    template_name = "admin_page/display_initiatives.html"
+    login_url = "sign-in"
+    redirect_field_name = "next"
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        context["diaspora_initiatives"] = InitiativesModel.objects.all()
+
+        return context
+    
+class InitiativeItemUpdate(LoginRequiredMixin, TemplateView):
+    template_name = "admin_page/display_initiatives.html"
+    login_url = "sign-in"
+    redirect_field_name = "next"
+
+    def post(self, request, pk):
+        initiative = get_object_or_404(InitiativesModel, pk=pk)
+        initiative.InitiativeName = request.POST.get("InitiativeName")
+        initiative.FoundationYear = request.POST.get("FoundationYear")
+        initiative.InitiativeType = request.POST.get("InitiativeType")
+        initiative.InitiativeOrigin = request.POST.get("InitiativeOrigin")
+        initiative.AriaOfFocus = request.POST.get("AriaOfFocus")
+        initiative.OfficialLink = request.POST.get("OfficialLink")
+        initiative.save()
+
+        messages.success(request, "Initiative Updated successfully!")
+
+        return redirect("display-initiatives")
+
+
+class InitiativeDelete(LoginRequiredMixin, TemplateView):
+
+    def post(self, request, pk):
+        FetchedRepository = get_object_or_404(InitiativesModel, pk=pk)
+        FetchedRepository.delete()
+
+        messages.success(request, "Initiative removed successfully!")
+
+        return redirect("display-initiatives")
 
 
 # User Admin Management

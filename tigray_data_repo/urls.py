@@ -36,6 +36,9 @@ from App.views import (
     DatasetItemDelete,
     # Initiatives URL Map
     InitiativesAdd,
+    DisplayInitiatives,
+    InitiativeItemUpdate,
+    InitiativeDelete,
     # User Admin Management
     AdminManagement,
     RemoveAdminAccount,
@@ -64,6 +67,9 @@ urlpatterns = [
     path("dataset-delete-item/<int:pk>", DatasetItemDelete.as_view(), name = "dataset-delete-item"),
     # Initiatives Management
     path("add-initiative/", InitiativesAdd.as_view(), name = "add-initiative"),
+    path("display-initiatives/", DisplayInitiatives.as_view(), name = "display-initiatives"),
+    path("update-initiatives/<int:pk>", InitiativeItemUpdate.as_view(), name = "update-initiatives"),
+    path("delete-initiatives/<int:pk>", InitiativeDelete.as_view(), name = "delete-initiatives"),
     # User Admin Account Management
     path("admin-management/", AdminManagement.as_view(), name = "admin-management"),
     path("remove-admin-account/<int:pk>", RemoveAdminAccount.as_view(), name = "remove-admin-account"),
