@@ -20,26 +20,30 @@
                 </div>
                 <div id="page-2" class="page bg-light two">
                     <h2 class="heading text-center">Diaspora Initiatives and Organisations</h2>
-                    <div class="filters">
-                        <label for="filter-origin">Filter by Origin:</label>
-                        <select id="filter-origin" class="form-control">
-                            <option value="">All Origins</option>
-                            <option value="Ethiopia (Outside of Tigray)">Ethiopia (Outside of Tigray)</option>
-                            <option value="Africa">Africa</option>
-                            <option value="North America">North America</option>
-                            <option value="Central/South America">Central/South America</option>
-                            <option value="Asia">Asia</option>
-                            <option value="Europe">Europe</option>
-                            <option value="Middle East">Middle East</option>
-                            <option value="Australia">Australia</option>
+                    <div class="col-lg-6 d-flex align-items-center">
+                        <label class="me-2 mb-0">Filter:</label>
+                        <select id="filter-initiative" class="form-select me-2" style="height: 100%;">
+                            <option disabled selected>Select Filter</option>
+                            <optgroup label="Filter by Origin">
+                                {% for origin in unique_origins %}
+                                <option data-column="4">{{ origin }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Filter by Area of Focus">
+                                {% for area in unique_area_focus %}
+                                <option data-column="5">{{ area }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Filter by Type">
+                                {% for type in unique_type %}
+                                <option data-column="3">{{ type }}</option>
+                                {% endfor %}
+                            </optgroup>
                         </select>
-                    
-                        <label for="filter-year">Filter by Foundation Year:</label>
-                        <input type="text" id="filter-year" class="form-control" placeholder="Enter Foundation Year">
-                    
-                        <label for="filter-focus">Filter by Area of Focus:</label>
-                        <input type="text" id="filter-focus" class="form-control" placeholder="Enter Area of Focus">
+                        <button class="btn btn-primary" id="reset-btn" style="border-radius: 4px;">Reset</button>
                     </div>
+
+                    <br>
                     
                     <table id="myTable" class="table table-bordered table-striped dt-responsive" style="width:100%">
                         <thead>
@@ -116,31 +120,7 @@
                 </div>
 
                 <script src="{% static 'js/canvas.js' %}"></script>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-                <script>
-                    $(document).ready(function() {
-                        var table = $('#myTable').DataTable();
-                        
-                        $('#filter-input').on('keyup', function () {
-                            table.column(1).search(this.value).draw();
-                        });
-                        
-                        $('#filter-origin').on('change', function () {
-                            var searchTerm = '\\b' + this.value + '\\b';
-                            table.column(4).search(searchTerm, true, false).draw();
-                        });
-                        
-                        $('#filter-year').on('change', function () {
-                            table.column(2).search(this.value).draw();
-                        });
-                        
-                        $('#filter-focus').on('change', function () {
-                            var searchTerm = '\\b' + this.value + '\\b';
-                            table.column(5).search(searchTerm, true, false).draw();
-                        });
-                    });
-                </script>                
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>               
                 
                 <script>
                     const doughnutData = {{ doughnut_data|safe }};

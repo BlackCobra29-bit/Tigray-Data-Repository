@@ -50,6 +50,14 @@ class InitiativesView(TemplateView):
         
         initiatives = InitiativesModel.objects.all()
 
+        # Unique Data for the datatable search filtering
+        unique_origins = InitiativesModel.objects.values_list("InitiativeOrigin", flat=True).distinct()
+        context["unique_origins"] = list(set(unique_origins))
+        unique_type = InitiativesModel.objects.values_list("InitiativeType", flat=True).distinct()
+        context["unique_type"] = list(set(unique_type))
+        unique_area_focus = InitiativesModel.objects.values_list("AriaOfFocus", flat=True).distinct()
+        context["unique_area_focus"] = list(set(unique_area_focus))
+
         # Data dictionaries
         foundation_year_data = {}
         origin_data = {}
