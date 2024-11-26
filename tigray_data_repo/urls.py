@@ -42,6 +42,8 @@ from App.views import (
     # User Admin Management
     AdminManagement,
     RemoveAdminAccount,
+    # Blog articles URL Map
+    WriteArticle,
     # Admin's Account Settings URL Maps
     AdminAccountSettings,
     AdminAccountUpdate,
@@ -70,6 +72,8 @@ urlpatterns = [
     path("display-initiatives/", DisplayInitiatives.as_view(), name = "display-initiatives"),
     path("update-initiatives/<int:pk>", InitiativeItemUpdate.as_view(), name = "update-initiatives"),
     path("delete-initiatives/<int:pk>", InitiativeDelete.as_view(), name = "delete-initiatives"),
+    # Blog Articles Management
+    path("write-analysis/", WriteArticle.as_view() ,name = "write-article"),
     # User Admin Account Management
     path("admin-management/", AdminManagement.as_view(), name = "admin-management"),
     path("remove-admin-account/<int:pk>", RemoveAdminAccount.as_view(), name = "remove-admin-account"),

@@ -56,11 +56,11 @@
                                                         <tr>
                                                             <td class="text-sm">
                                                                 {% if item.is_zip %}
-                                                                <span class="fas fa-caret-right"></span>
+                                                                <span class="expandable-table-caret fas fa-caret-right fa-fw"  class="ps-5"></span>
                                                                 <a href="#" data-bs-toggle="collapse" data-bs-target="#zip-{{ forloop.counter }}" aria-expanded="false">
-                                                                <i class="fa fa-file-archive me-2" aria-hidden="true" style="color: #666;"></i>
+                                                                <i class="fa-regular fa-file-zipper me-2" aria-hidden="true" style="color: #666;"></i>
                                                                 {{ item.name }} 
-                                                                <a href="{{ item.file.url }}" download class="badge badge-success float-right">
+                                                                <a href="{{ item.download_url }}" download class="badge badge-success float-right">
                                                                     <i class="fa fa-download"></i> Download
                                                                 </a>
                                                                 
@@ -70,7 +70,10 @@
                                                                 </div>
                                                                 {% else %}
                                                                 <i class="fa fa-file me-2" aria-hidden="true" style="color: #666;"></i>
-                                                                {{ item.name }}
+                                                                {{ item.name }} 
+                                                                <a href="{{ item.download_url }}" download class="badge badge-success float-right">
+                                                                    <i class="fa fa-download"></i> Download
+                                                                </a>
                                                                 {% endif %}
                                                             </td>
                                                         </tr>
@@ -242,6 +245,12 @@
 <style>
     .text-primary{
         color: #1261a8 !important;
+    }
+    a{
+        color: #6a7695;
+    }
+    a:hover{
+        color: black;
     }
 </style>
 {% endblock %}

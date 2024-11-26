@@ -51,6 +51,7 @@ class IndexView(TemplateView):
                 file_data = {
                     "name": os.path.basename(repository.file.name),
                     "is_zip": repository.file.name.endswith(".zip"),
+                    "download_url": repository.file.url,
                     "contents": "",
                 }
 
@@ -90,7 +91,7 @@ class IndexView(TemplateView):
             if subitems:  # Folder
                 folder_id = f"folder-{level}-{hash(name)}"
                 html += f"""
-                <li>
+                <li class="ps-4">
                     <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
                     <i class="fa fa-folder me-2" style="color: #428bca;"></i> 
                     <a href="#" data-bs-toggle="collapse" data-bs-target="#{folder_id}" aria-expanded="false">{name}</a>
@@ -101,7 +102,7 @@ class IndexView(TemplateView):
                 """
             else:  # File
                 html += f"""
-                <li>
+                <li class="ps-5">
                     <i class="fa fa-file me-2"></i> {name}
                 </li>
                 """
@@ -507,10 +508,16 @@ class InitiativeDelete(LoginRequiredMixin, TemplateView):
 
         return redirect("display-initiatives")
 
+# Blog Article Section Views
+class WriteArticle(LoginRequiredMixin, TemplateView):
+    template_name = "admin_page/write_article.html"
+    login_url = "sign_in"
+    redirect_field_name = "next"
 
 # User Admin Management
 class AdminManagement(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/admin_management.html"
+    template_engine = "jinja2"
     login_url = "sign-in"
     redirect_field_name = "next"
 

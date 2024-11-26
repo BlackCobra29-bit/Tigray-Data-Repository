@@ -43,6 +43,8 @@
     />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <!-- Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
   </head>
 
   <body class="hold-transition sidebar-mini layout-fixed">
@@ -162,6 +164,31 @@
                   </li>
                 </ul>
               </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'write-article' or request.resolver_match.url_name == 'display-initiatives' %}active{% endif %}">
+                  <i class="nav-icon fa fa-pencil"></i>
+                  <p>
+                    Analysis <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a
+                      href="{% url 'write-article' %}"
+                      class="nav-link {% if request.resolver_match.url_name == 'write-article' %}active{% endif %}"
+                    >
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Write Analysis</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'display-initiatives' %}" class="nav-link {% if request.resolver_match.url_name == 'display-initiatives' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Manage Data</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
               {% if request.user.is_superuser %}
               <li class="nav-item">
                 <a
@@ -226,6 +253,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
 
     <script>
       function confirmLogout() {
@@ -528,5 +557,23 @@
       });
     </script>
 
+  <script>
+    $(document).ready(function() {
+        $('#editor').summernote({
+            height: 300, // Set editor height
+            placeholder: 'Start typing your content here...',
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['insert', ['link', 'picture', 'video']],
+            ]
+        });
+    });
+  </script>
   </body>
 </html>

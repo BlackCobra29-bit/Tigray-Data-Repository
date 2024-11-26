@@ -38,6 +38,9 @@ class AdminPic(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Profile Picture"
+    
+    class Meta:
+        verbose_name_plural = "Admin Pictures"
 
 
 class RepositoryGroup(models.Model):
@@ -49,6 +52,7 @@ class RepositoryGroup(models.Model):
 
     class Meta:
         ordering = ["-id"]
+        verbose_name_plural = "Repository Groups"
 
 class RepositoryItem(models.Model):
     repository = models.ForeignKey(RepositoryGroup, on_delete=models.CASCADE, related_name='repositories')
@@ -61,6 +65,7 @@ class RepositoryItem(models.Model):
 
     class Meta:
         ordering = ["-id"]
+        verbose_name_plural = "Respository Datasets"
 
 class InitiativesModel(models.Model):
     InitiativeName = models.CharField(max_length=255)
@@ -75,3 +80,17 @@ class InitiativesModel(models.Model):
     
     class Meta:
         ordering = ["-id"]
+        verbose_name_plural = "Initiatives & Organizations"
+        
+class Blog(models.Model):
+    ArticleTitle = models.CharField(max_length=255)
+    ArticleContent = models.TextField()
+    DatePublished = models.DateField(default=timezone.now)
+    
+    def __str__(self):
+        
+        return self.ArticleTitle
+    
+    class Meta:
+        ordering = ["-id"]
+        verbose_name_plural = "Blog Articles"
