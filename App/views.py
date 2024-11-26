@@ -517,7 +517,6 @@ class WriteArticle(LoginRequiredMixin, TemplateView):
 # User Admin Management
 class AdminManagement(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/admin_management.html"
-    template_engine = "jinja2"
     login_url = "sign-in"
     redirect_field_name = "next"
 
