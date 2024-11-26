@@ -37,13 +37,13 @@
                         <h4 class="mb-0"><strong>Available Datasets</strong></h4>
                     </div>
                         <div class="card-body p-0">
-                            <table class="table table-hover">
+                            <table class="table">
                                 <tbody>
                                     {% for group in repository_groups %}
                                     <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>
                                             <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
-                                            <i class="fa fa-folder me-2" aria-hidden="true" style="font-size: 1.1rem; color: #428bca;"></i> 
+                                            <i class="fa fa-folder me-2" aria-hidden="true" style="font-size: 1.1rem; color: #428bca;"></i>
                                             {{ group.name }}
                                         </td>
                                     </tr>
@@ -52,15 +52,26 @@
                                             <div class="p-0">
                                                 <table class="table table-hover">
                                                     <tbody>
-                                                        {% for item in group.repositories.all %}
+                                                        {% for item in group.repositories %}
                                                         <tr>
                                                             <td class="text-sm">
-                                                                <i class="fa fa-file me-2" aria-hidden="true" style="color: #666;"></i> 
-                                                                {{ item.file.name|basename }}
-                                                            </td>
-                                                            <td class="text-sm float-right">
-                                                                <a href="" class="badge badge-warning">View</a>
-                                                                <a href="" class="badge badge-success">Download</a>
+                                                                {% if item.is_zip %}
+                                                                <span class="fas fa-caret-right"></span>
+                                                                <a href="#" data-bs-toggle="collapse" data-bs-target="#zip-{{ forloop.counter }}" aria-expanded="false">
+                                                                <i class="fa fa-file-archive me-2" aria-hidden="true" style="color: #666;"></i>
+                                                                {{ item.name }} 
+                                                                <a href="{{ item.file.url }}" download class="badge badge-success float-right">
+                                                                    <i class="fa fa-download"></i> Download
+                                                                </a>
+                                                                
+                                                            </a>
+                                                                <div id="zip-{{ forloop.counter }}" class="collapse mt-2">
+                                                                    {{ item.contents|safe }}
+                                                                </div>
+                                                                {% else %}
+                                                                <i class="fa fa-file me-2" aria-hidden="true" style="color: #666;"></i>
+                                                                {{ item.name }}
+                                                                {% endif %}
                                                             </td>
                                                         </tr>
                                                         {% empty %}
@@ -76,6 +87,20 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
+                            
+                            <style>
+                                /* Remove hover effect for table rows */
+                                .table tbody tr:hover {
+                                    background-color: transparent !important;
+                                }
+
+                                /* Optional: Change the background color of the row without hover */
+                                .table tbody tr {
+                                    background-color: #f9f9f9;
+                                }
+
+                            </style>
+                            
                                                       
                         </div>
                         <!-- /.card-body -->
@@ -109,6 +134,102 @@
     </div>
 </section>
 
+<section class="ftco-section ftco-no-pt">
+    <div class="container">
+        <div class="row justify-content-center py-5 mt-5">
+            <div class="col-md-5 heading-section text-center ftco-animate">
+              <h2 class="mb-4" style="font-size: 25px; line-height: 42px;">Analysis</h2>
+              <span class="d-block mx-auto mt-2" style="height: 4px; width: 50px; background-color: #263b5e;"></span>
+            </div>
+          </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-6 border-0">
+                        <!-- Card Body -->
+                        <div class="card-body d-flex flex-column">
+                            <!-- Title -->
+                            <h5 class="card-title mb-3">
+                                <a href="#" class="text-primary fw-bold text-decoration-none">
+                                    After fleeing to Sudan, Ethiopians from Tigray recount brutal killings
+                                </a>
+                            </h5>
+                
+                            <!-- Publish Date -->
+                            <p class="card-text text-muted small">
+                                <i class="fa fa-clock me-2"></i> Published on: <strong>November 25, 2024</strong>
+                            </p>
+                
+                            <!-- Description -->
+                            <p class="card-text flex-grow-1 text-secondary">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet asperiores eius accusamus eum ipsum ratione... 
+                                <a href="#" class="text-primary text-decoration-none">Read More</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-6 border-0">
+                        <!-- Card Body -->
+                        <div class="card-body d-flex flex-column">
+                            <!-- Title -->
+                            <h5 class="card-title mb-3">
+                                <a href="#" class="text-primary fw-bold text-decoration-none">
+                                    After fleeing to Sudan, Ethiopians from Tigray recount brutal killings
+                                </a>
+                            </h5>
+                
+                            <!-- Publish Date -->
+                            <p class="card-text text-muted small">
+                                <i class="fa fa-clock me-2"></i> Published on: <strong>November 25, 2024</strong>
+                            </p>
+                
+                            <!-- Description -->
+                            <p class="card-text flex-grow-1 text-secondary">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet asperiores eius accusamus eum ipsum ratione... 
+                                <a href="#" class="text-primary text-decoration-none">Read More</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-6 border-0">
+                        <!-- Card Body -->
+                        <div class="card-body d-flex flex-column">
+                            <!-- Title -->
+                            <h5 class="card-title mb-3">
+                                <a href="#" class="text-primary fw-bold text-decoration-none">
+                                    After fleeing to Sudan, Ethiopians from Tigray recount brutal killings
+                                </a>
+                            </h5>
+                
+                            <!-- Publish Date -->
+                            <p class="card-text text-muted small">
+                                <i class="fa fa-clock me-2"></i> Published on: <strong>November 25, 2024</strong>
+                            </p>
+                
+                            <!-- Description -->
+                            <p class="card-text flex-grow-1 text-secondary">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet asperiores eius accusamus eum ipsum ratione... 
+                                <a href="#" class="text-primary text-decoration-none">Read More</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+
+</div>
+
+
+        </div>
+    </div>
+
+    </div>
+</section>
+
 <!-- Page Specfic Animation Script -->
 <script>
     // Slide in the card from the left
@@ -117,4 +238,10 @@
     // Slide in the card from the right
     gsap.from("#slideFromRight", { x: 300, opacity: 0, duration: 1 });
 </script>
+
+<style>
+    .text-primary{
+        color: #1261a8 !important;
+    }
+</style>
 {% endblock %}

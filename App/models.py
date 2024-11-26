@@ -2,7 +2,35 @@ import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
+def validate_file_type(value):
+    valid_extensions = [
+        # Documents
+        '.doc', '.docx', '.pdf', '.txt', '.xls', '.xlsx', '.ppt', '.pptx', '.odt', '.ods', '.odp', '.rtf',
+        
+        # Images
+        '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.svg', '.webp',
+        
+        # Audio
+        '.mp3', '.wav', '.aac', '.ogg', '.flac', '.wma', '.m4a',
+        
+        # Video
+        '.mp4', '.avi', '.mkv', '.mov', '.wmv', '.flv', '.webm',
+        
+        # Archives
+        '.zip', '.rar', '.tar', '.gz', '.7z', '.bz2',
+        
+        # Code and Markup
+        '.html', '.css', '.js', '.py', '.java', '.c', '.cpp', '.php', '.json', '.xml', '.yml', '.yaml', '.sql', '.sh',
+        
+        # Miscellaneous
+        '.csv', '.md', '.epub', '.ico', '.log', '.dat'
+    ]
+    
+    ext = os.path.splitext(value.name)[1]  # Extract the file extension
+    if ext.lower() not in valid_extensions:
+        raise ValidationError(f'Unsupported file type. Allowed types are: {", ".join(valid_extensions)}')
 
 class AdminPic(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="adminpic")
@@ -25,7 +53,7 @@ class RepositoryGroup(models.Model):
 class RepositoryItem(models.Model):
     repository = models.ForeignKey(RepositoryGroup, on_delete=models.CASCADE, related_name='repositories')
     title = models.CharField(max_length=255)
-    file = models.FileField(upload_to="repositories_items/")
+    file = models.FileField(upload_to="repositories_items/", validators=[validate_file_type])
     uploaded_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

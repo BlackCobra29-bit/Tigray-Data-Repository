@@ -3,6 +3,7 @@ import json
 import os
 import random
 import string
+from zipfile import ZipFile
 import plotly
 import plotly.graph_objects as go
 
@@ -12,9 +13,11 @@ from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.db.models import Count
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
 from django.views.generic import TemplateView
+from django.utils.safestring import mark_safe
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -35,11 +38,75 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["repository_groups"] = RepositoryGroup.objects.prefetch_related(
-            "repositories"
-        )
+        # Prefetch repository groups and related repositories
+        repository_groups = RepositoryGroup.objects.prefetch_related("repositories")
+        context["repository_groups"] = []
+
+        for group in repository_groups:
+            group_data = {
+                "name": group.name,
+                "repositories": [],
+            }
+            for repository in group.repositories.all():
+                file_data = {
+                    "name": os.path.basename(repository.file.name),
+                    "is_zip": repository.file.name.endswith(".zip"),
+                    "contents": "",
+                }
+
+                # If it's a ZIP file, generate HTML for its tree structure
+                if file_data["is_zip"]:
+                    zip_path = repository.file.path
+                    with ZipFile(zip_path, "r") as zip_file:
+                        file_tree = self._build_zip_tree(zip_file)
+                        file_data["contents"] = self._render_zip_tree(file_tree)
+
+                group_data["repositories"].append(file_data)
+
+            context["repository_groups"].append(group_data)
 
         return context
+
+    def _build_zip_tree(self, zip_file):
+        """
+        Builds a nested dictionary representing the file tree of a ZIP file.
+        """
+        tree = {}
+        for file in zip_file.namelist():
+            parts = file.split("/")
+            node = tree
+            for part in parts:
+                if part not in node:
+                    node[part] = {}
+                node = node[part]
+        return tree
+
+    def _render_zip_tree(self, tree, level=0):
+        """
+        Recursively renders a nested HTML structure for the ZIP file tree with collapsible folders.
+        """
+        html = f'<ul class="list-unstyled" style="margin-left: {level * 20}px;">'
+        for name, subitems in tree.items():
+            if subitems:  # Folder
+                folder_id = f"folder-{level}-{hash(name)}"
+                html += f"""
+                <li>
+                    <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
+                    <i class="fa fa-folder me-2" style="color: #428bca;"></i> 
+                    <a href="#" data-bs-toggle="collapse" data-bs-target="#{folder_id}" aria-expanded="false">{name}</a>
+                    <div id="{folder_id}" class="collapse">
+                        {self._render_zip_tree(subitems, level + 1)}
+                    </div>
+                </li>
+                """
+            else:  # File
+                html += f"""
+                <li>
+                    <i class="fa fa-file me-2"></i> {name}
+                </li>
+                """
+        html += "</ul>"
+        return mark_safe(html)
 
 
 class InitiativesView(TemplateView):
@@ -47,16 +114,26 @@ class InitiativesView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         initiatives = InitiativesModel.objects.all()
 
         # Unique Data for the datatable search filtering
-        unique_origins = InitiativesModel.objects.values_list("InitiativeOrigin", flat=True).distinct()
+        unique_origins = InitiativesModel.objects.values_list(
+            "InitiativeOrigin", flat=True
+        ).distinct()
         context["unique_origins"] = list(set(unique_origins))
-        unique_type = InitiativesModel.objects.values_list("InitiativeType", flat=True).distinct()
+        unique_type = InitiativesModel.objects.values_list(
+            "InitiativeType", flat=True
+        ).distinct()
         context["unique_type"] = list(set(unique_type))
-        unique_area_focus = InitiativesModel.objects.values_list("AriaOfFocus", flat=True).distinct()
+        unique_area_focus = InitiativesModel.objects.values_list(
+            "AriaOfFocus", flat=True
+        ).distinct()
         context["unique_area_focus"] = list(set(unique_area_focus))
+        unique_foundation_year = InitiativesModel.objects.values_list(
+            "FoundationYear", flat=True
+        ).distinct()
+        context["unique_foundation_year"] = list(set(unique_foundation_year))
 
         # Data dictionaries
         foundation_year_data = {}
@@ -65,16 +142,28 @@ class InitiativesView(TemplateView):
         initiative_type_data = {}
 
         for initiative in initiatives:
-            foundation_year_data[initiative.FoundationYear] = foundation_year_data.get(initiative.FoundationYear, 0) + 1
-            origin_data[initiative.InitiativeOrigin] = origin_data.get(initiative.InitiativeOrigin, 0) + 1
-            focus_data[initiative.AriaOfFocus] = focus_data.get(initiative.AriaOfFocus, 0) + 1
-            initiative_type_data[initiative.InitiativeType] = initiative_type_data.get(initiative.InitiativeType, 0) + 1
+            foundation_year_data[initiative.FoundationYear] = (
+                foundation_year_data.get(initiative.FoundationYear, 0) + 1
+            )
+            origin_data[initiative.InitiativeOrigin] = (
+                origin_data.get(initiative.InitiativeOrigin, 0) + 1
+            )
+            focus_data[initiative.AriaOfFocus] = (
+                focus_data.get(initiative.AriaOfFocus, 0) + 1
+            )
+            initiative_type_data[initiative.InitiativeType] = (
+                initiative_type_data.get(initiative.InitiativeType, 0) + 1
+            )
 
         # Convert dictionaries to CanvasJS-compatible data points
-        doughnut_data = [{"label": key, "y": value} for key, value in foundation_year_data.items()]
+        doughnut_data = [
+            {"label": key, "y": value} for key, value in foundation_year_data.items()
+        ]
         pie_data = [{"label": key, "y": value} for key, value in focus_data.items()]
         column_data = [{"label": key, "y": value} for key, value in origin_data.items()]
-        pyramid_data = [{"label": key, "y": value} for key, value in initiative_type_data.items()]
+        pyramid_data = [
+            {"label": key, "y": value} for key, value in initiative_type_data.items()
+        ]
 
         # Pass data to context
         context["diaspora_initiatives"] = initiatives
@@ -84,6 +173,7 @@ class InitiativesView(TemplateView):
         context["pyramid_data"] = pyramid_data
 
         return context
+
 
 """
 Admin Views --> CBV --> Class Based Views
@@ -371,7 +461,8 @@ class InitiativesAdd(LoginRequiredMixin, TemplateView):
 
         messages.success(request, "Initiative has been successfully added!")
         return self.render_to_response({"success": True})
-    
+
+
 class DisplayInitiatives(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/display_initiatives.html"
     login_url = "sign-in"
@@ -384,7 +475,8 @@ class DisplayInitiatives(LoginRequiredMixin, TemplateView):
         context["diaspora_initiatives"] = InitiativesModel.objects.all()
 
         return context
-    
+
+
 class InitiativeItemUpdate(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/display_initiatives.html"
     login_url = "sign-in"

@@ -15,8 +15,7 @@
             <div class="col-md-12">
                 <div id="page-1" class="page bg-light one">
                     <h2 class="heading text-center">Description</h2>
-                    <p>On her way she met a copy. The copy warned the Little Blind Text, that where it came from it
-                        would have been rewritten a thousand times...</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat soluta culpa rerum, aliquid fugiat deserunt expedita nobis quo incidunt dolore necessitatibus aliquam harum laudantium laboriosam laborum iste dolor ex nam?</p>
                 </div>
                 <div id="page-2" class="page bg-light two">
                     <h2 class="heading text-center">Diaspora Initiatives and Organisations</h2>
@@ -29,14 +28,21 @@
                                 <option data-column="4">{{ origin }}</option>
                                 {% endfor %}
                             </optgroup>
+                            <br>
                             <optgroup label="Filter by Area of Focus">
                                 {% for area in unique_area_focus %}
                                 <option data-column="5">{{ area }}</option>
                                 {% endfor %}
                             </optgroup>
+                            <br><br>
                             <optgroup label="Filter by Type">
                                 {% for type in unique_type %}
                                 <option data-column="3">{{ type }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Filter by Year Founded">
+                                {% for type in unique_foundation_year %}
+                                <option data-column="2">{{ type }}</option>
                                 {% endfor %}
                             </optgroup>
                         </select>
@@ -66,7 +72,7 @@
                                 <td>{{ initiative.InitiativeType }}</td>
                                 <td>{{ initiative.InitiativeOrigin }}</td>
                                 <td>{{ initiative.AriaOfFocus }}</td>
-                                <td><a href="{{ initiative.OfficialLink }}" target="_blank" class="text-sm"><strong><span class="fa fa-link"></span> Official Link</strong></a></td>
+                                <td><a href="{{ initiative.OfficialLink }}" target="_blank" class="text-sm"><strong><span class="fa fa-link"></span> {{ initiative.OfficialLink }}</strong></a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
