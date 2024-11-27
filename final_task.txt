@@ -4,3 +4,7 @@
 display by region
 by year
 by focus area
+
+
+
+* display the articles pagination limit current is 3

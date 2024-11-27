@@ -60,6 +60,8 @@
       rel="stylesheet"
       href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css"
     />
+    <!-- ShareThis Stick Share Button -->
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=674610b5231a330012e92179&product=sticky-share-buttons&source=platform" async="async"></script>
   </head>
 
   <body
@@ -94,12 +96,12 @@
         <div class="collapse navbar-collapse" id="ftco-nav">
           <ul class="navbar-nav nav ml-auto">
             <li class="nav-item">
-              <a href="{% url 'index' %}" class="nav-link"
+              <a href="{% url 'index' %}" class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}"
                 ><i class="typcn typcn-home"></i> Home</a
               >
             </li>
             <li class="nav-item">
-              <a href="#main-section" class="nav-link"
+              <a href="{% url 'blog-view' %}" class="nav-link {% if request.resolver_match.url_name == 'blog-view' %}active{% endif %}"
                 ><i class="typcn typcn-pencil"></i> Blog</a
               >
             </li>

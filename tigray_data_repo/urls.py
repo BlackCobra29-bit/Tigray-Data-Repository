@@ -22,6 +22,8 @@ from django.conf.urls.static import static
 from App.views import (
     # User page url map
     IndexView,
+    BlogView,
+    ViewBlog,
     InitiativesView,
     SignInView,
     # Admin Dashboard URL Map
@@ -44,6 +46,9 @@ from App.views import (
     RemoveAdminAccount,
     # Blog articles URL Map
     WriteArticle,
+    ArticleManagement,
+    ArticleUpdate,
+    ArticleDelete,
     # Admin's Account Settings URL Maps
     AdminAccountSettings,
     AdminAccountUpdate,
@@ -55,6 +60,8 @@ from App.views import (
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", IndexView.as_view(), name="index"),
+    path("blog/", BlogView.as_view(), name="blog-view"),
+    path("view-blog/<int:pk>", ViewBlog.as_view(), name = "view-blog"),
     path("initiatives/", InitiativesView.as_view(), name="initiatives"),
     # Admin Dashboard URL Maps
     path("admin-login", SignInView.as_view(), name="sign-in"),
@@ -74,6 +81,9 @@ urlpatterns = [
     path("delete-initiatives/<int:pk>", InitiativeDelete.as_view(), name = "delete-initiatives"),
     # Blog Articles Management
     path("write-analysis/", WriteArticle.as_view() ,name = "write-article"),
+    path("analysis-management/", ArticleManagement.as_view() ,name = "article-management"),
+    path("update-article/<int:pk>", ArticleUpdate.as_view(), name = "update-article"),
+    path("delete-article/<int:pk>", ArticleDelete.as_view(), name = "delete-article"),
     # User Admin Account Management
     path("admin-management/", AdminManagement.as_view(), name = "admin-management"),
     path("remove-admin-account/<int:pk>", RemoveAdminAccount.as_view(), name = "remove-admin-account"),

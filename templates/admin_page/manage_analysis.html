@@ -1,0 +1,137 @@
+{% extends 'admin_page/base.html' %}
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1></h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <span class="fa fa-check-circle"></span> {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Left Column -->
+                <div class="col-md-12">
+                    <div class="card card-lightblue">
+                        <div class="card-header">
+                            <h3 class="card-title"><span class="fa fa-pencil"></span>
+                                <small>Analysis Management</small>
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <table id="myTable" class="table table-bordered table-striped dt-responsive" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Index</th>
+                                        <th>Analysis Title</th>
+                                        <th>Published On</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for article in FetchedArticles %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ article.ArticleTitle }}</td>
+                                        <td>{{ article.DatePublished|date:"d M Y" }}</td>
+                                        <td>
+                                            <!-- Edit Button -->
+                                            <a href="#" data-toggle="modal" data-target="#editModal{{ article.id }}">
+                                                <i class="fa fa-pencil text-warning text-sm" title="Edit Item"></i>
+                                            </a>
+                                            &nbsp;
+                                            <!-- Delete Button -->
+                                            <a href="#" onclick="confirmDelete('{{ article.id }}', '{{ article.ArticleTitle }}')">
+                                                <i class="fa fa-trash text-danger text-sm" title="Delete Item"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Edit Modal -->
+                                    <div class="modal fade" id="editModal{{ article.id }}" style="overflow-y: scroll;">
+                                        <div class="modal-dialog modal-default">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-lightblue">
+                                                    <h4 class="modal-title">
+                                                        <small>Edit Analysis Article</small>
+                                                    </h4>
+                                                </div>
+                                                <form id="AnalysisForm" method="POST" action="{% url 'update-article' article.id %}">
+                                                    {% csrf_token %}
+                                                    <div class="card-body">
+                                                                <div class="form-group">
+                                                                    <label>Analysis Title:</label>
+                                                                    <input type="text" name="ArticleTitle" value="{{ article.ArticleTitle }}" class="form-control" placeholder="Enter analysis title">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Analysis Content:</label>
+                                                                    <textarea id="editor" class="form-control" name="ArticleContent" rows="10" required>
+                                                                        {{ article.ArticleContent|safe }}
+                                                                    </textarea>
+                                                                </div>
+                                                        </div>
+                                                    <div class="card-footer">
+                                                        <button type="submit" class="btn btn-dark float-right">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function confirmDelete(itemId, itemName) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `Do you want to delete "${itemName}"?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#7066e0',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Continue <span class="fa fa-arrow-right"></span>',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit the form programmatically
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/delete-article/${itemId}`;
+                form.innerHTML = `{% csrf_token %}`;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+</script>
+
+{% endblock %}

@@ -4,6 +4,7 @@ import os
 import random
 import string
 from zipfile import ZipFile
+from django.http.response import HttpResponse as HttpResponse
 import plotly
 import plotly.graph_objects as go
 
@@ -13,23 +14,22 @@ from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.db.models import Count
-from django.utils.html import format_html
+from django.core.paginator import Paginator
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
 from django.views.generic import TemplateView
-from django.utils.safestring import mark_safe
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponseRedirect
+from django.http import HttpRequest, HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.hashers import check_password
 
 # Local Application Imports
-from .models import RepositoryGroup, RepositoryItem, AdminPic, InitiativesModel
+from .models import RepositoryGroup, RepositoryItem, AdminPic, InitiativesModel, Blog
 
 
 class IndexView(TemplateView):
@@ -37,6 +37,8 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        context["blog_articles"] = Blog.objects.all()[:3]
 
         # Prefetch repository groups and related repositories
         repository_groups = RepositoryGroup.objects.prefetch_related("repositories")
@@ -109,6 +111,29 @@ class IndexView(TemplateView):
         html += "</ul>"
         return mark_safe(html)
 
+class BlogView(TemplateView):
+    template_name = "blog.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        all_articles = Blog.objects.all()
+        paginator = Paginator(all_articles, 3)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context["page_obj"] = page_obj
+        
+        return context
+    
+class ViewBlog(TemplateView):
+    template_name = "view_blog.html"
+    
+    def get(self, request, pk, *args, **kwargs):
+        
+        fetched_article = get_object_or_404(Blog, id=pk)
+        
+        context = {"article": fetched_article}
+        
+        return render(request, self.template_name, context)
 
 class InitiativesView(TemplateView):
     template_name = "initiatives.html"
@@ -209,87 +234,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             num_items=Count("repositories")
         ).order_by("-num_items")[:4]
 
-        data_initiative = {
-            "labels": [
-                "Community Service Organisation (CSO)",
-                "Business/Grassroots Organisation (BGO)",
-                "Humanitarian International NGO",
-                "Public Media",
-                "Media house",
-                "Media Organization",
-                "NGO",
-                "Storytelling platform",
-            ],
-            "values": [65.2, 8.7, 8.7, 10, 20, 30, 8.7, 8.7],
-        }
-
-        fig_initiative = go.Figure(
-            data=[
-                go.Pie(
-                    labels=data_initiative["labels"], values=data_initiative["values"]
-                )
-            ]
-        )
-
-        fig_initiative.update_layout(
-            margin=dict(l=0, r=0, t=30, b=0),
-            legend=dict(
-                orientation="h",
-                yanchor="top",
-                y=1.7,
-                xanchor="center",
-                x=0.5,
-                itemwidth=50,
-                traceorder="normal",
-                font=dict(size=12),
-                bgcolor="rgba(255, 255, 255, 0.7)",
-            ),
-        )
-
-        pie_chart_initiative = json.dumps(
-            fig_initiative, cls=plotly.utils.PlotlyJSONEncoder
-        )
-
-        data_geo = {
-            "labels": [
-                "Ethiopia (Outside of Tigray)",
-                "Africa",
-                "North America",
-                "Central/South America",
-                "Asia",
-                "Europe",
-                "Middle East",
-                "Australia",
-            ],
-            "values": [22.7, 22.7, 13.6, 10, 20, 40.9, 30, 40],
-        }
-
-        fig_geo = go.Figure(
-            data=[
-                go.Pie(labels=data_geo["labels"], values=data_geo["values"], hole=0.2)
-            ]
-        )
-
-        fig_geo.update_layout(
-            margin=dict(l=0, r=0, t=30, b=0),
-            legend=dict(
-                orientation="h",
-                yanchor="top",
-                y=1.7,
-                xanchor="center",
-                x=0.5,
-                itemwidth=50,
-                traceorder="normal",
-                font=dict(size=12),
-                bgcolor="rgba(255, 255, 255, 0.7)",
-            ),
-        )
-
-        pie_chart_geo = json.dumps(fig_geo, cls=plotly.utils.PlotlyJSONEncoder)
-
         context = super().get_context_data(**kwargs)
-        context["pie_chart_initiative"] = pie_chart_initiative
-        context["pie_chart_geo"] = pie_chart_geo
         context["top_groups"] = top_groups
         return context
 
@@ -501,7 +446,9 @@ class InitiativeItemUpdate(LoginRequiredMixin, TemplateView):
 class InitiativeDelete(LoginRequiredMixin, TemplateView):
 
     def post(self, request, pk):
+        
         FetchedRepository = get_object_or_404(InitiativesModel, pk=pk)
+        
         FetchedRepository.delete()
 
         messages.success(request, "Initiative removed successfully!")
@@ -513,6 +460,55 @@ class WriteArticle(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/write_article.html"
     login_url = "sign_in"
     redirect_field_name = "next"
+    
+    def post(self, request, *args, **kwargs):
+        
+        AnalysisCreate = Blog.objects.create(ArticleTitle = request.POST["ArticleTitle"],
+                                             ArticleContent = request.POST["ArticleContent"])
+        
+        AnalysisCreate.save()
+        
+        messages.success(request, f"Analysis article published successfully!")
+        
+        return redirect("write-article")
+    
+class ArticleManagement(LoginRequiredMixin, TemplateView):
+    template_name = "admin_page/manage_analysis.html"
+    login_url = "sign-in"
+    redirect_field_name = "next"
+    
+    def get_context_data(self, **kwargs):
+        
+        context = super().get_context_data(**kwargs)
+        
+        context["FetchedArticles"] = Blog.objects.all()
+        
+        return context
+    
+class ArticleUpdate(LoginRequiredMixin, TemplateView):
+    template_name = "admin_page/update_article.html"
+    login_url = "sign-in"
+    redirect_field_name = "next"
+
+    def post(self, request, pk):
+        FetchedArticle = get_object_or_404(Blog, pk=pk)
+        FetchedArticle.ArticleTitle = request.POST["ArticleTitle"]
+        FetchedArticle.ArticleContent = request.POST["ArticleContent"]
+        FetchedArticle.save()
+
+        messages.success(request, "Analysis article Updated successfully!")
+
+        return redirect("article-management")
+    
+class ArticleDelete(LoginRequiredMixin, TemplateView):
+
+    def post(self, request, pk):
+        FetchedArticle = get_object_or_404(Blog, pk=pk)
+        FetchedArticle.delete()
+
+        messages.success(request, "Article deleted successfully!")
+
+        return redirect("article-management")
 
 # User Admin Management
 class AdminManagement(LoginRequiredMixin, TemplateView):
@@ -521,8 +517,11 @@ class AdminManagement(LoginRequiredMixin, TemplateView):
     redirect_field_name = "next"
 
     def get_context_data(self, **kwargs):
+        
         context = super().get_context_data(**kwargs)
+        
         context["UserAdminList"] = User.objects.all()
+        
         return context
 
     def post(self, request, *args, **kwargs):

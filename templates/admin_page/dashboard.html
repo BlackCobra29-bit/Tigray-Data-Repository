@@ -41,50 +41,8 @@
         <!-- /.col -->
         {% endfor %}
       </div>
-
-      <!-- Row for Pie Charts -->
-      <div class="row">
-        <!-- Pie Chart 1 -->
-        <div class="col-lg-6">
-          <div class="card card-primary">
-            <div class="card-header">Type of Initiative or Organisation</div>
-            <div class="card-body">
-              <div id="pie-chart-initiative"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pie Chart 2 -->
-        <div class="col-lg-6">
-          <div class="card card-primary">
-            <div class="card-header">
-              Geographic Origin of the Initiative or Organisation
-            </div>
-            <div class="card-body">
-              <div id="pie-chart-geo"></div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 </div>
 
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script>
-  // Render the first pie chart
-  var pieChartInitiative = {{ pie_chart_initiative|safe }};
-  Plotly.newPlot('pie-chart-initiative', pieChartInitiative.data, pieChartInitiative.layout);
-
-  // Render the second pie chart
-  var pieChartGeo = {{ pie_chart_geo|safe }};
-  Plotly.newPlot('pie-chart-geo', pieChartGeo.data, pieChartGeo.layout);
-</script>
-
-<!-- remove plotly logo and modebar from the website -->
-<style>
-  .modebar-container{
-      display: none;
-  }
-</style>
 {% endblock %}

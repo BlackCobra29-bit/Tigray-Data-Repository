@@ -10843,7 +10843,8 @@ h5,
 .ftco-navbar-light .navbar-nav > .nav-item .nav-link.active {
   background: transparent;
   background: none;
-  color: #17b978;
+  color: #428bca;
+  font-weight: bold;
 }
 .ftco-navbar-light .navbar-nav > .nav-item .nav-link.active span:before {
   visibility: visible;
@@ -10938,7 +10939,7 @@ h5,
   color: #000000 !important;
 }
 .ftco-navbar-light.scrolled .nav-link.active {
-  color: #17b978 !important;
+  color: #428bca !important;
 }
 .ftco-navbar-light.scrolled.awake {
   margin-top: 0px;
