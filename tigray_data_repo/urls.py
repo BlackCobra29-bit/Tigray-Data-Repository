@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 from App.views import (
     # User page url map
     IndexView,
@@ -26,6 +27,8 @@ from App.views import (
     ViewBlog,
     InitiativesView,
     SignInView,
+    # Reset passsword URL Map
+    ForgotPasswordView,
     # Admin Dashboard URL Map
     DashboardView,
     # Dataset Group URL Maps
@@ -64,7 +67,10 @@ urlpatterns = [
     path("view-blog/<int:pk>", ViewBlog.as_view(), name = "view-blog"),
     path("initiatives/", InitiativesView.as_view(), name="initiatives"),
     # Admin Dashboard URL Maps
-    path("admin-login", SignInView.as_view(), name="sign-in"),
+    path("admin-login/", SignInView.as_view(), name="sign-in"),
+    # Reset password URL Maps
+    path("forgot-password/", ForgotPasswordView.as_view(), name = "forgot-password"),
+    # Dashboard URL Maps
     path("dashboard/", DashboardView.as_view(), name="dashboard-page"),
     # Dataset Groups URL Maps
     path("dataset-groups/", DatasetGroup.as_view(), name="dataset-groups"),
@@ -91,6 +97,11 @@ urlpatterns = [
     path("account-settings/", AdminAccountSettings.as_view(), name="account-settings"),
     path('admin-account-update/', AdminAccountUpdate.as_view(), name = 'admin-account-update'),
     path('admin-password-update/', AdminUpdatePassword.as_view(), name = 'admin-password-update'),
+    # url pattern for password reset
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='password_reset_form.html'), name='password_reset'),
+    path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(template_name='admin_page/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='admin_page/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='admin_page/password_reset_complete.html'), name='password_reset_complete'),
     # Logout Session URL Map
     path("logout/", LogoutView.as_view(), name="logout"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

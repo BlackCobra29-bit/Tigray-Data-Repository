@@ -1,3 +1,9 @@
+# Tigray data repository
+# developed by: tesfahiwet truneh
+# date: 2024
+# location: Mekelle, Tigray, Ethiopia
+
+
 # Standard Library Imports
 import json
 import os
@@ -217,11 +223,21 @@ class SignInView(TemplateView):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
+            
+            if self.request.POST.get("remember_me"):
+                self.request.session.set_expiry(1209600)
+            else:
+                self.request.session.set_expiry(0)
+                
             login(request, user)
             return HttpResponseRedirect(self.success_url)
         else:
             messages.error(request, "Invalid username or password")
             return render(request, self.template_name)
+        
+# Password reset views
+class ForgotPasswordView(TemplateView):
+    template_name = "admin_page/forgot_password.html"
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
