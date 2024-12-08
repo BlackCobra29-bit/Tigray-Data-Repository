@@ -5,9 +5,10 @@
 
 
 # Standard Library Imports
-import json
 import os
+import stripe
 import random
+import logging
 import string
 from zipfile import ZipFile
 from django.http.response import HttpResponse as HttpResponse
@@ -20,6 +21,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.db.models import Count
+from django.conf import settings
 from django.core.paginator import Paginator
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
@@ -30,13 +32,26 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.hashers import make_password
 from django.http import HttpRequest, HttpResponseRedirect
 from django.template.loader import render_to_string
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404, reverse
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.hashers import check_password
 
 # Local Application Imports
 from .models import RepositoryGroup, RepositoryItem, AdminPic, InitiativesModel, Blog
 
+log_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app.log')
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file_path),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class IndexView(TemplateView):
     template_name = "index.html"
@@ -205,7 +220,56 @@ class InitiativesView(TemplateView):
         context["pyramid_data"] = pyramid_data
 
         return context
+    
+class StripeCheckoutView(View):
 
+    def get(self, request, *args, **kwargs):
+        try:
+
+            amount_in_cents = int(request.GET.get("amount", 0)) * 100
+
+            stripe_session = stripe.checkout.Session.create(
+                payment_method_types=[
+                    "card",
+                ],
+                line_items=[
+                    {
+                        "price_data": {
+                            "currency": "usd",
+                            "unit_amount": amount_in_cents,
+                            "product_data": {
+                                "name": "Tigray Data Repository",
+                                "description": "Thank you for your generous donation. Your support means a lot to us.",
+                                "images": [
+                                    "https://coderspdf.com/wp-content/uploads/2024/12/Tigray_logo2.png"
+                                ],
+                            },
+                        },
+                        "quantity": 1,
+                    }
+                ],
+                mode="payment",
+                success_url=request.build_absolute_uri(reverse("payment-success")),
+                cancel_url=request.build_absolute_uri(reverse("payment-cancel")),
+                metadata={
+                    "amount_paid": amount_in_cents,
+                },
+            )
+
+            return redirect(stripe_session.url)
+
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error: {str(e)}")
+            return redirect("index")
+        except Exception as e:
+            logger.error(f"Error during checkout: {str(e)}")
+            return redirect("index")
+
+class PaymentSuccessView(TemplateView):
+    template_name = "payment_success.html"
+
+class PaymentCancelView(TemplateView):
+    template_name = "payment_cancel.html"
 
 """
 Admin Views --> CBV --> Class Based Views
@@ -683,7 +747,6 @@ class AdminUpdatePassword(LoginRequiredMixin, View):
 
         messages.success(request, "Password updated successfully.")
         return redirect("account-settings")
-
 
 # Logout View
 class LogoutView(LoginRequiredMixin, View):

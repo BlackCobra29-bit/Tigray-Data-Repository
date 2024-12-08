@@ -27,6 +27,9 @@ from App.views import (
     ViewBlog,
     InitiativesView,
     SignInView,
+    StripeCheckoutView,
+    PaymentSuccessView,
+    PaymentCancelView,
     # Reset passsword URL Map
     ForgotPasswordView,
     # Admin Dashboard URL Map
@@ -66,6 +69,9 @@ urlpatterns = [
     path("blog/", BlogView.as_view(), name="blog-view"),
     path("view-blog/<int:pk>", ViewBlog.as_view(), name = "view-blog"),
     path("initiatives/", InitiativesView.as_view(), name="initiatives"),
+    path("stripe-checkout/", StripeCheckoutView.as_view(), name = "stripe-checkout"),
+    path("payment-success/", PaymentSuccessView.as_view(), name = "payment-success"),
+    path("payment-cancel/", PaymentCancelView.as_view(), name = "payment-cancel"),
     # Admin Dashboard URL Maps
     path("admin-login/", SignInView.as_view(), name="sign-in"),
     # Reset password URL Maps

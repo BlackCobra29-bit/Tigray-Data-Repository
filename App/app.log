@@ -1,0 +1,60 @@
+2024-12-08 20:39:16,723 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\tigray_data_repo\settings.py changed, reloading.
+2024-12-08 20:40:52,438 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 20:42:06,648 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 20:42:16,458 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 20:42:41,562 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 20:43:05,218 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 20:43:39,759 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 20:43:47,427 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 20:45:23,247 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 20:45:32,837 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 20:47:21,804 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\tigray_data_repo\urls.py changed, reloading.
+2024-12-08 20:48:03,684 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\tigray_data_repo\urls.py changed, reloading.
+2024-12-08 20:56:27,846 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:03:49,724 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\tigray_data_repo\urls.py changed, reloading.
+2024-12-08 21:04:01,295 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\tigray_data_repo\urls.py changed, reloading.
+2024-12-08 21:06:52,398 - WARNING - Method Not Allowed (POST): /stripe-checkout/
+2024-12-08 21:06:52,401 - WARNING - Method Not Allowed: /stripe-checkout/
+2024-12-08 21:06:52,453 - WARNING - Not Found: /favicon.ico
+2024-12-08 21:07:15,378 - WARNING - Method Not Allowed (POST): /stripe-checkout/
+2024-12-08 21:07:15,379 - WARNING - Method Not Allowed: /stripe-checkout/
+2024-12-08 21:07:20,976 - WARNING - Method Not Allowed (POST): /stripe-checkout/
+2024-12-08 21:07:20,976 - WARNING - Method Not Allowed: /stripe-checkout/
+2024-12-08 21:08:11,668 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:08:18,097 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:08:25,447 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\tigray_data_repo\urls.py changed, reloading.
+2024-12-08 21:08:36,818 - WARNING - Method Not Allowed (POST): /stripe-checkout/
+2024-12-08 21:08:36,818 - WARNING - Method Not Allowed: /stripe-checkout/
+2024-12-08 21:09:25,125 - WARNING - Not Found: /favicon.ico
+2024-12-08 21:09:29,055 - WARNING - Method Not Allowed (POST): /stripe-checkout/
+2024-12-08 21:09:29,055 - WARNING - Method Not Allowed: /stripe-checkout/
+2024-12-08 21:10:19,152 - WARNING - Method Not Allowed (POST): /stripe-checkout/
+2024-12-08 21:10:19,156 - WARNING - Method Not Allowed: /stripe-checkout/
+2024-12-08 21:10:36,836 - WARNING - Method Not Allowed (POST): /stripe-checkout/
+2024-12-08 21:10:36,836 - WARNING - Method Not Allowed: /stripe-checkout/
+2024-12-08 21:11:51,221 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:11:55,562 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:12:37,101 - WARNING - Method Not Allowed (POST): /stripe-checkout/
+2024-12-08 21:12:37,101 - WARNING - Method Not Allowed: /stripe-checkout/
+2024-12-08 21:13:13,519 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:13:19,172 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:13:48,450 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:14:07,081 - INFO - message='Request to Stripe api' method=post url=https://api.stripe.com/v1/checkout/sessions
+2024-12-08 21:14:08,877 - INFO - message='Stripe API response' path=https://api.stripe.com/v1/checkout/sessions response_code=200
+2024-12-08 21:15:02,700 - INFO - message='Request to Stripe api' method=post url=https://api.stripe.com/v1/checkout/sessions
+2024-12-08 21:15:04,378 - INFO - message='Stripe API response' path=https://api.stripe.com/v1/checkout/sessions response_code=200
+2024-12-08 21:18:50,258 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:19:08,474 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:19:16,862 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:19:20,390 - INFO - message='Request to Stripe api' method=post url=https://api.stripe.com/v1/checkout/sessions
+2024-12-08 21:19:22,206 - INFO - message='Stripe API response' path=https://api.stripe.com/v1/checkout/sessions response_code=200
+2024-12-08 21:19:28,291 - INFO - message='Request to Stripe api' method=post url=https://api.stripe.com/v1/checkout/sessions
+2024-12-08 21:19:29,040 - INFO - message='Stripe API response' path=https://api.stripe.com/v1/checkout/sessions response_code=200
+2024-12-08 21:21:40,217 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:22:53,880 - INFO - message='Request to Stripe api' method=post url=https://api.stripe.com/v1/checkout/sessions
+2024-12-08 21:22:56,220 - INFO - message='Stripe API response' path=https://api.stripe.com/v1/checkout/sessions response_code=200
+2024-12-08 21:23:58,700 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:24:22,122 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:24:36,938 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2024-12-08 21:24:45,916 - INFO - message='Request to Stripe api' method=post url=https://api.stripe.com/v1/checkout/sessions
+2024-12-08 21:24:47,617 - INFO - message='Stripe API response' path=https://api.stripe.com/v1/checkout/sessions response_code=200
