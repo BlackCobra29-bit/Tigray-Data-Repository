@@ -1,0 +1,29 @@
+{% load static %}
+{% load custom_filters %}
+
+<section class="ftco-section ftco-no-pt">
+    <div class="container">
+        <div class="row justify-content-center py-4 mt-5">
+            <div class="col-md-5 heading-section text-center ftco-animate">
+            </div>
+          </div>
+
+            <div class="row d-flex">
+
+                <div class="col-md-9 pt-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <!-- Card Body -->
+                        <div class="card-body d-flex flex-column">
+                            <div>
+                                <h2 class="heading" style="font-size: 1.8rem; font-weight: bold;">{{ article.ArticleTitle }}</h2>
+                                <p>{{ article.ArticleContent|safe }}</p>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</section>

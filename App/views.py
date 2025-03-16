@@ -1,10 +1,11 @@
 # Tigray data repository
 # developed by: tesfahiwet truneh
-# date: 2024
+# date: 2024, 2025
 # location: Mekelle, Tigray, Ethiopia
-
+# TechStack Used: Django, Bootstrap4 Template and Plotly for graph design
 
 # Standard Library Imports
+
 import os
 import stripe
 import random
@@ -55,13 +56,21 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class IndexView(TemplateView):
     template_name = "index.html"
+    partial_template_name = "index-partial.html"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if request.headers.get('HX-Request') == 'true':
+            # Return partial content for HTMX requests
+            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
+        # Return full page for regular requests
+        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
         context["blog_articles"] = Blog.objects.all()[:3]
 
-        # Prefetch repository groups and related repositories
         repository_groups = RepositoryGroup.objects.prefetch_related("repositories")
         context["repository_groups"] = []
 
@@ -78,7 +87,6 @@ class IndexView(TemplateView):
                     "contents": "",
                 }
 
-                # If it's a ZIP file, generate HTML for its tree structure
                 if file_data["is_zip"]:
                     zip_path = repository.file.path
                     with ZipFile(zip_path, "r") as zip_file:
@@ -131,10 +139,28 @@ class IndexView(TemplateView):
                 """
         html += "</ul>"
         return mark_safe(html)
+    
+class WhyTdr(TemplateView):
+    
+    template_name = "why_tdr.html"
+    partial_template_name = "why-tdr-partial.html"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if request.headers.get('HX-Request') == 'true':
+            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
+        return self.render_to_response(context)
 
 class BlogView(TemplateView):
     template_name = "blog.html"
-    
+    partial_template_name = "blog-partial.html"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if request.headers.get('HX-Request') == 'true':
+            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
+        return self.render_to_response(context)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         all_articles = Blog.objects.all()
@@ -142,22 +168,30 @@ class BlogView(TemplateView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context["page_obj"] = page_obj
-        
         return context
     
 class ViewBlog(TemplateView):
     template_name = "view_blog.html"
-    
+    partial_template_name = "view-blog-partial.html"
+
     def get(self, request, pk, *args, **kwargs):
-        
         fetched_article = get_object_or_404(Blog, id=pk)
-        
         context = {"article": fetched_article}
-        
-        return render(request, self.template_name, context)
+        if request.headers.get('HX-Request') == 'true':
+            # Return partial content for HTMX requests
+            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
+        # Return full page for regular requests
+        return self.render_to_response(context)
 
 class InitiativesView(TemplateView):
     template_name = "initiatives.html"
+    partial_template_name = "initiatives-partial.html"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if request.headers.get('HX-Request') == 'true':
+            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
+        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -221,6 +255,29 @@ class InitiativesView(TemplateView):
 
         return context
     
+class ManifestoView(TemplateView):
+    
+    template_name = "manifesto.html"
+    partial_template_name = "manifesto-partial.html"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if request.headers.get('HX-Request') == 'true':
+            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
+        return self.render_to_response(context)
+    
+class ContributeView(TemplateView):
+    template_name = "contribute.html"
+    partial_template_name = "contribute-partial.html"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if request.headers.get('HX-Request') == 'true':
+            # Return partial content for HTMX requests
+            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
+        # Return full page for regular requests
+        return self.render_to_response(context)
+    
 class StripeCheckoutView(View):
 
     def get(self, request, *args, **kwargs):
@@ -239,10 +296,7 @@ class StripeCheckoutView(View):
                             "unit_amount": amount_in_cents,
                             "product_data": {
                                 "name": "Tigray Data Repository",
-                                "description": "Thank you for your generous donation. Your support means a lot to us.",
-                                "images": [
-                                    "https://coderspdf.com/wp-content/uploads/2024/12/Tigray_logo2.png"
-                                ],
+                                "description": "The Tigray Data Repository (TDR) is an online, open-source repository of datasets documenting Tigray’s history and the experiences of the Tigray communities living in other countries. The TDR was established in May 2024 and went live in January 2025. It is an archive created to document the digital, humanitarian, socio-economic, cultural, political, educational, historical, and many other types of data related to the community, serving as a resource for education and research for the benefit of future generations. As such, it is best described by its motto: “Data for Tigray, Knowledge for Generations!”.",  
                             },
                         },
                         "quantity": 1,

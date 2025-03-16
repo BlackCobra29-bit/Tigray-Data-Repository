@@ -23,9 +23,12 @@ from django.contrib.auth import views as auth_views
 from App.views import (
     # User page url map
     IndexView,
+    WhyTdr,
     BlogView,
     ViewBlog,
     InitiativesView,
+    ManifestoView,
+    ContributeView,
     SignInView,
     StripeCheckoutView,
     PaymentSuccessView,
@@ -66,9 +69,12 @@ from App.views import (
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", IndexView.as_view(), name="index"),
+    path("why-tdr/", WhyTdr.as_view(), name = "why-tdr"),
     path("blog/", BlogView.as_view(), name="blog-view"),
     path("view-blog/<int:pk>", ViewBlog.as_view(), name = "view-blog"),
     path("initiatives/", InitiativesView.as_view(), name="initiatives"),
+    path("manifesto/", ManifestoView.as_view(), name = "manifesto-view"),
+    path("contribute/", ContributeView.as_view(), name = "contribute-view"),
     path("stripe-checkout/", StripeCheckoutView.as_view(), name = "stripe-checkout"),
     path("payment-success/", PaymentSuccessView.as_view(), name = "payment-success"),
     path("payment-cancel/", PaymentCancelView.as_view(), name = "payment-cancel"),

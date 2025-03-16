@@ -5,52 +5,5 @@
 {% load custom_filters %}
 
 {% block 'main-section' %}
-
-<section class="ftco-section ftco-no-pt">
-    <div class="container">
-        <div class="row justify-content-center py-4 mt-5">
-            <div class="col-md-5 heading-section text-center ftco-animate">
-            </div>
-          </div>
-
-            <div class="row d-flex justify-content-center">
-
-                <div class="col-md-9 pt-4">
-                    <div class="card h-100 shadow-sm border-0">
-                        <!-- Card Body -->
-                        <div class="card-body d-flex flex-column">
-                            <div>
-                                <h2 class="heading" style="font-size: 1.8rem; font-weight: bold;">{{ article.ArticleTitle }}</h2>
-                                <p>{{ article.ArticleContent|safe }}</p>
-                              </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    </div>
-</section>
-
-<!-- Page Specfic Animation Script -->
-<script>
-    // Slide in the card from the left
-    gsap.from("#slideFromLeft", { x: -300, opacity: 0, duration: 1 });
-
-    // Slide in the card from the right
-    gsap.from("#slideFromRight", { x: 300, opacity: 0, duration: 1 });
-</script>
-
-<style>
-    .text-primary{
-        color: #1261a8 !important;
-    }
-    a{
-        color: #6a7695;
-    }
-    a:hover{
-        color: black;
-    }
-</style>
+    {% include 'view-blog-partial.html' %}
 {% endblock %}
