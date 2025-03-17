@@ -41,35 +41,30 @@
       <div class="collapse navbar-collapse" id="ftco-nav">
         <ul class="navbar-nav nav ml-auto">
           <li class="nav-item">
-            <a href="{% url 'index' %}" hx-get="{% url 'index' %}" hx-push-url="true" hx-target="#htmx-content"
-              hx-swap="innerHTML" class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+            <a href="{% url 'index' %}" class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
               <i class="bi bi-bank"></i> Home
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'why-tdr' %}" hx-get="{% url 'why-tdr' %}" hx-push-url="true" hx-target="#htmx-content"
-              hx-swap="innerHTML"
+            <a href="{% url 'why-tdr' %}" 
               class="nav-link {% if request.resolver_match.url_name == 'why-tdr' %}active{% endif %}">
               <i class="bi bi-globe"></i> Why TDR?
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'blog-view' %}" hx-get="{% url 'blog-view' %}" hx-push-url="true" hx-target="#htmx-content"
-              hx-swap="innerHTML"
+            <a href="{% url 'blog-view' %}"
               class="nav-link {% if request.resolver_match.url_name == 'blog-view' %}active{% endif %}">
               <i class="bi bi-pencil"></i> TDR Journal
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'manifesto-view' %}" hx-get="{% url 'manifesto-view' %}" hx-push-url="true"
-              hx-target="#htmx-content" hx-swap="innerHTML"
+            <a href="{% url 'manifesto-view' %}"
               class="nav-link {% if request.resolver_match.url_name == 'manifesto-view' %}active{% endif %}">
               <i class="bi bi-clipboard2-data"></i> Manifesto
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'contribute-view' %}" hx-get="{% url 'contribute-view' %}" hx-push-url="true"
-              hx-target="#htmx-content" hx-swap="innerHTML"
+            <a href="{% url 'contribute-view' %}"
               class="nav-link {% if request.resolver_match.url_name == 'contribute-view' %}active{% endif %}">
               <i class="bi bi-database"></i> Contribute
             </a>
@@ -148,36 +143,6 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-
-  <script>
-    $(document).ready(function () {
-      var table = $("#myTable").DataTable({
-        responsive: true,
-        paging: true,
-        searching: true,
-        ordering: true,
-        lengthChange: true,
-        info: true,
-        autoWidth: false,
-        dom: "Bfrtip",
-        buttons: ["copy", "csv", "excel", "pdf", "print"],
-      });
-
-      $("#filter-initiative").on("change", function () {
-        let selectedValue = $(this).val();
-        let column = $(this).find(":selected").data("column");
-        if (column !== undefined) {
-          table.search("").columns().search("");
-          table.columns(column).search(selectedValue).draw();
-        }
-      });
-
-      $("#reset-btn").on("click", function () {
-        $("#filter-initiative").val("");
-        table.search("").columns().search("").draw();
-      });
-    });
-  </script>
 
   <style>
     .dataTables_filter {

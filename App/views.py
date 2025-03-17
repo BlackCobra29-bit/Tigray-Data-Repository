@@ -56,21 +56,10 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class IndexView(TemplateView):
     template_name = "index.html"
-    partial_template_name = "index-partial.html"
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if request.headers.get('HX-Request') == 'true':
-            # Return partial content for HTMX requests
-            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
-        # Return full page for regular requests
-        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
         context["blog_articles"] = Blog.objects.all()[:3]
-
         repository_groups = RepositoryGroup.objects.prefetch_related("repositories")
         context["repository_groups"] = []
 
@@ -86,23 +75,17 @@ class IndexView(TemplateView):
                     "download_url": repository.file.url,
                     "contents": "",
                 }
-
                 if file_data["is_zip"]:
                     zip_path = repository.file.path
                     with ZipFile(zip_path, "r") as zip_file:
                         file_tree = self._build_zip_tree(zip_file)
                         file_data["contents"] = self._render_zip_tree(file_tree)
-
                 group_data["repositories"].append(file_data)
-
             context["repository_groups"].append(group_data)
 
         return context
 
     def _build_zip_tree(self, zip_file):
-        """
-        Builds a nested dictionary representing the file tree of a ZIP file.
-        """
         tree = {}
         for file in zip_file.namelist():
             parts = file.split("/")
@@ -114,9 +97,6 @@ class IndexView(TemplateView):
         return tree
 
     def _render_zip_tree(self, tree, level=0):
-        """
-        Recursively renders a nested HTML structure for the ZIP file tree with collapsible folders.
-        """
         html = f'<ul class="list-unstyled" style="margin-left: {level * 20}px;">'
         for name, subitems in tree.items():
             if subitems:  # Folder
@@ -141,25 +121,10 @@ class IndexView(TemplateView):
         return mark_safe(html)
     
 class WhyTdr(TemplateView):
-    
     template_name = "why_tdr.html"
-    partial_template_name = "why-tdr-partial.html"
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if request.headers.get('HX-Request') == 'true':
-            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
-        return self.render_to_response(context)
 
 class BlogView(TemplateView):
     template_name = "blog.html"
-    partial_template_name = "blog-partial.html"
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if request.headers.get('HX-Request') == 'true':
-            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
-        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -172,26 +137,14 @@ class BlogView(TemplateView):
     
 class ViewBlog(TemplateView):
     template_name = "view_blog.html"
-    partial_template_name = "view-blog-partial.html"
 
     def get(self, request, pk, *args, **kwargs):
         fetched_article = get_object_or_404(Blog, id=pk)
         context = {"article": fetched_article}
-        if request.headers.get('HX-Request') == 'true':
-            # Return partial content for HTMX requests
-            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
-        # Return full page for regular requests
-        return self.render_to_response(context)
+        return render(request, self.template_name, context)
 
 class InitiativesView(TemplateView):
     template_name = "initiatives.html"
-    partial_template_name = "initiatives-partial.html"
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if request.headers.get('HX-Request') == 'true':
-            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
-        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -256,27 +209,10 @@ class InitiativesView(TemplateView):
         return context
     
 class ManifestoView(TemplateView):
-    
     template_name = "manifesto.html"
-    partial_template_name = "manifesto-partial.html"
 
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if request.headers.get('HX-Request') == 'true':
-            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
-        return self.render_to_response(context)
-    
 class ContributeView(TemplateView):
     template_name = "contribute.html"
-    partial_template_name = "contribute-partial.html"
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if request.headers.get('HX-Request') == 'true':
-            # Return partial content for HTMX requests
-            return HttpResponse(render_to_string(self.partial_template_name, context, request=request))
-        # Return full page for regular requests
-        return self.render_to_response(context)
     
 class StripeCheckoutView(View):
 

@@ -4,5 +4,299 @@
 {% load custom_filters %}
 
 {% block 'main-section' %}
-    {% include 'initiatives-partial.html' %}
+
+<section class="ftco-section ftco-no-pb ftco-no-pt" id="chapter-section">
+    <div class="container">
+        <div class="row justify-content-center py-5 mt-5">
+            <div class="col-md-12 heading-section text-center ftco-animate">
+            </div>
+        </div>
+
+        <div class="row d-flex">
+            <div class="col-md-12 pt-4">
+                <div class="card h-100 shadow-none border-0">
+                    <!-- Card Body -->
+                    <div class="card-body d-flex flex-column">
+                        <div>
+                            <div class="heading-container pt-4">
+                                <span class="vertical-line"></span>
+                                <h2 class="heading">From Afar, For Tigray – Diaspora Initiatives and Organizations</h2>
+                            </div>
+                            <div class="underline"></div>
+                            <br>
+                            <p id="intro-text">As part of our mission to document and preserve the stories of Tigray and its communities, we have created a database of Tigrayan diaspora initiatives and organizations. This includes organizations founded both before, during, and after the Tigray war (2020-2022), which have been actively responding to the disaster and contributing to community rebuilding efforts.</p>
+                        </div>
+
+                        <div class="heading-container pt-4">
+                            <span class="vertical-line"></span>
+                            <h2 class="heading">Interactive Dashboards</h2>
+                        </div>
+                        <div class="underline"></div>
+                        <br>
+                        <p id="intro-text">Below you will find interactive dashboards presenting data about these diaspora-led initiatives and/or organizations, their distribution, and other key measures.</p>
+                        <div class="row pt-4">
+                            <!-- Pie Chart (CanvasJS) -->
+                            <div class="col-lg-6">
+                                <div class="card card-default">
+                                    <div class="card-header text-center">Foundation Year</div>
+                                    <div class="card-body">
+                                        <div id="doughnut-chart" class="text-center" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Column Chart (CanvasJS) -->
+                            <div class="col-lg-6">
+                                <div class="card card-default">
+                                    <div class="card-header text-center">Origin of Initiative</div>
+                                    <div class="card-body">
+                                        <div id="column-chart" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bar Chart (CanvasJS) -->
+                            <div class="col-lg-6">
+                                <div class="card card-default">
+                                    <div class="card-header text-center">Area of Focus</div>
+                                    <div class="card-body">
+                                        <div id="bar-chart" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pyramid Chart (CanvasJS) -->
+                            <div class="col-lg-6">
+                                <div class="card card-default">
+                                    <div class="card-header text-center">Type of Initiative</div>
+                                    <div class="card-body">
+                                        <div id="pyramid-chart" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="heading-container pt-5">
+                            <span class="vertical-line"></span>
+                            <h2 class="heading">Datatable</h2>
+                        </div>
+                        <div class="underline"></div>
+                        <br>
+
+                        <div class="d-flex align-items-center pt-1">
+                            <label class="me-2 mb-0">Filter:</label>
+                            <select id="filter-initiative" class="form-select me-2" style="height: 100%;">
+                                <option disabled selected>Select Filter</option>
+                                <optgroup label="Filter by Origin">
+                                    {% for origin in unique_origins %}
+                                    <option data-column="4">{{ origin }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <br>
+                                <optgroup label="Filter by Area of Focus">
+                                    {% for area in unique_area_focus %}
+                                    <option data-column="5">{{ area }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <br><br>
+                                <optgroup label="Filter by Type">
+                                    {% for type in unique_type %}
+                                    <option data-column="3">{{ type }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="Filter by Year Founded">
+                                    {% for year in unique_foundation_year %}
+                                    <option data-column="2">{{ year }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                            <button class="btn btn-primary" id="reset-btn" style="border-radius: 4px;">Reset</button>
+                        </div>
+
+                        <br>
+
+                        <table id="myTable" class="table table-bordered table-striped dt-responsive" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Index</th>
+                                    <th>Initiative Name</th>
+                                    <th>Foundation Year</th>
+                                    <th>Type of Initiative</th>
+                                    <th>Origin of the Initiative</th>
+                                    <th>Area of Focus</th>
+                                    <th>Official Link</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for initiative in diaspora_initiatives %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ initiative.InitiativeName }}</td>
+                                    <td>{{ initiative.FoundationYear }}</td>
+                                    <td>{{ initiative.InitiativeType }}</td>
+                                    <td>{{ initiative.InitiativeOrigin }}</td>
+                                    <td>{{ initiative.AriaOfFocus }}</td>
+                                    <td><a href="{{ initiative.OfficialLink }}" target="_blank" class="text-sm"><strong><span class="fa fa-link"></span> {{ initiative.OfficialLink }}</strong></a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <div class="heading-container pt-5">
+                            <span class="vertical-line"></span>
+                            <h2 class="heading">Submit Your Initiative and/or Organization Info</h2>
+                        </div>
+                        <br>
+                        <p id="intro-text">
+                            If your initiative or organization is not yet registered, please submit this
+                            <a href="" class="fw-semibold brand-text-color" target="_blank">short survey form</a> to
+                            be included in our growing database.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+</script><script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+<script>
+    // Function to initialize charts and DataTable
+    function initializeInitiativesContent() {
+        // Safeguard for DataTables
+        if (typeof $.fn.DataTable === "undefined") {
+            console.error("DataTables is not loaded yet. Ensure jQuery and DataTables scripts are included.");
+            return;
+        }
+
+        // DataTable Initialization
+        if (!$.fn.DataTable.isDataTable('#myTable')) {
+            var table = $("#myTable").DataTable({
+                responsive: true,
+                paging: true,
+                searching: true,
+                ordering: true,
+                lengthChange: true,
+                info: true,
+                autoWidth: false,
+                dom: "Bfrtip",
+                buttons: ["copy", "csv", "excel", "pdf", "print"]
+            });
+
+            $("#filter-initiative").on("change", function () {
+                let selectedValue = $(this).val();
+                let column = $(this).find(":selected").data("column");
+                if (column !== undefined) {
+                    table.search("").columns().search("");
+                    table.columns(column).search(selectedValue).draw();
+                }
+            });
+
+            $("#reset-btn").on("click", function () {
+                $("#filter-initiative").val("");
+                table.search("").columns().search("").draw();
+            });
+        }
+
+        // Chart Data
+        const doughnutData = {{ doughnut_data|safe }};
+        const columnData = {{ column_data|safe }};
+        const barData = {{ pie_data|safe }};
+        const pyramidData = {{ pyramid_data|safe }};
+
+        // Doughnut Chart (Foundation Year)
+        const totalFoundationYears = doughnutData.reduce((total, data) => total + data.y, 0);
+        const processedDoughnutData = doughnutData.map(item => ({
+            label: item.label,
+            y: item.y,
+            percent: ((item.y / totalFoundationYears) * 100).toFixed(2)
+        }));
+
+        const doughnutChart = new CanvasJS.Chart("doughnut-chart", {
+            animationEnabled: true,
+            data: [{
+                type: "pie",
+                toolTipContent: "{label}: ({percent}%)",
+                indexLabel: "{label}: ({percent}%)",
+                dataPoints: processedDoughnutData.map(item => ({
+                    label: item.label,
+                    y: item.y,
+                    percent: item.percent,
+                }))
+            }]
+        });
+        doughnutChart.render();
+
+        // Column Chart (Origin)
+        const areaChart = new CanvasJS.Chart("column-chart", {
+            animationEnabled: true,
+            axisY: { title: "Number of initiatives", gridThickness: 0.1 },
+            legend: { verticalAlign: "top" },
+            data: [{
+                type: "area",
+                toolTipContent: "{label}: {y}",
+                dataPoints: columnData
+            }]
+        });
+        areaChart.render();
+
+        // Bar Chart (Area of Focus)
+        const barChart = new CanvasJS.Chart("bar-chart", {
+            animationEnabled: true,
+            axisY: { title: "Number of initiatives", gridThickness: 0.3 },
+            legend: { verticalAlign: "top" },
+            data: [{
+                type: "bar",
+                toolTipContent: "{label}: {y} ({percent}%)",
+                indexLabel: "{percent}%",
+                indexLabelFontSize: 14,
+                indexLabelPlacement: "outside",
+                markerColor: "red",
+                markerType: "triangle",
+                dataPoints: barData.map(item => ({
+                    label: item.label,
+                    y: item.y,
+                    percent: ((item.y / barData.reduce((sum, dp) => sum + dp.y, 0)) * 100).toFixed(2)
+                }))
+            }]
+        });
+        barChart.render();
+
+        // Pyramid Chart (Type)
+        const totalPyramidValue = pyramidData.reduce((total, data) => total + data.y, 0);
+        const pyramidChart = new CanvasJS.Chart("pyramid-chart", {
+            animationEnabled: true,
+            data: [{
+                type: "pyramid",
+                showInLegend: true,
+                legendText: "{label}",
+                toolTipContent: "{label}: {y} ({percent}%)",
+                indexLabel: "{label}: {percent}%",
+                indexLabelFontSize: 14,
+                dataPoints: pyramidData.map(item => ({
+                    label: item.label,
+                    y: item.y,
+                    percent: ((item.y / totalPyramidValue) * 100).toFixed(2)
+                }))
+            }]
+        });
+        pyramidChart.render();
+    }
+
+    // Run on initial page load
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("DOMContentLoaded: Initializing content");
+        initializeInitiativesContent();
+    });
+
+    // Run after HTMX swap
+    document.body.addEventListener("htmx:afterSwap", function (event) {
+        if (event.detail.target.id === "htmx-content") {
+            console.log("htmx:afterSwap: Initializing content");
+            initializeInitiativesContent();
+        }
+    });
+</script>
 {% endblock %}
