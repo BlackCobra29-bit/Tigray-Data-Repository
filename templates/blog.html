@@ -10,41 +10,82 @@
             </div>
         </div>
 
-        <div class="row">
-            {% if page_obj %}
-            {% for article in page_obj %}
-                <div class="col-md-4 pt-4">
-                    <div class="card h-100 shadow-6 border-0">
-                        <!-- Card Body -->
-                        <div class="card-body d-flex flex-column">
-                            <!-- Title -->
-                            <h5 class="card-title mb-3">
-                                <a href="{% url 'view-blog' article.id %}" class="text-primary fw-bold text-decoration-none">
-                                    {{ article.ArticleTitle }}
-                                </a>
-                            </h5>
-                
-                            <p class="card-text text-muted small">
-                                <i class="fa fa-clock me-2"></i> Published on: 
-                                <strong>{{ article.DatePublished|date:"d M Y" }}</strong>
+        <div class="row py-5">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <!-- Tabs Section -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item blog-nav" role="presentation">
+                        <button class="nav-link tdr-journal-tab active fw-bold" id="articles-tab" data-bs-toggle="tab"
+                            data-bs-target="#articles" type="button" role="tab" aria-controls="articles"
+                            aria-selected="true">
+                            Articles
+                             <span style="margin-left: .3em;
+                             font-weight: normal;
+                             display: block;
+                             line-height: 1;">2</span>
+                        </button>
+                    </li>
+                    <li class="nav-item blog-nav" role="presentation">
+                        <button class="nav-link tdr-journal-tab fw-bold" id="journals-tab" data-bs-toggle="tab"
+                            data-bs-target="#journals" type="button" role="tab" aria-controls="journals"
+                            aria-selected="false">
+                            Journals 
+                            <span style="margin-left: .3em;
+                            font-weight: normal;
+                            display: block;
+                            line-height: 1;">3</span>
+                        </button>
+                    </li>
+                    <li class="nav-item blog-nav" role="presentation">
+                        <button class="nav-link tdr-journal-tab fw-bold" id="special-tab" data-bs-toggle="tab"
+                            data-bs-target="#special" type="button" role="tab" aria-controls="special"
+                            aria-selected="false">
+                            Special issues
+                            <span style="margin-left: .3em;
+                            font-weight: normal;
+                            display: block;
+                            line-height: 1;">4</span>
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="articles" role="tabpanel" aria-labelledby="articles-tab">
+
+                        {% if page_obj %}
+                        {% for article in page_obj %}
+                        <div class="result-item mt-3">
+                            <h6 class="mb-1 blog-title">
+                                <a href="{% url 'view-blog' article.slug %}" class="text-primary">
+                                    {{ article.ArticleTitle }}</a>
+                            </h6>
+                            <p class="mb-1">
+                                <small><span class="bi bi-clock"></span> Published on:
+                                    {{ article.DatePublished|date:"d M Y" }}</small>
                             </p>
-                
-                            <p class="card-text flex-grow-1 text-secondary">
+                            <p class="mb-0">
                                 {{ article.content|read_more_content|safe }}
-                                <a href="{% url 'view-blog' article.id %}" hx-get="{% url 'view-blog' article.id %}" hx-push-url="true" hx-target="#htmx-content" hx-swap="innerHTML" class="text-primary text-decoration-none">Read more...</a>
+                                <a href="{% url 'view-blog' article.slug %}" hx-get="{% url 'view-blog' article.slug %}"
+                                    hx-push-url="true" hx-target="#htmx-content" hx-swap="innerHTML"
+                                    class="text-primary text-decoration-none">Read more...</a>
                             </p>
+                            <div class="check-icon">
+                            </div>
                         </div>
+                        {% endfor %}
+                        {% endif %}
+
+                    </div>
+                    <div class="tab-pane fade" id="journals" role="tabpanel" aria-labelledby="journals-tab">
+                        <p>Journals content goes here.</p>
+                    </div>
+                    <div class="tab-pane fade" id="special" role="tabpanel" aria-labelledby="special-tab">
+                        <p>Special issues & collections content goes here.</p>
                     </div>
                 </div>
-            {% endfor %}
-            {% else %}
-            <!-- No Articles Found Message -->
-            <div class="d-flex flex-column align-items-center justify-content-center text-center my-5">
-                <i class="bi bi-exclamation-circle display-4 text-danger"></i>
-                <h4 class="text-muted mt-2">No Articles Found</h4>
-                <p class="text-secondary">We couldn't find any articles at the moment. Please check back later.</p>
             </div>
-            {% endif %}
         </div>
 
         <!-- Pagination -->
@@ -54,31 +95,31 @@
                     <ul class="pagination justify-content-center">
                         {% if page_obj %}
                         {% if page_obj.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page=1" aria-label="First">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                                    <span aria-hidden="true">&lsaquo;</span>
-                                </a>
-                            </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1" aria-label="First">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&lsaquo;</span>
+                            </a>
+                        </li>
                         {% endif %}
 
                         {% for num in page_obj.paginator.page_range %}
-                            {% if page_obj.number == num %}
-                                <li class="page-item active">
-                                    <span class="page-link">{{ num }}</span>
-                                </li>
-                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                </li>
+                        {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li
+                            class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
                             {% endif %}
-                        {% endfor %}
+                            {% endfor %}
 
-                        {% if page_obj.has_next %}
+                            {% if page_obj.has_next %}
                             <li class="page-item">
                                 <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
                                     <span aria-hidden="true">&rsaquo;</span>
@@ -89,8 +130,8 @@
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
-                        {% endif %}
-                        {% endif %}
+                            {% endif %}
+                            {% endif %}
                     </ul>
                 </nav>
             </div>
@@ -99,14 +140,102 @@
 </section>
 
 <style>
-    .text-primary{
-        color: #1261a8 !important;
+    .nav-tabs {
+        border-bottom: none;
+        /* Remove default Bootstrap border */
     }
-    a{
-        color: #6a7695;
+
+    .nav-tabs .nav-link {
+        color: #2E599D;
+        border: 1px solid #ddd;
+        border-bottom: none;
+        border-radius: 5px 5px 0 0;
+        margin-right: 5px;
+        position: relative;
     }
-    a:hover{
-        color: black;
+
+    .nav-tabs .nav-link.active {
+        background-color: #2E599D;
+        color: white;
+        border-color: #2E599D;
+        width: 100%;
+    }
+
+    /* Arrow effect for active tab */
+    .nav-tabs .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        /* Adjust based on arrow size */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        /* Adjust size of arrow */
+        border-right: 10px solid transparent;
+        border-top: 10px solid #2E599D;
+    }
+
+    .result-item {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        position: relative;
+    }
+
+    .tdr-journal-tab {
+        padding-right: 45px;
+        padding-left: 45px;
+    }
+
+    .tdr-journal-tab:hover {
+        background-color: #2E599D;
+        color: white;
+        width: 100%;
+    }
+
+    .blog-nav {
+        background-color: #cec8c8;
+        margin-left: 5px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+    }
+
+    .blog-title {
+        font-size: 1.1rem;
+    }
+
+    .blog-title:hover {
+        text-decoration: underline;
+    }
+
+    .text-primary {
+        color: #2E599D !important;
+    }
+
+    /* Adjust font size for smaller screens */
+    /* Further adjustments for very small screens */
+    @media (max-width: 400px) {
+        .nav-tabs .nav-link {
+            font-size: 0.65rem;
+            /* Even smaller font */
+            padding: 5px 6px;
+            /* Even smaller padding */
+        }
+
+        .nav-tabs .badge {
+            font-size: 0.55rem;
+            /* Even smaller badge */
+        }
+
+        .nav-tabs .nav-link.active::after {
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #0056b3;
+            bottom: -6px;
+        }
     }
 </style>
 {% endblock %}

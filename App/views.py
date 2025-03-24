@@ -25,6 +25,7 @@ from django.db.models import Count
 from django.conf import settings
 from .forms import ArticleForm
 from django.core.paginator import Paginator
+from django.views.generic.edit import UpdateView
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
 from django.views.generic import TemplateView
@@ -140,7 +141,7 @@ class ViewBlog(TemplateView):
     template_name = "view_blog.html"
 
     def get(self, request, pk, *args, **kwargs):
-        fetched_article = get_object_or_404(Blog, id=pk)
+        fetched_article = get_object_or_404(Blog, slug=pk)
         context = {"article": fetched_article}
         return render(request, self.template_name, context)
 
@@ -561,20 +562,36 @@ class ArticleManagement(LoginRequiredMixin, TemplateView):
         
         return context
     
-class ArticleUpdate(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/update_article.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
+class ArticleUpdate(LoginRequiredMixin, UpdateView):
+    model = Blog
+    form_class = ArticleForm
+    template_name = "admin_page/update-article.html"
+    success_url = reverse_lazy('article-management')
 
-    def post(self, request, pk):
-        FetchedArticle = get_object_or_404(Blog, pk=pk)
-        FetchedArticle.ArticleTitle = request.POST["ArticleTitle"]
-        FetchedArticle.content = request.POST["content"]
-        FetchedArticle.save()
+    def get_object(self, queryset=None):
+        slug = self.kwargs.get("slug")
+        return get_object_or_404(Blog, slug=slug)
 
-        messages.success(request, "Analysis article Updated successfully!")
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.form_class(request.POST, request.FILES, instance=self.object)
 
-        return redirect("article-management")
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Article updated successfully!")
+                return redirect(self.success_url)
+            except Exception as e:
+                messages.error(request, f"An error occurred: {str(e)}")
+        else:
+            messages.error(request, "Invalid form data. Please correct the errors below.")
+
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.form_class(instance=self.get_object())
+        return context
     
 class ArticleDelete(LoginRequiredMixin, TemplateView):
 

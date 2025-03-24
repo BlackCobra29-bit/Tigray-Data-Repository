@@ -12,4 +12,4 @@ def basename(value):
 @register.filter
 def read_more_content(value):
     
-    return strip_tags(value).strip()[:100]
+    return strip_tags(value).strip()[:250]

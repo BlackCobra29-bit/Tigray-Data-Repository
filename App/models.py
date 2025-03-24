@@ -1,5 +1,6 @@
 import os
 from django.db import models
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.utils import timezone
 from froala_editor.fields import FroalaField
@@ -91,6 +92,7 @@ class Blog(models.Model):
     ]
     
     ArticleTitle = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, blank=True)
     content = FroalaField(theme='dark')
     DatePublished = models.DateField(default=timezone.now)
     article_type = models.CharField(max_length=20, choices=ARTICLE_TYPES, default='article')
@@ -101,3 +103,12 @@ class Blog(models.Model):
     class Meta:
         ordering = ["-id"]
         verbose_name_plural = "Blog Articles"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.ArticleTitle)
+            counter = 1
+            while Blog.objects.filter(slug=self.slug).exists():
+                self.slug = f"{self.slug}-{counter}"
+                counter += 1
+        super().save(*args, **kwargs)

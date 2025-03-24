@@ -1467,3 +1467,252 @@ Traceback (most recent call last):
     raise MultiValueDictKeyError(key)
 django.utils.datastructures.MultiValueDictKeyError: 'ArticleContent'
 2025-03-24 13:05:14,076 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 13:26:53,131 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\templatetags\custom_filters.py changed, reloading.
+2025-03-24 13:27:04,769 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\templatetags\custom_filters.py changed, reloading.
+2025-03-24 18:09:16,624 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:10:07,368 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:10:44,713 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:11:05,204 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:13:53,572 - ERROR - Internal Server Error: /update-article/2
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'ArticleTitle'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py", line 576, in post
+    FetchedArticle.ArticleTitle = request.POST["ArticleTitle"]
+                                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'ArticleTitle'
+2025-03-24 18:13:53,936 - WARNING - Not Found: /favicon.ico
+2025-03-24 18:14:57,123 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:16:15,034 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:17:02,672 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:17:35,426 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:17:49,314 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:17:56,649 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:18:45,245 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:18:57,350 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:19:07,087 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:19:12,565 - ERROR - Internal Server Error: /analysis-management/
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py", line 563, in get_context_data
+    context['form'] = self.form_class(instance=self.get_object())
+                                               ^^^^^^^^^^^^^^^
+AttributeError: 'ArticleManagement' object has no attribute 'get_object'
+2025-03-24 18:19:32,300 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 18:22:05,433 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 19:56:56,439 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 19:57:03,881 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 19:57:21,617 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\models.py changed, reloading.
+2025-03-24 19:57:45,118 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\models.py changed, reloading.
+2025-03-24 19:58:23,260 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\models.py changed, reloading.
+2025-03-24 19:59:13,824 - ERROR - Internal Server Error: /analysis-management/
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: App_blog.slug
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+                 ^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\models\query.py", line 382, in __len__
+    self._fetch_all()
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: App_blog.slug
+2025-03-24 19:59:39,257 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\models.py changed, reloading.
+2025-03-24 20:00:20,380 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\models.py changed, reloading.
+2025-03-24 20:02:50,306 - ERROR - Internal Server Error: /write-analysis/
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py", line 537, in post
+    AnalysisCreate = Blog.objects.create(ArticleTitle = request.POST["ArticleTitle"],
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\db\models\query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\models.py", line 109, in save
+    self.slug = slugify(self.title)
+                        ^^^^^^^^^^
+AttributeError: 'Blog' object has no attribute 'title'
+2025-03-24 20:03:06,342 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\models.py changed, reloading.
+2025-03-24 20:05:11,217 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:08:36,585 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\tigray_data_repo\urls.py changed, reloading.
+2025-03-24 20:09:19,516 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:10:08,344 - ERROR - Internal Server Error: /update-article/3
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'content'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py", line 572, in post
+    FetchedArticle.content = request.POST["content"]
+                             ~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'content'
+2025-03-24 20:14:18,421 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:14:33,257 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:14:50,715 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:16:30,707 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:16:51,061 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:17:07,362 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:17:40,943 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:18:15,774 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-03-24 20:18:31,474 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\tigray_data_repo\urls.py changed, reloading.
+2025-03-24 20:18:57,650 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\tigray_data_repo\urls.py changed, reloading.
+2025-03-24 21:10:03,772 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\models.py changed, reloading.

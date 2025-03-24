@@ -72,7 +72,7 @@ urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("why-tdr/", WhyTdr.as_view(), name = "why-tdr"),
     path("blog/", BlogView.as_view(), name="blog-view"),
-    path("view-blog/<int:pk>", ViewBlog.as_view(), name = "view-blog"),
+    path("view-blog/<slug:pk>", ViewBlog.as_view(), name = "view-blog"),
     path("initiatives/", InitiativesView.as_view(), name="initiatives"),
     path("manifesto/", ManifestoView.as_view(), name = "manifesto-view"),
     path("contribute/", ContributeView.as_view(), name = "contribute-view"),
@@ -101,7 +101,7 @@ urlpatterns = [
     # Blog Articles Management
     path("write-analysis/", WriteArticle.as_view() ,name = "write-article"),
     path("analysis-management/", ArticleManagement.as_view() ,name = "article-management"),
-    path("update-article/<int:pk>", ArticleUpdate.as_view(), name = "update-article"),
+    path("update-article/<slug:slug>", ArticleUpdate.as_view(), name = "update-article"),
     path("delete-article/<int:pk>", ArticleDelete.as_view(), name = "delete-article"),
     # User Admin Account Management
     path("admin-management/", AdminManagement.as_view(), name = "admin-management"),

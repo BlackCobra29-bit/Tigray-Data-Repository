@@ -57,7 +57,7 @@
                                         <td>{{ article.DatePublished|date:"d M Y" }}</td>
                                         <td>
                                             <!-- Edit Button -->
-                                            <a href="#" data-toggle="modal" data-target="#editModal{{ article.id }}">
+                                            <a href="{% url 'update-article' article.slug %}">
                                                 <i class="fa fa-pencil text-warning text-sm" title="Edit Item"></i>
                                             </a>
                                             &nbsp;
@@ -68,36 +68,6 @@
                                         </td>
                                     </tr>
 
-                                    <!-- Edit Modal -->
-                                    <div class="modal fade" id="editModal{{ article.id }}" style="overflow-y: scroll;">
-                                        <div class="modal-dialog modal-default">
-                                            <div class="modal-content">
-                                                <div class="modal-header bg-lightblue">
-                                                    <h4 class="modal-title">
-                                                        <small>Edit Analysis Article</small>
-                                                    </h4>
-                                                </div>
-                                                <form id="AnalysisForm" method="POST" action="{% url 'update-article' article.id %}">
-                                                    {% csrf_token %}
-                                                    <div class="card-body">
-                                                                <div class="form-group">
-                                                                    <label>Analysis Title:</label>
-                                                                    <input type="text" name="ArticleTitle" value="{{ article.ArticleTitle }}" class="form-control" placeholder="Enter analysis title">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Analysis Content:</label>
-                                                                    <textarea id="editor" class="form-control" name="ArticleContent" rows="10" required>
-                                                                        {{ article.ArticleContent|safe }}
-                                                                    </textarea>
-                                                                </div>
-                                                        </div>
-                                                    <div class="card-footer">
-                                                        <button type="submit" class="btn btn-dark float-right">Submit</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
                                     {% endfor %}
                                 </tbody>
                             </table>
