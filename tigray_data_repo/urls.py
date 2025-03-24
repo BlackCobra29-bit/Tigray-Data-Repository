@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
@@ -68,6 +68,7 @@ from App.views import (
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('froala_editor/',include('froala_editor.urls')),
     path("", IndexView.as_view(), name="index"),
     path("why-tdr/", WhyTdr.as_view(), name = "why-tdr"),
     path("blog/", BlogView.as_view(), name="blog-view"),

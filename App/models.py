@@ -2,6 +2,7 @@ import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from froala_editor.fields import FroalaField
 from django.core.exceptions import ValidationError
 
 def validate_file_type(value):
@@ -83,14 +84,20 @@ class InitiativesModel(models.Model):
         verbose_name_plural = "Initiatives & Organizations"
         
 class Blog(models.Model):
+    ARTICLE_TYPES = [
+        ('articles', 'Articles'),
+        ('journals', 'Journals'),
+        ('special_issues', 'Special Issues'),
+    ]
+    
     ArticleTitle = models.CharField(max_length=255)
-    ArticleContent = models.TextField()
+    content = FroalaField(theme='dark')
     DatePublished = models.DateField(default=timezone.now)
-    
+    article_type = models.CharField(max_length=20, choices=ARTICLE_TYPES, default='article')
+
     def __str__(self):
-        
         return self.ArticleTitle
-    
+
     class Meta:
         ordering = ["-id"]
         verbose_name_plural = "Blog Articles"

@@ -12,6 +12,64 @@
       type="image/x-icon"
     />
 
+
+    
+    <link href="/static/froala_editor/css/froala_editor.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/froala_style.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/froala-django.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/themes/dark.min.css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/char_counter.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/code_view.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/colors.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/draggable.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/emoticons.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/file.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/fullscreen.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/image_manager.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/image.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/line_breaker.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/quick_insert.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/table.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="/static/froala_editor/css/plugins/video.min.css" type="text/css" media="all" rel="stylesheet">
+    <script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+    <script src="/static/froala_editor/js/froala_editor.min.js"></script>
+    <script src="/static/admin/js/calendar.js"></script>
+    <script src="/static/admin/js/jquery.init.js"></script>
+    <script src="/static/froala_editor/js/froala-django.js"></script>
+    <script src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+    <script src="/static/admin/js/core.js"></script>
+    <script src="/static/froala_editor/js/plugins/align.min.js"></script>
+    <script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+    <script src="/static/froala_editor/js/plugins/char_counter.min.js"></script>
+    <script src="/static/admin/js/actions.js"></script>
+    <script src="/static/froala_editor/js/plugins/code_beautifier.min.js"></script>
+    <script src="/static/admin/js/urlify.js"></script>
+    <script src="/static/froala_editor/js/plugins/code_view.min.js"></script>
+    <script src="/static/admin/js/prepopulate.js"></script>
+    <script src="/static/froala_editor/js/plugins/colors.min.js"></script>
+    <script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+    <script src="/static/froala_editor/js/plugins/draggable.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/emoticons.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/entities.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/file.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/font_family.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/font_size.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/fullscreen.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/image_manager.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/image.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/inline_style.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/line_breaker.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/link.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/lists.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/paragraph_format.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/paragraph_style.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/quick_insert.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/quote.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/save.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/table.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/url.min.js"></script>
+    <script src="/static/froala_editor/js/plugins/video.min.js"></script>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/typicons/2.1.2/typicons.min.css"
@@ -42,8 +100,6 @@
       href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css"
     />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-    <!-- Summernote CSS -->
-    <link href="{% static 'admin_static/summernote/summernote-bs4.min.css' %}" rel="stylesheet">
   </head>
 
   <body class="hold-transition sidebar-mini layout-fixed">
@@ -165,7 +221,7 @@
                 <a href="#" class="nav-link {% if request.resolver_match.url_name == 'write-article' or request.resolver_match.url_name == 'article-management' %}active{% endif %}">
                   <i class="nav-icon fa fa-pencil"></i>
                   <p>
-                    Analysis <i class="fas fa-angle-left right"></i>
+                    TDR Articles <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -175,13 +231,13 @@
                       class="nav-link {% if request.resolver_match.url_name == 'write-article' %}active{% endif %}"
                     >
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Write Analysis</p>
+                      <p>Write Article</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{% url 'article-management' %}" class="nav-link {% if request.resolver_match.url_name == 'article-management' %}active{% endif %}">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Analysis Management</p>
+                      <p>Article Management</p>
                     </a>
                   </li>
                 </ul>
@@ -243,8 +299,6 @@
 
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
-    <!-- Summernote JS -->
-    <script src="{% static 'admin_static/summernote/summernote-bs4.min.js' %}"></script>
 
     <script>
       function confirmLogout() {
@@ -578,10 +632,5 @@
       });
     </script>
 
-  <script>
-    $(document).ready(function() {
-        $('#editor').summernote();
-    });
-  </script>
   </body>
 </html>

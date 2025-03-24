@@ -44,18 +44,21 @@
                         <form id="AnalysisForm" method="POST">
                             {% csrf_token %}
                             <div class="card-body">
-                                        <div class="form-group">
-                                            <label>Analysis Title:</label>
-                                            <input type="text" name="ArticleTitle" class="form-control"
-                                                placeholder="Enter title">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Analysis Content:</label>
-                                            <textarea id="editor" class="form-control" name="ArticleContent" rows="10" required></textarea>
-                                        </div>
-                                        <div class="card-footer">
-                                            <button type="submit" class="btn btn-dark float-right">Submit</button>
-                                        </div>
+                                <div class="form-group">
+                                    {{ form.ArticleTitle.label_tag }}
+                                    {{ form.ArticleTitle }}
+                                </div>
+                                <div class="form-group pt-4">
+                                    {{ form.article_type.label_tag }}
+                                    {{ form.article_type }}
+                                </div>
+                                <div class="form-group pt-4">
+                                    {{ form.content.label_tag }}
+                                    {{ form.content }}
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-dark float-right">Submit</button>
+                                </div>
                         </form>
                     </div>
                 </div>
@@ -63,5 +66,18 @@
         </div>
     </section>
 </div>
+
+<style>
+    #fr-logo {
+        display: none;
+    }
+</style>
+
+<script>
+    const toolbar = document.querySelector('.fr-toolbar.fr-desktop.fr-top.fr-basic.fr-sticky-off');
+    if (toolbar) {
+        toolbar.classList.add('dark-theme');
+    }
+</script>
 
 {% endblock %}

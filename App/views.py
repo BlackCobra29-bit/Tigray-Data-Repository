@@ -23,6 +23,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.db.models import Count
 from django.conf import settings
+from .forms import ArticleForm
 from django.core.paginator import Paginator
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
@@ -534,13 +535,18 @@ class WriteArticle(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         
         AnalysisCreate = Blog.objects.create(ArticleTitle = request.POST["ArticleTitle"],
-                                             ArticleContent = request.POST["ArticleContent"])
+                                             content = request.POST["content"])
         
         AnalysisCreate.save()
         
         messages.success(request, f"Analysis article published successfully!")
         
         return redirect("write-article")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ArticleForm()
+        return context
     
 class ArticleManagement(LoginRequiredMixin, TemplateView):
     template_name = "admin_page/manage_analysis.html"
@@ -563,7 +569,7 @@ class ArticleUpdate(LoginRequiredMixin, TemplateView):
     def post(self, request, pk):
         FetchedArticle = get_object_or_404(Blog, pk=pk)
         FetchedArticle.ArticleTitle = request.POST["ArticleTitle"]
-        FetchedArticle.ArticleContent = request.POST["ArticleContent"]
+        FetchedArticle.content = request.POST["content"]
         FetchedArticle.save()
 
         messages.success(request, "Analysis article Updated successfully!")
