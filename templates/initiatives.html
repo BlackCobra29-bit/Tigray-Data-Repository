@@ -136,7 +136,13 @@
                                     <td>{{ initiative.InitiativeType }}</td>
                                     <td>{{ initiative.InitiativeOrigin }}</td>
                                     <td>{{ initiative.AriaOfFocus }}</td>
-                                    <td><a href="{{ initiative.OfficialLink }}" target="_blank" class="text-sm"><strong><span class="fa fa-link"></span> {{ initiative.OfficialLink }}</strong></a></td>
+                                    <td>
+                                        {% if initiative.OfficialLink %}
+                                        <a href="{{ initiative.OfficialLink }}" target="_blank" class="text-sm"><strong><span class="fa fa-link"></span> {{ initiative.OfficialLink }}</strong></a>
+                                        {% else %}
+                                        N/A
+                                        {% endif %}
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

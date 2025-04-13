@@ -120,7 +120,7 @@
         class="main-sidebar sidebar-dark-lightblue elevation-4"
       >
         <img
-          src="{% static 'img/output-onlinepngtools.png' %}"
+          src="{% static 'img/tigray data repo.jpg' %}"
           alt="Tigray Data Repository Logo"
           class="brand-image text-center"
           style="opacity: 1; width: 80%"
@@ -221,7 +221,7 @@
                 <a href="#" class="nav-link {% if request.resolver_match.url_name == 'write-article' or request.resolver_match.url_name == 'article-management' %}active{% endif %}">
                   <i class="nav-icon fa fa-pencil"></i>
                   <p>
-                    TDR Articles <i class="fas fa-angle-left right"></i>
+                    TDR Journal <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -514,10 +514,6 @@
             AriaOfFocus: {
               required: true,
             },
-            OfficialLink: {
-              required: true,
-              url: true,
-            },
           },
           messages: {
             InitiativeName: {
@@ -534,10 +530,6 @@
             },
             AriaOfFocus: {
               required: "Please provide the area of focus",
-            },
-            OfficialLink: {
-              required: "Please provide the official link",
-              url: "Please make sure it is a valid URL",
             },
           },
           errorElement: "span",

@@ -70,16 +70,28 @@ class RepositoryItem(models.Model):
         verbose_name_plural = "Respository Datasets"
 
 class InitiativesModel(models.Model):
+    
+    INITIATIVE_ORIGIN_CHOICES = [
+        ('Ethiopia (Outside of Tigray)', 'Ethiopia (Outside of Tigray)'),
+        ('Africa', 'Africa'),
+        ('North America', 'North America'),
+        ('Central/South America', 'Central/South America'),
+        ('Asia', 'Asia'),
+        ('Europe', 'Europe'),
+        ('Middle East', 'Middle East'),
+        ('Australia', 'Australia'),
+    ]
+
     InitiativeName = models.CharField(max_length=255)
-    FoundationYear = models.IntegerField()
+    FoundationYear = models.DateField()
     InitiativeType = models.CharField(max_length=255)
-    InitiativeOrigin = models.CharField(max_length=255)
+    InitiativeOrigin = models.CharField(max_length=255, choices=INITIATIVE_ORIGIN_CHOICES)
     AriaOfFocus = models.CharField(max_length=255)
-    OfficialLink = models.URLField(max_length=255)
+    OfficialLink = models.URLField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.InitiativeName
-    
+
     class Meta:
         ordering = ["-id"]
         verbose_name_plural = "Initiatives & Organizations"

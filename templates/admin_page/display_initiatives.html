@@ -61,7 +61,7 @@
                                         <td>{{ initiative.FoundationYear }}</td>
                                         <td>{{ initiative.InitiativeType }}</td>
                                         <td>{{ initiative.InitiativeOrigin }}</td>
-                                        <td>{{ initiative.AriaOfFocus }}</td>
+                                        <td>{{ initiative.AriaOfFocus|slice:":45" }}{% if initiative.AriaOfFocus|length > 50 %}...{% endif %}</td>
                                         <td><a href="{{ initiative.OfficialLink }}" target="_blank" class="text-sm"><strong><span class="fa fa-link"></span> Official Link</strong></a></td>
                                         <td>
                                             <!-- Edit Button -->
@@ -96,7 +96,7 @@
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label>Foundation Year:</label>
-                                                                    <input type="text" name="FoundationYear" value="{{ initiative.FoundationYear }}" class="form-control" placeholder="Enter foundation year">
+                                                                    <input type="date" name="FoundationYear" value="{{ initiative.FoundationYear }}" class="form-control" placeholder="Enter foundation year">
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label>Type of Initiative:</label>

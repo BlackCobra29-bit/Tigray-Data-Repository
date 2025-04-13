@@ -28,6 +28,7 @@ from django.core.paginator import Paginator
 from django.views.generic.edit import UpdateView
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
+from django.db.models.functions import ExtractYear
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -166,9 +167,11 @@ class InitiativesView(TemplateView):
             "AriaOfFocus", flat=True
         ).distinct()
         context["unique_area_focus"] = list(set(unique_area_focus))
-        unique_foundation_year = InitiativesModel.objects.values_list(
-            "FoundationYear", flat=True
-        ).distinct()
+        
+        # Fetch unique foundation years, extracting only the year part
+        unique_foundation_year = InitiativesModel.objects.annotate(
+            foundation_year=ExtractYear('FoundationYear')
+        ).values_list('foundation_year', flat=True).distinct()
         context["unique_foundation_year"] = list(set(unique_foundation_year))
 
         # Data dictionaries
@@ -178,8 +181,10 @@ class InitiativesView(TemplateView):
         initiative_type_data = {}
 
         for initiative in initiatives:
-            foundation_year_data[initiative.FoundationYear] = (
-                foundation_year_data.get(initiative.FoundationYear, 0) + 1
+            # Extract the year part of FoundationYear for counting
+            foundation_year = initiative.FoundationYear.year  # assuming FoundationYear is a DateField
+            foundation_year_data[foundation_year] = (
+                foundation_year_data.get(foundation_year, 0) + 1
             )
             origin_data[initiative.InitiativeOrigin] = (
                 origin_data.get(initiative.InitiativeOrigin, 0) + 1
@@ -462,7 +467,7 @@ class InitiativesAdd(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         InitiativeName = request.POST.get("InitiativeName")
-        FoundationYear = request.POST.get("FoundationYear")[:4]
+        FoundationYear = request.POST.get("FoundationYear")
         InitiativeType = request.POST.get("InitiativeType")
         InitiativeOrigin = request.POST.get("InitiativeOrigin")
         AriaOfFocus = request.POST.get("AriaOfFocus")
@@ -470,7 +475,7 @@ class InitiativesAdd(LoginRequiredMixin, TemplateView):
 
         InitiativesModel.objects.create(
             InitiativeName=InitiativeName,
-            FoundationYear=int(FoundationYear),
+            FoundationYear=FoundationYear,
             InitiativeType=InitiativeType,
             InitiativeOrigin=InitiativeOrigin,
             AriaOfFocus=AriaOfFocus,
