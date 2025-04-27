@@ -58,3 +58,150 @@ django.core.exceptions.ValidationError: ['“” value has an invalid date format. I
 2025-04-13 18:48:53,847 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
 2025-04-13 19:01:16,655 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
 2025-04-13 19:11:02,578 - WARNING - Not Found: /family-sponsors/
+2025-04-25 18:48:26,705 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 19:37:10,490 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 19:41:23,403 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 19:42:45,018 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 19:47:00,877 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 19:56:39,835 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:01:36,699 - ERROR - Internal Server Error: /initiatives/
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py", line 211, in get_context_data
+    origin_map = Map(location=[20, 0], zoom_start=2, tiles='Stamen Terrain')  # Start map centered at a global view
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\folium\folium.py", line 322, in __init__
+    tile_layer = TileLayer(
+                 ^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\folium\raster_layers.py", line 143, in __init__
+    raise ValueError("Custom tiles must have an attribution.")
+ValueError: Custom tiles must have an attribution.
+2025-04-27 20:01:37,037 - WARNING - Not Found: /favicon.ico
+2025-04-27 20:03:31,190 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:03:34,324 - ERROR - Internal Server Error: /initiatives/
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py", line 211, in get_context_data
+    origin_map = Map(location=[20, 0], zoom_start=2, tiles='Stamen Terrain')  # Start map centered at a global view
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\folium\folium.py", line 322, in __init__
+    tile_layer = TileLayer(
+                 ^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\folium\raster_layers.py", line 143, in __init__
+    raise ValueError("Custom tiles must have an attribution.")
+ValueError: Custom tiles must have an attribution.
+2025-04-27 20:03:53,463 - ERROR - Internal Server Error: /initiatives/
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py", line 211, in get_context_data
+    origin_map = Map(location=[20, 0], zoom_start=2, tiles='Stamen Terrain')  # Start map centered at a global view
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\folium\folium.py", line 322, in __init__
+    tile_layer = TileLayer(
+                 ^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\folium\raster_layers.py", line 143, in __init__
+    raise ValueError("Custom tiles must have an attribution.")
+ValueError: Custom tiles must have an attribution.
+2025-04-27 20:04:14,439 - ERROR - Internal Server Error: /initiatives/
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py", line 211, in get_context_data
+    origin_map = Map(location=[20, 0], zoom_start=2, tiles='Stamen Terrain')  # Start map centered at a global view
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\folium\folium.py", line 322, in __init__
+    tile_layer = TileLayer(
+                 ^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\folium\raster_layers.py", line 143, in __init__
+    raise ValueError("Custom tiles must have an attribution.")
+ValueError: Custom tiles must have an attribution.
+2025-04-27 20:06:27,175 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:06:31,082 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:06:35,882 - ERROR - Internal Server Error: /initiatives/
+Traceback (most recent call last):
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\env\Lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py", line 215, in get_context_data
+    folium.TileLayer('cartodb positron').add_to(origin_map)  # Adds a satellite-style view
+    ^^^^^^
+NameError: name 'folium' is not defined
+2025-04-27 20:06:51,009 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:07:01,625 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:11:09,894 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:13:42,270 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:14:16,315 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:14:28,256 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:14:34,256 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:14:50,026 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:15:23,656 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:16:01,507 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:16:33,977 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.
+2025-04-27 20:17:22,607 - INFO - C:\Users\emine\OneDrive\Documents\tigray_repo\tigray_data_repo\App\views.py changed, reloading.

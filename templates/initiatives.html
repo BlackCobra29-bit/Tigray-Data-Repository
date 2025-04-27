@@ -55,17 +55,17 @@
                                 </div>
                             </div>
 
-                            <!-- Bar Chart (CanvasJS) -->
-                            <div class="col-lg-6">
+                            <!-- Map -->
+                            <div class="col-lg-12">
                                 <div class="card card-default">
-                                    <div class="card-header text-center">Area of Focus</div>
+                                    <div class="card-header text-center">Origin Map</div> 
                                     <div class="card-body">
-                                        <div id="bar-chart" style="height: 300px;"></div>
+                                        {{ origin_map|safe }}
                                     </div>
                                 </div>
-                            </div>
+                            </div>                            
 
-                            <!-- Pyramid Chart (CanvasJS) -->
+                            Pyramid Chart (CanvasJS)
                             <div class="col-lg-6">
                                 <div class="card card-default">
                                     <div class="card-header text-center">Type of Initiative</div>
@@ -276,7 +276,7 @@
         // Chart Data
         const doughnutData = {{ doughnut_data|safe }};
         const columnData = {{ column_data|safe }};
-        const barData = {{ pie_data|safe }};
+        // const barData = {{ pie_data|safe }};
         const pyramidData = {{ pyramid_data|safe }};
 
         // Doughnut Chart (Foundation Year)
@@ -315,27 +315,6 @@
         });
         areaChart.render();
 
-        // Bar Chart (Area of Focus)
-        const barChart = new CanvasJS.Chart("bar-chart", {
-            animationEnabled: true,
-            axisY: { title: "Number of initiatives", gridThickness: 0.3 },
-            legend: { verticalAlign: "top" },
-            data: [{
-                type: "bar",
-                toolTipContent: "{label}: {y} ({percent}%)",
-                indexLabel: "{percent}%",
-                indexLabelFontSize: 14,
-                indexLabelPlacement: "outside",
-                markerColor: "red",
-                markerType: "triangle",
-                dataPoints: barData.map(item => ({
-                    label: item.label,
-                    y: item.y,
-                    percent: ((item.y / barData.reduce((sum, dp) => sum + dp.y, 0)) * 100).toFixed(2)
-                }))
-            }]
-        });
-        barChart.render();
 
         // Pyramid Chart (Type)
         const totalPyramidValue = pyramidData.reduce((total, data) => total + data.y, 0);
