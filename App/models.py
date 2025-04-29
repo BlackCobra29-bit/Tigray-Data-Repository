@@ -86,7 +86,7 @@ class InitiativesModel(models.Model):
     FoundationYear = models.DateField()
     InitiativeType = models.CharField(max_length=255)
     InitiativeOrigin = models.CharField(max_length=255, choices=INITIATIVE_ORIGIN_CHOICES)
-    AriaOfFocus = models.CharField(max_length=255)
+    AriaOfFocus = models.TextField()
     OfficialLink = models.URLField(max_length=255, null=True, blank=True)
 
     def __str__(self):

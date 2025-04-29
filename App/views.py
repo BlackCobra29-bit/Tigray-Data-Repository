@@ -16,6 +16,7 @@ from django.http.response import HttpResponse as HttpResponse
 import plotly
 import plotly.graph_objects as go
 from folium import Map, Marker, Icon
+from folium.plugins import Fullscreen
 
 # Third-Party Imports
 from django.views import View
@@ -155,7 +156,6 @@ class InitiativesView(TemplateView):
 
         initiatives = InitiativesModel.objects.all()
 
-        # Unique Data for the datatable search filtering
         unique_origins = InitiativesModel.objects.values_list(
             "InitiativeOrigin", flat=True
         ).distinct()
@@ -171,20 +171,17 @@ class InitiativesView(TemplateView):
         ).distinct()
         context["unique_area_focus"] = list(set(unique_area_focus))
 
-        # Fetch unique foundation years, extracting only the year part
         unique_foundation_year = InitiativesModel.objects.annotate(
             foundation_year=ExtractYear('FoundationYear')
         ).values_list('foundation_year', flat=True).distinct()
         context["unique_foundation_year"] = list(set(unique_foundation_year))
 
-        # Data dictionaries for graph creation
         foundation_year_data = {}
         origin_data = {}
         initiative_type_data = {}
 
         for initiative in initiatives:
-            # Extract the year part of FoundationYear for counting
-            foundation_year = initiative.FoundationYear.year  # assuming FoundationYear is a DateField
+            foundation_year = initiative.FoundationYear.year
             foundation_year_data[foundation_year] = (
                 foundation_year_data.get(foundation_year, 0) + 1
             )
@@ -195,50 +192,42 @@ class InitiativesView(TemplateView):
                 initiative_type_data.get(initiative.InitiativeType, 0) + 1
             )
 
-        # Coordinates for the center of each continent (adjusted for clarity)
         origin_coordinates = {
-            'Ethiopia (Outside of Tigray)': [9.145, 40.4897],  # Example coordinates
-            'Africa': [1.2921, 36.8219],  # Approximate center of Africa
-            'North America': [37.0902, -95.7129],  # USA as center of North America
-            'Central/South America': [0.0, -60.0],  # Approximate center of Central/South America
-            'Asia': [34.0479, 100.6197],  # Approximate center of Asia
-            'Europe': [54.5260, 15.2551],  # Approximate center of Europe
-            'Middle East': [21.4225, 39.8262],  # Approximate center of Middle East
-            'Australia': [-25.2744, 133.7751],  # Approximate center of Australia
+            'Ethiopia (Outside of Tigray)': [8.988913, 38.720441],
+            'Africa': [8.572851, 18.916199],
+            'North America': [37.0902, -95.7129],
+            'Central/South America': [-10.649842, -57.603866],
+            'Asia': [38.901695, 101.828851],
+            'Europe': [51.246039, 15.631759],
+            'Middle East': [29.956507, 43.444022],
+            'Australia': [-25.2744, 133.7751],
         }
 
-        # Create a Folium map with Satellite view
-        origin_map = Map(location=[20, 0], zoom_start=2, tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                          attr='Esri')  # Start map centered at a global view
+        origin_map = Map(location=[20, 0], zoom_start=1, tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                          attr='Esri')
 
-        # Add a red map pin for each initiative origin with the continent-centered location
-        for origin, count in origin_data.items():
-            if origin in origin_coordinates:
-                lat_lon = origin_coordinates[origin]
-                Marker(
-                    location=lat_lon,
-                    popup=f"{origin}: {count} initiatives",
-                    icon=Icon(color='red', icon='globe', prefix='fa')  # Red map pointer icon
-                ).add_to(origin_map)
+        Fullscreen(position='topright', title='Expand', title_cancel='Exit', force_separate_button=True).add_to(origin_map)
+        for origin, lat_lon in origin_coordinates.items():
+            count = origin_data.get(origin, 0)  # Default to 0 if origin is not in origin_data
+            Marker(
+                location=lat_lon,
+                popup=f"<strong style='color: cornflowerblue'>{origin}</strong>: {count} initiatives"
+            ).add_to(origin_map)
 
-        # Convert the Folium map to HTML and pass it to the context
         context["origin_map"] = origin_map._repr_html_()
 
-        # Data for charts
         doughnut_data = [
             {"label": key, "y": value} for key, value in foundation_year_data.items()
         ]
         column_data = [{"label": key, "y": value} for key, value in origin_data.items()]
         pyramid_data = [{"label": key, "y": value} for key, value in initiative_type_data.items()]
 
-        # Pass data to context for rendering in the template
         context["diaspora_initiatives"] = initiatives
         context["doughnut_data"] = doughnut_data
         context["column_data"] = column_data
         context["pyramid_data"] = pyramid_data
 
         return context
-
     
 class ManifestoView(TemplateView):
     template_name = "manifesto.html"

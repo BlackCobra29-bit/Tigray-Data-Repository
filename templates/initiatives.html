@@ -5,6 +5,17 @@
 
 {% block 'main-section' %}
 
+<!-- hide the canvasjs credit and the leaflet map texts -->
+<style>
+    a.canvasjs-chart-credit {
+        display: none !important;
+    }
+    .leaflet-control-attribution {
+        display: none !important;
+    }
+</style>
+<!-- end of css -->
+
 <section class="ftco-section ftco-no-pb ftco-no-pt" id="chapter-section">
     <div class="container">
         <div class="row justify-content-center py-5 mt-5">
@@ -35,42 +46,34 @@
                         <br>
                         <p id="intro-text">Below you will find interactive dashboards presenting data about these diaspora-led initiatives and/or organizations, their distribution, and other key measures.</p>
                         <div class="row pt-4">
-                            <!-- Pie Chart (CanvasJS) -->
-                            <div class="col-lg-6">
-                                <div class="card card-default">
-                                    <div class="card-header text-center">Foundation Year</div>
-                                    <div class="card-body">
-                                        <div id="doughnut-chart" class="text-center" style="height: 300px;"></div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Column Chart (CanvasJS) -->
-                            <div class="col-lg-6">
-                                <div class="card card-default">
-                                    <div class="card-header text-center">Origin of Initiative</div>
+                            <!-- Pyramid Chart (CanvasJS) -->
+                            <div class="col-lg-8">
+                                <div class="card card-dark">
+                                    <div class="card-header text-center">Distribution of Initiatives or Organizations by Type</div>
                                     <div class="card-body">
-                                        <div id="column-chart" style="height: 300px;"></div>
+                                        <div id="pyramid-chart" style="height: 300px;"></div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Map -->
-                            <div class="col-lg-12">
-                                <div class="card card-default">
+                            <div class="col-lg-6">
+                                <div class="card card-dark">
                                     <div class="card-header text-center">Origin Map</div> 
                                     <div class="card-body">
-                                        {{ origin_map|safe }}
+                                        <div id="pyramid-chart" style="height: 300px;">{{ origin_map|safe }}</div>
                                     </div>
                                 </div>
-                            </div>                            
-
-                            Pyramid Chart (CanvasJS)
+                            </div>
+                            
+                            
+                            <!-- Pie Chart (CanvasJS) -->
                             <div class="col-lg-6">
-                                <div class="card card-default">
-                                    <div class="card-header text-center">Type of Initiative</div>
+                                <div class="card card-dark">
+                                    <div class="card-header text-center">Initiatives Counts by Period of Establishment.</div>
                                     <div class="card-body">
-                                        <div id="pyramid-chart" style="height: 300px;"></div>
+                                        <div id="doughnut-chart" class="text-center" style="height: 300px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +123,7 @@
                                 <tr>
                                     <th>Index</th>
                                     <th>Initiative Name</th>
-                                    <th>Established Year</th>
+                                    <th>Established Year</th>
                                     <th>Type</th>
                                     <th>Origin</th>
                                     <th>Area of Focus</th>
@@ -135,7 +138,9 @@
                                     <td>{{ initiative.FoundationYear }}</td>
                                     <td>{{ initiative.InitiativeType }}</td>
                                     <td>{{ initiative.InitiativeOrigin }}</td>
-                                    <td>{{ initiative.AriaOfFocus }}</td>
+                                    <td>
+                                        {{ initiative.AriaOfFocus }}
+                                    </td>
                                     <td>
                                         {% if initiative.OfficialLink %}
                                         <a href="{{ initiative.OfficialLink }}" target="_blank" class="text-sm"><strong><span class="fa fa-link"></span> {{ initiative.OfficialLink }}</strong></a>
@@ -164,7 +169,6 @@
         </div>
     </div>
 </section>
-
 
 </script><script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
@@ -275,7 +279,6 @@
 
         // Chart Data
         const doughnutData = {{ doughnut_data|safe }};
-        const columnData = {{ column_data|safe }};
         // const barData = {{ pie_data|safe }};
         const pyramidData = {{ pyramid_data|safe }};
 
@@ -289,43 +292,33 @@
 
         const doughnutChart = new CanvasJS.Chart("doughnut-chart", {
             animationEnabled: true,
+            axisY: { title: "Number of Initiatives or Organizations", gridThickness: 0 },
+            axisX: { title: "Establishment Year" },
             data: [{
-                type: "pie",
-                toolTipContent: "{label}: ({percent}%)",
-                indexLabel: "{label}: ({percent}%)",
+                type: "area",
+                toolTipContent: "<b>{label}</b>: {y}",
                 dataPoints: processedDoughnutData.map(item => ({
                     label: item.label,
-                    y: item.y,
-                    percent: item.percent,
+                    y: item.y
                 }))
             }]
         });
         doughnutChart.render();
 
-        // Column Chart (Origin)
-        const areaChart = new CanvasJS.Chart("column-chart", {
-            animationEnabled: true,
-            axisY: { title: "Number of initiatives", gridThickness: 0.1 },
-            legend: { verticalAlign: "top" },
-            data: [{
-                type: "area",
-                toolTipContent: "{label}: {y}",
-                dataPoints: columnData
-            }]
-        });
-        areaChart.render();
-
-
         // Pyramid Chart (Type)
         const totalPyramidValue = pyramidData.reduce((total, data) => total + data.y, 0);
         const pyramidChart = new CanvasJS.Chart("pyramid-chart", {
             animationEnabled: true,
+            exportEnabled: true,
+            theme: "light2",
+            axisY: { title: "Number of Initiatives or Organizations", gridThickness: 0 },
+            axisX: { title: "Type of Initiatives or Organizations" },
             data: [{
-                type: "pyramid",
-                showInLegend: true,
+                type: "column",
+                showInLegend: false,
                 legendText: "{label}",
                 toolTipContent: "{label}: {y} ({percent}%)",
-                indexLabel: "{label}: {percent}%",
+                indexLabel: "{y}",
                 indexLabelFontSize: 14,
                 dataPoints: pyramidData.map(item => ({
                     label: item.label,
