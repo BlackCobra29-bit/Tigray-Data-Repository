@@ -47,8 +47,11 @@
                         <p id="intro-text">Below you will find interactive dashboards presenting data about these diaspora-led initiatives and/or organizations, their distribution, and other key measures.</p>
                         <div class="row pt-4">
 
+                            
+                            <div class="col-lg-1"></div>
+
                             <!-- Pyramid Chart (CanvasJS) -->
-                            <div class="col-lg-8">
+                            <div class="col-lg-10">
                                 <div class="card card-dark">
                                     <div class="card-header text-center">Distribution of Initiatives or Organizations by Type</div>
                                     <div class="card-body">
@@ -306,28 +309,44 @@
         doughnutChart.render();
 
         // Pyramid Chart (Type)
-        const totalPyramidValue = pyramidData.reduce((total, data) => total + data.y, 0);
+        const moveToLast = ['Social Movement', 'Other']; // Correct order: 'Other' will be last
+        const reorderedPyramidData = [
+            ...pyramidData.filter(item => !moveToLast.includes(item.label)),
+            ...moveToLast.map(label => pyramidData.find(item => item.label === label)).filter(Boolean)
+        ];
+
+        const totalPyramidValue = reorderedPyramidData.reduce((total, data) => total + data.y, 0);
+
         const pyramidChart = new CanvasJS.Chart("pyramid-chart", {
             animationEnabled: true,
             exportEnabled: true,
             theme: "light2",
-            axisY: { title: "Number of Initiatives or Organizations", gridThickness: 0 },
+            axisY: { title: "Number of Responses", gridThickness: 0 },
             axisX: { title: "Type of Initiatives or Organizations" },
             data: [{
                 type: "column",
                 showInLegend: false,
                 legendText: "{label}",
-                toolTipContent: "{label}: {y} ({percent}%)",
+                toolTipContent: "<strong style='color:{color}'>{label}</strong>: {y} ({percent}%)",
                 indexLabel: "{y}",
                 indexLabelFontSize: 14,
-                dataPoints: pyramidData.map(item => ({
+                dataPoints: reorderedPyramidData.map(item => ({
                     label: item.label,
                     y: item.y,
-                    percent: ((item.y / totalPyramidValue) * 100).toFixed(2)
+                    percent: ((item.y / totalPyramidValue) * 100).toFixed(2),
+                    color:
+                        item.label === "Advocacy Group" ? "#8ec5ea" :
+                        item.label === "Community Service Organisation (CSO)" ? "#e69b81" :
+                        item.label === "Other" ? "#b49fcc" :
+                        undefined
                 }))
             }]
         });
+
         pyramidChart.render();
+
+
+        
     }
 
     // Run on initial page load
