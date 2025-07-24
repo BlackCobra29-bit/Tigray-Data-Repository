@@ -63,9 +63,9 @@
                             <!-- Map -->
                             <div class="col-lg-6">
                                 <div class="card card-dark">
-                                    <div class="card-header text-center">Origin Map</div> 
+                                    <div class="card-header text-center">Distribution of Initiatives or Organizations by Origin</div> 
                                     <div class="card-body">
-                                        <div id="pyramid-chart" style="height: 300px;">{{ origin_map|safe }}</div>
+                                        <div style="height: 300px;">{{ origin_map|safe }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                             <!-- Pie Chart (CanvasJS) -->
                             <div class="col-lg-6">
                                 <div class="card card-dark">
-                                    <div class="card-header text-center">Initiatives Counts by Period of Establishment.</div>
+                                    <div class="card-header text-center">Distribution of Initiatives and Organizations by Establishment Year</div>
                                     <div class="card-body">
                                         <div id="doughnut-chart" class="text-center" style="height: 300px;"></div>
                                     </div>
@@ -295,10 +295,12 @@
 
         const doughnutChart = new CanvasJS.Chart("doughnut-chart", {
             animationEnabled: true,
+            exportEnabled: true,
+            theme: "light1",
             axisY: { title: "Number of Initiatives or Organizations", gridThickness: 0 },
             axisX: { title: "Establishment Year" },
             data: [{
-                type: "area",
+                type: "line",
                 toolTipContent: "<b>{label}</b>: {y}",
                 dataPoints: processedDoughnutData.map(item => ({
                     label: item.label,

@@ -188,8 +188,8 @@ class InitiativesView(TemplateView):
             origin_data[initiative.InitiativeOrigin] = (
                 origin_data.get(initiative.InitiativeOrigin, 0) + 1
             )
-            initiative_type_data[initiative.InitiativeType] = (
-                initiative_type_data.get(initiative.InitiativeType, 0) + 1
+            initiative_type_data[initiative.InitiativeTypeforgraph] = (
+                initiative_type_data.get(initiative.InitiativeTypeforgraph, 0) + 1
             )
 
         origin_coordinates = {
@@ -217,8 +217,8 @@ class InitiativesView(TemplateView):
         context["origin_map"] = origin_map._repr_html_()
 
         doughnut_data = [
-            {"label": key, "y": value} for key, value in foundation_year_data.items()
-        ]
+                {"label": key, "y": value} for key, value in sorted(foundation_year_data.items())
+            ]
         column_data = [{"label": key, "y": value} for key, value in origin_data.items()]
         pyramid_data = [{"label": key, "y": value} for key, value in initiative_type_data.items()]
 

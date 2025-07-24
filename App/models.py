@@ -70,7 +70,6 @@ class RepositoryItem(models.Model):
         verbose_name_plural = "Respository Datasets"
 
 class InitiativesModel(models.Model):
-    
     INITIATIVE_ORIGIN_CHOICES = [
         ('Ethiopia (Outside of Tigray)', 'Ethiopia (Outside of Tigray)'),
         ('Africa', 'Africa'),
@@ -85,6 +84,7 @@ class InitiativesModel(models.Model):
     InitiativeName = models.CharField(max_length=255)
     FoundationYear = models.DateField()
     InitiativeType = models.CharField(max_length=255)
+    InitiativeTypeforgraph = models.CharField(max_length=255, null=True, blank=True)
     InitiativeOrigin = models.CharField(max_length=255, choices=INITIATIVE_ORIGIN_CHOICES)
     AriaOfFocus = models.TextField()
     OfficialLink = models.URLField(max_length=255, null=True, blank=True)
