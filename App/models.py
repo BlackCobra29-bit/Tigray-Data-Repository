@@ -3,8 +3,9 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.utils import timezone
-from froala_editor.fields import FroalaField
 from django.core.exceptions import ValidationError
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 def validate_file_type(value):
     valid_extensions = [
@@ -34,40 +35,106 @@ def validate_file_type(value):
     if ext.lower() not in valid_extensions:
         raise ValidationError(f'Unsupported file type. Allowed types are: {", ".join(valid_extensions)}')
 
-class AdminPic(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="adminpic")
-    profile_pic = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.user.username}'s Profile Picture"
-    
-    class Meta:
-        verbose_name_plural = "Admin Pictures"
-
-
 class RepositoryGroup(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=255, unique=True, help_text="Enter a unique name for the repository group.")
+    description = models.TextField(blank=True, null=True, help_text="Provide a brief description of the repository group (optional).")
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ["-id"]
-        verbose_name_plural = "Repository Groups"
+        verbose_name_plural = "Repository"
+
+class SubFolder(models.Model):
+    parent = models.ForeignKey(
+        RepositoryGroup,
+        on_delete=models.CASCADE,
+        related_name='subfolders',
+        help_text="Select the parent folder (Repository Group) that this sub-folder belongs to."
+    )
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        help_text="Enter a unique name for the sub-folder."
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Provide a brief description of the sub-folder (optional)."
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["-id"]
+        verbose_name_plural = "Repository Folders"
 
 class RepositoryItem(models.Model):
-    repository = models.ForeignKey(RepositoryGroup, on_delete=models.CASCADE, related_name='repositories')
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    parent = GenericForeignKey('content_type', 'object_id')
+
     title = models.CharField(max_length=255)
-    file = models.FileField(upload_to="repositories_items/", validators=[validate_file_type])
+    file = models.FileField(upload_to='repository_items/', validators=[validate_file_type])
     uploaded_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
 
+    def get_download_count(self):
+        """Get the download count for this item"""
+        try:
+            return self.download_counter.download_count
+        except DownloadCounter.DoesNotExist:
+            return 0
+
     class Meta:
         ordering = ["-id"]
-        verbose_name_plural = "Respository Datasets"
+        verbose_name_plural = "Repository Datasets"
+
+class DownloadCounter(models.Model):
+    repository_item = models.OneToOneField(
+        RepositoryItem, 
+        on_delete=models.CASCADE, 
+        related_name='download_counter',
+        help_text="The repository item being tracked for downloads."
+    )
+    download_count = models.PositiveIntegerField(
+        default=0,
+        help_text="Number of times this file has been downloaded."
+    )
+    first_downloaded_at = models.DateTimeField(
+        null=True, 
+        blank=True,
+        help_text="Timestamp of the first download."
+    )
+    last_downloaded_at = models.DateTimeField(
+        null=True, 
+        blank=True,
+        help_text="Timestamp of the most recent download."
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Downloads for {self.repository_item.title}: {self.download_count}"
+
+    def increment_download(self):
+        """Increment the download count and update timestamps"""
+        self.download_count += 1
+        now = timezone.now()
+        
+        if not self.first_downloaded_at:
+            self.first_downloaded_at = now
+        
+        self.last_downloaded_at = now
+        self.save()
+
+    class Meta:
+        ordering = ["-download_count", "-last_downloaded_at"]
+        verbose_name_plural = "Download Counters"
 
 class InitiativesModel(models.Model):
     INITIATIVE_ORIGIN_CHOICES = [
@@ -105,7 +172,7 @@ class Blog(models.Model):
     
     ArticleTitle = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, blank=True)
-    content = FroalaField(theme='dark')
+    content = models.TextField()
     DatePublished = models.DateField(default=timezone.now)
     article_type = models.CharField(max_length=20, choices=ARTICLE_TYPES, default='article')
 
@@ -114,7 +181,7 @@ class Blog(models.Model):
 
     class Meta:
         ordering = ["-id"]
-        verbose_name_plural = "Blog Articles"
+        verbose_name_plural = "TDR Journals"
 
     def save(self, *args, **kwargs):
         if not self.slug:

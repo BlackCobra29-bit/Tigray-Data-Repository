@@ -2,128 +2,153 @@
 # developed by: tesfahiwet truneh
 # date: 2024, 2025
 # location: Mekelle, Tigray, Ethiopia
-# TechStack Used: Django, Bootstrap4 Template and Plotly for graph design
 
 # Standard Library Imports
 
 import os
-import stripe
-import random
-import logging
-import string
-from zipfile import ZipFile
 from django.http.response import HttpResponse as HttpResponse
-import plotly
-import plotly.graph_objects as go
-from folium import Map, Marker, Icon
+from folium import Map, Marker
 from folium.plugins import Fullscreen
 
 # Third-Party Imports
 from django.views import View
-from django.conf import settings
 from django.contrib import messages
-from django.urls import reverse_lazy
-from django.db.models import Count
-from django.conf import settings
-from .forms import ArticleForm
 from django.core.paginator import Paginator
-from django.views.generic.edit import UpdateView
-from django.utils.safestring import mark_safe
-from django.core.mail import send_mail
 from django.db.models.functions import ExtractYear
 from django.views.generic import TemplateView
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.hashers import make_password
-from django.http import HttpRequest, HttpResponseRedirect
-from django.template.loader import render_to_string
-from django.shortcuts import redirect, render, get_object_or_404, reverse
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.hashers import check_password
-
+from django.shortcuts import redirect, render, get_object_or_404
 # Local Application Imports
-from .models import RepositoryGroup, RepositoryItem, AdminPic, InitiativesModel, Blog
+from .models import RepositoryGroup, RepositoryItem, InitiativesModel, Blog, SubFolder, DownloadCounter
 
-log_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app.log')
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(log_file_path),
-        logging.StreamHandler()
-    ]
-)
-
-logger = logging.getLogger(__name__)
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class IndexView(TemplateView):
     template_name = "index.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["blog_articles"] = Blog.objects.all()[:3]
-        repository_groups = RepositoryGroup.objects.prefetch_related("repositories")
+        
+        # Get all repository groups with their subfolders
+        repository_groups = RepositoryGroup.objects.prefetch_related('subfolders').all()
+        
         context["repository_groups"] = []
-
+        
+        # Count variables
+        total_repository_items = 0
+        parent_repositories_count = repository_groups.count()
+        
         for group in repository_groups:
             group_data = {
+                "id": group.id,
                 "name": group.name,
-                "repositories": [],
+                "description": group.description,
+                "repository_items": [],  # Items directly in parent folder
+                "subfolders": []
             }
-            for repository in group.repositories.all():
+            
+            # Get repository items directly in the parent folder (RepositoryGroup)
+            from django.contrib.contenttypes.models import ContentType
+            group_content_type = ContentType.objects.get_for_model(RepositoryGroup)
+            group_repository_items = RepositoryItem.objects.filter(
+                content_type=group_content_type,
+                object_id=group.id
+            )
+            
+            for item in group_repository_items:
+                # Get download count for this item
+                download_count = 0
+                try:
+                    download_counter = item.download_counter
+                    download_count = download_counter.download_count
+                except DownloadCounter.DoesNotExist:
+                    download_count = 0
+                
                 file_data = {
-                    "name": os.path.basename(repository.file.name),
-                    "is_zip": repository.file.name.endswith(".zip"),
-                    "download_url": repository.file.url,
-                    "contents": "",
+                    "id": item.id,
+                    "title": item.title,
+                    "file_name": os.path.basename(item.file.name),
+                    "file_url": item.file.url,
+                    "uploaded_at": item.uploaded_at,
+                    "file_size": item.file.size if item.file else 0,
+                    "download_count": download_count,
                 }
-                if file_data["is_zip"]:
-                    zip_path = repository.file.path
-                    with ZipFile(zip_path, "r") as zip_file:
-                        file_tree = self._build_zip_tree(zip_file)
-                        file_data["contents"] = self._render_zip_tree(file_tree)
-                group_data["repositories"].append(file_data)
+                
+                group_data["repository_items"].append(file_data)
+                total_repository_items += 1
+            
+            # Get subfolders for this group
+            for subfolder in group.subfolders.all():
+                subfolder_data = {
+                    "id": subfolder.id,
+                    "name": subfolder.name,
+                    "description": subfolder.description,
+                    "repository_items": []
+                }
+                
+                # Get repository items for this subfolder using GenericForeignKey
+                subfolder_content_type = ContentType.objects.get_for_model(SubFolder)
+                repository_items = RepositoryItem.objects.filter(
+                    content_type=subfolder_content_type,
+                    object_id=subfolder.id
+                )
+                
+                for item in repository_items:
+                    # Get download count for this item
+                    download_count = 0
+                    try:
+                        download_counter = item.download_counter
+                        download_count = download_counter.download_count
+                    except DownloadCounter.DoesNotExist:
+                        download_count = 0
+                    
+                    file_data = {
+                        "id": item.id,
+                        "title": item.title,
+                        "file_name": os.path.basename(item.file.name),
+                        "file_url": item.file.url,
+                        "uploaded_at": item.uploaded_at,
+                        "file_size": item.file.size if item.file else 0,
+                        "download_count": download_count,
+                    }
+                    
+                    subfolder_data["repository_items"].append(file_data)
+                    total_repository_items += 1
+                
+                group_data["subfolders"].append(subfolder_data)
+            
             context["repository_groups"].append(group_data)
-
+        
+        # Add counts to context
+        context["parent_repositories_count"] = parent_repositories_count
+        context["total_repository_items"] = total_repository_items
+        
         return context
 
-    def _build_zip_tree(self, zip_file):
-        tree = {}
-        for file in zip_file.namelist():
-            parts = file.split("/")
-            node = tree
-            for part in parts:
-                if part not in node:
-                    node[part] = {}
-                node = node[part]
-        return tree
-
-    def _render_zip_tree(self, tree, level=0):
-        html = f'<ul class="list-unstyled" style="margin-left: {level * 20}px;">'
-        for name, subitems in tree.items():
-            if subitems:  # Folder
-                folder_id = f"folder-{level}-{hash(name)}"
-                html += f"""
-                <li class="ps-4">
-                    <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
-                    <i class="fa fa-folder me-2" style="color: #428bca;"></i> 
-                    <a href="#" data-bs-toggle="collapse" data-bs-target="#{folder_id}" aria-expanded="false">{name}</a>
-                    <div id="{folder_id}" class="collapse">
-                        {self._render_zip_tree(subitems, level + 1)}
-                    </div>
-                </li>
-                """
-            else:  # File
-                html += f"""
-                <li class="ps-5">
-                    <i class="fa fa-file me-2"></i> {name}
-                </li>
-                """
-        html += "</ul>"
-        return mark_safe(html)
+class DownloadFileView(View):
+    """View to handle file downloads and track download counts"""
+    
+    def get(self, request, item_id):
+        # Get the repository item
+        repository_item = get_object_or_404(RepositoryItem, id=item_id)
+        
+        # Get or create download counter for this item
+        download_counter, created = DownloadCounter.objects.get_or_create(
+            repository_item=repository_item,
+            defaults={'download_count': 0}
+        )
+        
+        # Increment the download count
+        download_counter.increment_download()
+        
+        # Serve the file for download
+        file_path = repository_item.file.path
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type='application/octet-stream')
+                response['Content-Disposition'] = f'attachment; filename="{os.path.basename(file_path)}"'
+                return response
+        else:
+            messages.error(request, "File not found.")
+            return redirect('index')
     
 class WhyTdr(TemplateView):
     template_name = "why_tdr.html"
@@ -133,11 +158,23 @@ class BlogView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        all_articles = Blog.objects.all()
-        paginator = Paginator(all_articles, 3)
+
+        # Filter blog posts by type
+        articles = Blog.objects.filter(article_type='articles')
+        journals = Blog.objects.filter(article_type='journals')
+        special_issues = Blog.objects.filter(article_type='special_issues')
+
+        # Pagination (optional)
         page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context["page_obj"] = page_obj
+        context["articles_page"] = Paginator(articles, 3).get_page(page_number)
+        context["journals_page"] = Paginator(journals, 3).get_page(page_number)
+        context["specials_page"] = Paginator(special_issues, 3).get_page(page_number)
+
+        # Counts
+        context["count_articles"] = articles.count()
+        context["count_journals"] = journals.count()
+        context["count_specials"] = special_issues.count()
+
         return context
     
 class ViewBlog(TemplateView):
@@ -234,554 +271,3 @@ class ManifestoView(TemplateView):
 
 class ContributeView(TemplateView):
     template_name = "contribute.html"
-    
-class StripeCheckoutView(View):
-
-    def get(self, request, *args, **kwargs):
-        try:
-
-            amount_in_cents = int(request.GET.get("amount", 0)) * 100
-
-            stripe_session = stripe.checkout.Session.create(
-                payment_method_types=[
-                    "card",
-                ],
-                line_items=[
-                    {
-                        "price_data": {
-                            "currency": "usd",
-                            "unit_amount": amount_in_cents,
-                            "product_data": {
-                                "name": "Tigray Data Repository",
-                                "description": "The Tigray Data Repository (TDR) is an online, open-source repository of datasets documenting Tigray’s history and the experiences of the Tigray communities living in other countries. The TDR was established in May 2024 and went live in January 2025. It is an archive created to document the digital, humanitarian, socio-economic, cultural, political, educational, historical, and many other types of data related to the community, serving as a resource for education and research for the benefit of future generations. As such, it is best described by its motto: “Data for Tigray, Knowledge for Generations!”.",  
-                            },
-                        },
-                        "quantity": 1,
-                    }
-                ],
-                mode="payment",
-                success_url=request.build_absolute_uri(reverse("payment-success")),
-                cancel_url=request.build_absolute_uri(reverse("payment-cancel")),
-                metadata={
-                    "amount_paid": amount_in_cents,
-                },
-            )
-
-            return redirect(stripe_session.url)
-
-        except stripe.error.StripeError as e:
-            logger.error(f"Stripe error: {str(e)}")
-            return redirect("index")
-        except Exception as e:
-            logger.error(f"Error during checkout: {str(e)}")
-            return redirect("index")
-
-class PaymentSuccessView(TemplateView):
-    template_name = "payment_success.html"
-
-class PaymentCancelView(TemplateView):
-    template_name = "payment_cancel.html"
-
-"""
-Admin Views --> CBV --> Class Based Views
-"""
-
-
-class SignInView(TemplateView):
-    template_name = "admin_page/sign_in.html"
-    success_url = reverse_lazy("dashboard-page")
-
-    def post(self, request, *args, **kwargs):
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            
-            if self.request.POST.get("remember_me"):
-                self.request.session.set_expiry(1209600)
-            else:
-                self.request.session.set_expiry(0)
-                
-            login(request, user)
-            return HttpResponseRedirect(self.success_url)
-        else:
-            messages.error(request, "Invalid username or password")
-            return render(request, self.template_name)
-        
-# Password reset views
-class ForgotPasswordView(TemplateView):
-    template_name = "admin_page/forgot_password.html"
-
-
-class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/dashboard.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-    def get_context_data(self, **kwargs):
-        top_groups = RepositoryGroup.objects.annotate(
-            num_items=Count("repositories")
-        ).order_by("-num_items")[:4]
-
-        context = super().get_context_data(**kwargs)
-        context["top_groups"] = top_groups
-        return context
-
-
-# Dataset Group Views
-class DatasetGroup(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/dataset_groups.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-    model = RepositoryGroup
-
-    def get_context_data(self, *args, **kwargs):
-
-        context = super().get_context_data(**kwargs)
-
-        context["AvailableRepositoryGroups"] = RepositoryGroup.objects.all()
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        CreateRepositoryGroup = RepositoryGroup.objects.create(
-            name=request.POST["repository_name"],
-            description=request.POST["repository_description"],
-        )
-
-        CreateRepositoryGroup.save()
-
-        messages.success(request, "New repositrory created successfully!")
-
-        return redirect("dataset-groups")
-
-
-class DatasetManagement(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/dataset_groups.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-
-class DatasetUpdateGroup(LoginRequiredMixin, TemplateView):
-
-    def post(self, request, pk):
-        FetchedRepository = get_object_or_404(RepositoryGroup, pk=pk)
-        FetchedRepository.name = request.POST["UpdateRepositoryName"]
-        FetchedRepository.description = request.POST["UpdateRepositoryDescription"]
-        FetchedRepository.save()
-
-        messages.success(request, "Repository Updated successfully!")
-
-        return redirect("dataset-groups")
-
-
-class DatasetDeleteGroup(LoginRequiredMixin, TemplateView):
-
-    def post(self, request, pk):
-        FetchedRepository = get_object_or_404(RepositoryGroup, pk=pk)
-        FetchedRepository.delete()
-
-        messages.success(request, "Repository removed successfully!")
-
-        return redirect("dataset-groups")
-
-
-# Dataset Item Views
-class DatasetAddItem(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/dataset_items.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-    def get_context_data(self, **kwargs):
-
-        context = super().get_context_data(**kwargs)
-
-        context["RepositoryGroupsList"] = RepositoryGroup.objects.all()
-        context["RepositoryItemList"] = RepositoryItem.objects.all()
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-
-        SaveRepositoryItem = RepositoryItem.objects.create(
-            repository=get_object_or_404(RepositoryGroup, id=request.POST["ItemGroup"]),
-            title=request.POST["ItemTitle"],
-            file=request.FILES["ItemFile"],
-        )
-
-        SaveRepositoryItem.save()
-
-        messages.success(
-            request,
-            f"New file added to {get_object_or_404(RepositoryGroup, id = request.POST["ItemGroup"]).name} repository!",
-        )
-
-        return redirect("add-dataset-item")
-
-
-class DatasetItemUpdate(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/dataset_items.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-    def post(self, request, *args, **kwargs):
-
-        item_id = kwargs.get("pk")
-        item = get_object_or_404(RepositoryItem, id=item_id)
-
-        if "ItemGroup" in request.POST:
-            item.repository = get_object_or_404(
-                RepositoryGroup, id=request.POST["ItemGroup"]
-            )
-
-        if "UpdateRepositoryName" in request.POST:
-            item.title = request.POST["UpdateRepositoryName"]
-
-        if "ItemFile" in request.FILES:
-            item.file = request.FILES["ItemFile"]
-
-        item.save()
-
-        messages.success(
-            request, f"Repository item '{item.title}' updated successfully!"
-        )
-
-        return redirect("add-dataset-item")
-
-
-class DatasetItemDelete(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/dataset_items.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-    def post(self, request, *args, **kwargs):
-
-        item_id = kwargs.get("pk")
-
-        item = get_object_or_404(RepositoryItem, id=item_id)
-
-        item_file_name = os.path.basename(item.file.name)
-
-        item.delete()
-
-        messages.success(
-            request, f"Repository item '{item_file_name}' deleted successfully!"
-        )
-
-        return redirect("add-dataset-item")
-
-
-# Diaspora Initiatives and organizations management
-class InitiativesAdd(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/add_initiatives.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-    def post(self, request, *args, **kwargs):
-        InitiativeName = request.POST.get("InitiativeName")
-        FoundationYear = request.POST.get("FoundationYear")
-        InitiativeType = request.POST.get("InitiativeType")
-        InitiativeOrigin = request.POST.get("InitiativeOrigin")
-        AriaOfFocus = request.POST.get("AriaOfFocus")
-        OfficialLink = request.POST.get("OfficialLink")
-
-        InitiativesModel.objects.create(
-            InitiativeName=InitiativeName,
-            FoundationYear=FoundationYear,
-            InitiativeType=InitiativeType,
-            InitiativeOrigin=InitiativeOrigin,
-            AriaOfFocus=AriaOfFocus,
-            OfficialLink=OfficialLink,
-        )
-
-        messages.success(request, "Initiative has been successfully added!")
-        return self.render_to_response({"success": True})
-
-
-class DisplayInitiatives(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/display_initiatives.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-    def get_context_data(self, **kwargs):
-
-        context = super().get_context_data(**kwargs)
-
-        context["diaspora_initiatives"] = InitiativesModel.objects.all()
-
-        return context
-
-
-class InitiativeItemUpdate(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/display_initiatives.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-    def post(self, request, pk):
-        initiative = get_object_or_404(InitiativesModel, pk=pk)
-        initiative.InitiativeName = request.POST.get("InitiativeName")
-        initiative.FoundationYear = request.POST.get("FoundationYear")
-        initiative.InitiativeType = request.POST.get("InitiativeType")
-        initiative.InitiativeOrigin = request.POST.get("InitiativeOrigin")
-        initiative.AriaOfFocus = request.POST.get("AriaOfFocus")
-        initiative.OfficialLink = request.POST.get("OfficialLink")
-        initiative.save()
-
-        messages.success(request, "Initiative Updated successfully!")
-
-        return redirect("display-initiatives")
-
-
-class InitiativeDelete(LoginRequiredMixin, TemplateView):
-
-    def post(self, request, pk):
-        
-        FetchedRepository = get_object_or_404(InitiativesModel, pk=pk)
-        
-        FetchedRepository.delete()
-
-        messages.success(request, "Initiative removed successfully!")
-
-        return redirect("display-initiatives")
-
-# Blog Article Section Views
-class WriteArticle(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/write_article.html"
-    login_url = "sign_in"
-    redirect_field_name = "next"
-    
-    def post(self, request, *args, **kwargs):
-        
-        AnalysisCreate = Blog.objects.create(ArticleTitle = request.POST["ArticleTitle"],
-                                             content = request.POST["content"])
-        
-        AnalysisCreate.save()
-        
-        messages.success(request, f"Analysis article published successfully!")
-        
-        return redirect("write-article")
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = ArticleForm()
-        return context
-    
-class ArticleManagement(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/manage_analysis.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-    
-    def get_context_data(self, **kwargs):
-        
-        context = super().get_context_data(**kwargs)
-        
-        context["FetchedArticles"] = Blog.objects.all()
-        
-        return context
-    
-class ArticleUpdate(LoginRequiredMixin, UpdateView):
-    model = Blog
-    form_class = ArticleForm
-    template_name = "admin_page/update-article.html"
-    success_url = reverse_lazy('article-management')
-
-    def get_object(self, queryset=None):
-        slug = self.kwargs.get("slug")
-        return get_object_or_404(Blog, slug=slug)
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.form_class(request.POST, request.FILES, instance=self.object)
-
-        if form.is_valid():
-            try:
-                form.save()
-                messages.success(request, "Article updated successfully!")
-                return redirect(self.success_url)
-            except Exception as e:
-                messages.error(request, f"An error occurred: {str(e)}")
-        else:
-            messages.error(request, "Invalid form data. Please correct the errors below.")
-
-        return self.render_to_response(self.get_context_data(form=form))
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class(instance=self.get_object())
-        return context
-    
-class ArticleDelete(LoginRequiredMixin, TemplateView):
-
-    def post(self, request, pk):
-        FetchedArticle = get_object_or_404(Blog, pk=pk)
-        FetchedArticle.delete()
-
-        messages.success(request, "Article deleted successfully!")
-
-        return redirect("article-management")
-
-# User Admin Management
-class AdminManagement(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/admin_management.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-    def get_context_data(self, **kwargs):
-        
-        context = super().get_context_data(**kwargs)
-        
-        context["UserAdminList"] = User.objects.all()
-        
-        return context
-
-    def post(self, request, *args, **kwargs):
-        while True:
-            username = "admin_" + "".join(
-                random.choices(string.ascii_letters + string.digits, k=8)
-            )
-            if not User.objects.filter(username=username).exists():
-                break
-
-        while True:
-            password = "".join(
-                random.choices(
-                    string.ascii_letters + string.digits + string.punctuation, k=12
-                )
-            )
-
-            if not User.objects.filter(password=make_password(password)).exists():
-                break
-
-        first_name = request.POST.get("FirstName")
-        last_name = request.POST.get("LastName")
-        email = request.POST.get("UserEmail")
-        profile_pic = request.FILES.get("UserProfile")
-
-        if not email:
-            messages.error(request, "Email is required")
-            return render(request, self.template_name)
-
-        if User.objects.filter(email=email).exists():
-            messages.error(
-                request, "Email is already taken. Please choose another one."
-            )
-
-            return render(request, self.template_name)
-
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-        )
-
-        admin_pic = AdminPic(user=user, profile_pic=profile_pic)
-        admin_pic.save()
-
-        subject = "New Admin Account Created"
-        message = render_to_string(
-            "admin_page/admin_email_template.html",
-            {
-                "first_name": first_name,
-                "last_name": last_name,
-                "username": username,
-                "password": password,
-            },
-        )
-
-        send_mail(
-            subject,
-            message,
-            settings.EMAIL_HOST_USER,
-            [email],
-            fail_silently=False,
-            html_message=message,
-        )
-
-        messages.success(request, "Admin account created successfully!")
-
-        return redirect("admin-management")
-
-
-class RemoveAdminAccount(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/admin_management.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-    def post(self, request, *args, **kwargs):
-        admin_id = kwargs.get("pk")
-
-        try:
-            admin = User.objects.get(id=admin_id)
-
-            if admin.is_superuser:
-                messages.error(request, "You cannot remove a superadmin.")
-            else:
-                admin.delete()
-                messages.success(request, "Admin removed successfully.")
-        except User.DoesNotExist:
-            messages.error(request, "Admin not found.")
-
-        return redirect("admin-management")
-
-
-# Admin Account Settings Views
-class AdminAccountSettings(LoginRequiredMixin, TemplateView):
-    template_name = "admin_page/account_settings.html"
-    login_url = "sign-in"
-    redirect_field_name = "next"
-
-
-class AdminAccountUpdate(LoginRequiredMixin, TemplateView):
-
-    def post(self, request):
-        try:
-            logged_in_account = request.user
-            logged_in_account.first_name = request.POST.get("UpdatedFirstName")
-            logged_in_account.last_name = request.POST.get("UpdatedLastName")
-            logged_in_account.username = request.POST.get("UpdatedUserName")
-            logged_in_account.email = request.POST.get("UpdatedEmail")
-            logged_in_account.save()
-            messages.success(request, "Account information updated successfully!")
-        except User.DoesNotExist:
-            messages.error(request, "User not found!")
-        except Exception as e:
-            messages.error(request, f"An error occurred: {e}")
-
-        return redirect("account-settings")
-
-
-class AdminUpdatePassword(LoginRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
-        current_password = request.POST.get("CurrentPassword")
-        new_password = request.POST.get("NewPassword")
-        confirm_password = request.POST.get("ConfirmNewPassword")
-
-        if not current_password or not new_password or not confirm_password:
-            messages.error(request, "All fields are required.")
-            return redirect("account-settings")
-
-        if not check_password(current_password, request.user.password):
-            messages.error(request, "Current password is incorrect.")
-            return redirect("account-settings")
-
-        if new_password != confirm_password:
-            messages.error(request, "Passwords do not match.")
-            return redirect("account-settings")
-
-        request.user.set_password(new_password)
-        request.user.save()
-
-        update_session_auth_hash(request, request.user)
-
-        messages.success(request, "Password updated successfully.")
-        return redirect("account-settings")
-
-# Logout View
-class LogoutView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return redirect("sign-in")

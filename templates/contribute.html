@@ -47,11 +47,8 @@
                                         that our
                                         history has a living memory through these valuable projects.
                                         <br><br>
-                                        Your engagement—whether through intellectual exploration or <a href
-                                            data-bs-toggle="modal" data-bs-target="#cardModal" class="brand-text-color"
-                                            target="_blank">financial
-                                            support</a>—brings
-                                        us closer to documenting and preserving our collective story.
+                                        Your engagement—whether through intellectual exploration or
+                                        financial support—brings us closer to documenting and preserving our collective story.
                                     </p>
                                 </div>
 
@@ -61,35 +58,6 @@
                                             generations!
                                     </p>
                                 </div>
-
-                                <div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header" style="background-color: #0c529cd0;">
-                                                <h5 class="modal-title text-white fw-semibold" id="cardModalLabel">
-                                                    <span class="bi bi-credit-card"></span> Your Support, Your Impact
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <form action="{% url 'stripe-checkout' %}" method="GET">
-                                                {% csrf_token %}
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <input type="number" name="amount" class="form-control"
-                                                            placeholder="Enter amount($)" required>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary" style="background-color: #0c529cd0;"><span
-                                                            class="fa fa-arrow-right"></span> Continue</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>

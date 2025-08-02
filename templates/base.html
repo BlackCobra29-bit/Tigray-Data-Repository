@@ -28,56 +28,57 @@
 
 <body data-spy="scroll" data-target=".site-navbar-target bg-dark" data-offset="300"
   data-theme="{{ request.session.theme|default:'light' }}">
-  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light site-navbar-target" id="ftco-navbar">
-    <div class="container">
-      <a class="navbar-brand" href="{% url 'index' %}" target="_blank">
-        <img src="{% static 'img/tigray data repo.jpg' %}" style="height: 44px" />
-      </a>
-      <button class="navbar-toggler js-fh5co-nav-toggle fh5co-nav-toggle" type="button" data-toggle="collapse"
-        data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="oi oi-menu"></span> Menu
-      </button>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white site-navbar-target" id="ftco-navbar">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}" target="_blank">
+      <img src="{% static 'img/tigray data repo.jpg' %}" 
+           alt="Tigray Data Repository Logo" 
+           class="img-fluid d-inline-block align-top"
+           style="max-height: 44px; width: auto;">
+    </a>
 
-      <div class="collapse navbar-collapse" id="ftco-nav">
-        <ul class="navbar-nav nav ml-auto">
-          <li class="nav-item">
-            <a href="{% url 'index' %}" class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
-              <i class="bi bi-bank"></i> Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'why-tdr' %}" 
-              class="nav-link {% if request.resolver_match.url_name == 'why-tdr' %}active{% endif %}">
-              <i class="bi bi-globe"></i> Why TDR?
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'blog-view' %}"
-              class="nav-link {% if request.resolver_match.url_name == 'blog-view' %}active{% endif %}">
-              <i class="bi bi-pencil"></i> TDR Journal
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'manifesto-view' %}"
-              class="nav-link {% if request.resolver_match.url_name == 'manifesto-view' %}active{% endif %}">
-              <i class="bi bi-clipboard2-data"></i> Manifesto
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'contribute-view' %}"
-              class="nav-link {% if request.resolver_match.url_name == 'contribute-view' %}active{% endif %}">
-              <i class="bi bi-database"></i> Contribute
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#projects-section" class="nav-link" id="themeToggleLink">
-              <theme-toggle storable="true" width="20" theme="light"></theme-toggle>
-            </a>
-          </li>
-        </ul>
-      </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+      aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="ftco-nav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a href="{% url 'index' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'index' %}active fw-bold{% endif %}">
+            <i class="bi bi-bank"></i> Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'why-tdr' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'why-tdr' %}active fw-bold{% endif %}">
+            <i class="bi bi-globe"></i> Why TDR?
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'blog-view' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'blog-view' %}active fw-bold{% endif %}">
+            <i class="bi bi-pencil"></i> TDR Journal
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'manifesto-view' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'manifesto-view' %}active fw-bold{% endif %}">
+            <i class="bi bi-clipboard2-data"></i> Manifesto
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'contribute-view' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'contribute-view' %}active fw-bold{% endif %}">
+            <i class="bi bi-database"></i> Contribute
+          </a>
+        </li>
+        <li class="nav-item d-flex align-items-center">
+          <a href="#projects-section" class="nav-link px-2 text-dark" id="themeToggleLink">
+            <theme-toggle storable="true" width="20" theme="light"></theme-toggle>
+          </a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+
 
     {% block 'main-section' %} {% endblock %}
 

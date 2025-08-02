@@ -1,6 +1,6 @@
 from django import forms
 from .models import Blog
-from froala_editor.widgets import FroalaEditor
+from django_summernote.widgets import SummernoteWidget
 
 class ArticleForm(forms.ModelForm):
     ARTICLE_TYPES = [
@@ -28,7 +28,7 @@ class ArticleForm(forms.ModelForm):
                     'id': 'title-icon'
                 }
             ),
-            'content': FroalaEditor(),
+            'content': SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):

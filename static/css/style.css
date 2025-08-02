@@ -11901,7 +11901,7 @@ h5,
   }
 }
 
-.ftco-navbar-light .navbar-nav>.nav-item>.nav-link {
+.navbar-nav>.nav-item>.nav-link {
   font-size: 14px;
   padding-top: 0.7rem;
   padding-bottom: 0.7rem;
@@ -13563,7 +13563,7 @@ textarea.form-control {
 
 /* Optional: Change the background color of the row without hover */
 .table tbody tr {
-  background-color: #f9f9f9;
+  background-color: #fff;
 }
 
 .brand-text-color {
