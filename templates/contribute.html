@@ -8,7 +8,22 @@
 
 <section class="ftco-section ftco-no-pt">
     <div class="container">
-        <div class="row justify-content-center py-4 mt-5">
+
+        <!-- Breadcrumb Navigation -->
+            <nav aria-label="breadcrumb" class="pt-4">
+                <ol class="breadcrumb bg-transparent px-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'index' %}" class="text-decoration-none text-muted">
+                            <i class="bi bi-house-door-fill"></i> Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">
+                        Contribute
+                    </li>
+                </ol>
+            </nav>
+
+        <div class="row justify-content-center" style="margin-top: -25px;">
             <div class="col-md-1 heading-section text-center ftco-animate">
             </div>
         </div>
@@ -20,42 +35,39 @@
                     <!-- Card Body -->
                     <div class="card-body d-flex flex-column">
                         <div class="container mt-2">
-                            <p id="intro-text">We, at TDR, strongly believe in the power of teamwork, collaboration,
-                                innovation and data-driven community work. To this end, here’s how you can contribute
-                                and make a bigger
-                                impact on our collective change in the society:</p>
+                            <p id="intro-text">
+                                We at TDR strongly believe in the power of teamwork, collaboration, innovation, and data-driven community work. We invite you to contribute and make a significant impact on our
+                                collective change in the society:
+                            </p>
 
                             <div class="mt-4">
                                 <div class="mb-3 pt-4">
-                                    <h5 class="fw-bold text-dark"><span class="bi bi-1-circle-fill"></span> Share Your
-                                        Insights</h5>
-                                    <p id="intro-text">Dive into our open datasets, identify patterns or insights, and
-                                        send your analysis to our
-                                        email: <a href="mailto:eminemmerne@gmail.com" class="brand-text-color"
-                                            target="_blank">info@datagray.org</a>. The work will be
-                                        featured in the
-                                        TDR Journal, and will boost the
-                                        discoveries that are improving our collective understanding.</p>
+                                    <h5 class="fw-bold text-dark"><span class="bi bi-1-circle-fill"></span> Share your Data or Insights</h5>
+                                    <p id="intro-text">Contribute any datasets you may have related to our community. Or dive deep into
+                                        our open datasets, identify patterns or insights, and send your analysis to our email at 
+                                        <a href="mailto:info@datafortigray.org" class="brand-text-color"
+                                            target="_blank">info@datafortigray.org</a>. Your datasets will be available in our repository, and your work
+                                        will be featured in the TDR Journal, advancing discoveries that enhance our collective
+                                        understanding.
+                                        </p>
                                 </div>
 
                                 <div class="mb-3 pt-4">
                                     <h5 class="fw-bold text-dark"><span class="bi bi-2-circle-fill"></span> Support Our
                                         Mission and Vision</h5>
-                                    <p id="intro-text">Help keep this important work going at TDR through your financial
-                                        contribution. This helps
-                                        fund data-driven community projects for better service delivery and making sure
-                                        that our
-                                        history has a living memory through these valuable projects.
-                                        <br><br>
-                                        Your engagement—whether through intellectual exploration or
-                                        financial support—brings us closer to documenting and preserving our collective story.
+                                    <p id="intro-text">
+                                        Our work encompasses various elements and we would greatly appreciate any financial
+                                        contribution towards our initiative to keep our work going. You can help fund data-driven
+                                        community projects for better service delivery and ensure our history has a living memory
+                                        through these valuable projects.
+                                        Your engagement—whether through intellectual exploration or financial support—brings
+                                        us closer to documenting and preserving our collective history.
                                     </p>
                                 </div>
 
                                 <div class="mb-3 pt-5">
                                     <p class="intro-text text-center fw-bold brand-text-color">
-                                        Let’s build this legacy together: Data for Tigray, knowledge for
-                                            generations!
+                                        <i>Let’s build this legacy together: Data for Tigray, knowledge for generations!</i>
                                     </p>
                                 </div>
                             </div>

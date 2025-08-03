@@ -18,7 +18,22 @@
 
 <section class="ftco-section ftco-no-pb ftco-no-pt" id="chapter-section">
     <div class="container">
-        <div class="row justify-content-center py-5 mt-5">
+
+        <!-- Breadcrumb Navigation -->
+            <nav aria-label="breadcrumb" class="pt-4">
+                <ol class="breadcrumb bg-transparent px-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'index' %}" class="text-decoration-none text-muted">
+                            <i class="bi bi-house-door-fill"></i> Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">
+                        Initiatives and Organizations
+                    </li>
+                </ol>
+            </nav>
+
+        <div class="row justify-content-center" style="margin-top: -25px;">
             <div class="col-md-12 heading-section text-center ftco-animate">
             </div>
         </div>
@@ -29,13 +44,11 @@
                     <!-- Card Body -->
                     <div class="card-body d-flex flex-column">
                         <div>
-                            <div class="heading-container pt-4">
-                                <span class="vertical-line"></span>
-                                <h2 class="heading">From Afar, For Tigray – Diaspora Initiatives and Organizations</h2>
-                            </div>
-                            <div class="underline"></div>
-                            <br>
-                            <p id="intro-text">As part of our mission to document and preserve the stories of Tigray and its communities, we have created a database of Tigrayan diaspora initiatives and organizations. This includes organizations founded both before, during, and after the Tigray war (2020-2022), which have been actively responding to the disaster and contributing to community rebuilding efforts.</p>
+                            <p id="intro-text">
+                                As part of our mission to document and preserve the stories of Tigray and its communities,
+                                we have created a database of Tigrayan Diaspora initiatives and organizations. This database showcases organizations founded before, during, and after the Tigray war (2020-2022)
+                                that have been actively responding to the disaster and contributing to community rebuilding efforts.
+                            </p>
                         </div>
 
                         <div class="heading-container pt-4">
@@ -44,7 +57,9 @@
                         </div>
                         <div class="underline"></div>
                         <br>
-                        <p id="intro-text">Below you will find interactive dashboards presenting data about these diaspora-led initiatives and/or organizations, their distribution, and other key measures.</p>
+                        <p id="intro-text">
+                            Below, you will find interactive dashboards presenting data about these diaspora-led initiatives and/or organizations, their distribution, and other key measures.
+                        </p>
                         <div class="row pt-4">
 
                             
@@ -96,12 +111,6 @@
                                 <optgroup label="Filter by Origin">
                                     {% for origin in unique_origins %}
                                     <option data-column="4">{{ origin }}</option>
-                                    {% endfor %}
-                                </optgroup>
-                                <br>
-                                <optgroup label="Filter by Area of Focus">
-                                    {% for area in unique_area_focus %}
-                                    <option data-column="5">{{ area }}</option>
                                     {% endfor %}
                                 </optgroup>
                                 <br><br>
@@ -163,8 +172,9 @@
                         <br>
                         <p id="intro-text">
                             If your initiative or organization is not yet registered, please submit this
-                            <a href="" class="fw-semibold brand-text-color" target="_blank">short survey form</a> to
-                            be included in our growing database.
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeBiwY-6BVuYVNo9hRs-mXahnAhfF-me0ViuIzETjCUDf5Kvg/viewform" class="fw-semibold brand-text-color" target="_blank">short survey form</a> 
+                            to be included in our growing database and bring your 
+                            story to light! 
                         </p>
                     </div>
                 </div>
@@ -327,7 +337,7 @@
             axisX: { title: "Type of Initiatives or Organizations" },
             data: [{
                 type: "column",
-                showInLegend: false,
+                showInLegend: true,
                 legendText: "{label}",
                 toolTipContent: "<strong style='color:{color}'>{label}</strong>: {y} ({percent}%)",
                 indexLabel: "{y}",

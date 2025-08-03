@@ -7,7 +7,22 @@
 {% block 'main-section' %}
 <section class="ftco-section ftco-no-pt">
     <div class="container">
-        <div class="row justify-content-center py-2 mt-4">
+
+        <!-- Breadcrumb Navigation -->
+            <nav aria-label="breadcrumb" class="pt-4">
+                <ol class="breadcrumb bg-transparent px-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'index' %}" class="text-decoration-none text-muted">
+                            <i class="bi bi-house-door-fill"></i> Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">
+                        Manifesto
+                    </li>
+                </ol>
+            </nav>
+
+        <div class="row justify-content-center" style="margin-top: -25px;">
             <div class="col-md-1 heading-section text-center ftco-animate">
             </div>
         </div>
@@ -20,97 +35,87 @@
                     <div class="card-body d-flex flex-column">
                         <div class="container">
                             <div class="mt-2">
-                                <div class="mb-3 pt-4"></div>
-
-                                <br>
+                                <div class="mb-3"></div>
                                 <div class="heading-container">
                                     <span class="vertical-line"></span>
-                                    <h2 class="heading">Title</h2>
+                                    <h2 class="heading">Title:</h2>
                                 </div>
                                 <div class="underline"></div>
-                                <p id="intro-text" class="pt-2">Data for Tigray, Knowledge for Generations</p>
+                                <p id="intro-text" class="pt-2">Building the Future Through Our Stories</p>
                             </div>
 
                             <br>
                             <div class="heading-container">
                                 <span class="vertical-line"></span>
-                                <h2 class="heading">Introduction</h2>
+                                <h2 class="heading">Introduction:</h2>
                             </div>
                             <div class="underline"></div>
-                            <p id="intro-text" class="pt-2">The Tigray Data Repository is more than a
-                                repository; it’s a
-                                movement toward the documentation, preservation, and sharing with the world of
-                                the rich history, culture, and experiences of Tigray and its diaspora. The TDR
-                                was created out of necessity. It is an initiative that
-                                focuses on building a data-based platform where data is transformed into
-                                knowledge and
-                                actionable insights. This platform also transforms history into a tool to
-                                advocate for change
-                                and raise awareness about Tigray-related issues. It seeks to empower future
-                                generations
-                                with the tools to understand their past, shape their present, and build their
-                                future.</p>
-                        </div>
-
-                        <br>
-                        <div class="heading-container">
-                            <span class="vertical-line"></span>
-                            <h2 class="heading">Vision</h2>
-                        </div>
-                        <div class="underline"></div>
-
-                        <div class="mb-3">
-                            <p id="intro-text">It is the main protector of data about Tigray, ensuring it will
-                                be preserved and available for
-                                future generations. At the same time, it raises awareness and promotes this
-                                cause around
-                                the world.
+                            <p id="intro-text" class="pt-2">
+                                The Tigray Data Repository is more than just an archive; it is a movement born out of necessity, 
+                                dedicated to documenting, preserving, and sharing the rich history, culture, and
+                                experiences of Tigrayans with the world. Our platform is an essential tool for data-based
+                                knowledge that can be used to advocate for change and raise awareness on Tigray-related
+                                issues. We seek to empower future generations with the tools to understand their past,
+                                shape their present, and build their future.
                             </p>
                         </div>
 
                         <br>
                         <div class="heading-container">
                             <span class="vertical-line"></span>
-                            <h2 class="heading">Mission</h2>
+                            <h2 class="heading">Vision:</h2>
                         </div>
                         <div class="underline"></div>
 
                         <div class="mb-3">
-                            <p id="intro-text">TDR is committed to documenting, preserving, and making available
-                                data related to Tigray’s
-                                history, culture, and socio-political contexts. Through making this data
-                                available to everyone, we are creating opportunities for researchers, educators,
-                                and advocates all over the
-                                world. They can use this information to take action in areas like research,
-                                education, innovation, and justice.
+                            <p id="intro-text">
+                                At TDR, we envision a future where the rich history, culture, and experiences of the Tigrayan
+                                communities are methodically preserved and readily accessible to both the community and
+                                future generations.
                             </p>
                         </div>
 
                         <br>
                         <div class="heading-container">
                             <span class="vertical-line"></span>
-                            <h2 class="heading">Core Values</h2>
+                            <h2 class="heading">Mission:</h2>
+                        </div>
+                        <div class="underline"></div>
+
+                        <div class="mb-3">
+                            <p id="intro-text">
+                                We are dedicated to documenting, preserving, and making data related to Tigray’s history,
+                                culture, and economic and socio-political contexts widely accessible. As such, we strive to
+                                create a comprehensive archive that provides invaluable resources for researchers, educators, and advocates.
+                            </p>
+                        </div>
+
+                        <br>
+                        <div class="heading-container">
+                            <span class="vertical-line"></span>
+                            <h2 class="heading">Core Values:</h2>
                         </div>
                         <div class="underline"></div>
 
                         <div class="mb-3">
                             <ul id="intro-text">
                                 <li>
-                                    <span class="fw-bold">Integrity:</span> Demonstrating precision and ethical
-                                    behavior in how we collect and manage data.
+                                    <span class="fw-bold">Integrity:</span> We are committed to ethical data collection and management practices.
                                 </li>
                                 <li>
-                                    <span class="fw-bold">Collaboration:</span> Working alongside partners
-                                    across the world to enhance TDR’s resources and expand our outreach.
+                                    <span class="fw-bold">Collaboration:</span> We work alongside stakeholders, committed individuals, and other
+                                        local and global partners to enhance TDR’s resources and expand our outreach and
+                                        impact.
                                 </li>
                                 <li>
-                                    <span class="fw-bold">Empowerment:</span> Providing Tigrayans and the
-                                    worldwide community with the knowledge they need for informed choices.
+                                    <span class="fw-bold">Empowerment:</span> Our focus is to provide Tigrayans and the global community with
+                                                        the data they need to make informed choices about matters related to Tigray and its
+                                                        community.
                                 </li>
                                 <li>
-                                    <span class="fw-bold">Accountability:</span> Using data helps us to reveal
-                                    truths, fight against misinformation, and
-                                    promote justice.
+                                    <span class="fw-bold">Accountability:</span> Through the data we collect and archive, along with the insights
+                                        shared in our journal, we strive to tell truths, combat misinformation, and promote
+                                        justice and accountability.
                                 </li>
                             </ul>
                         </div>
@@ -118,32 +123,32 @@
                         <br>
                         <div class="heading-container">
                             <span class="vertical-line"></span>
-                            <h2 class="heading">Objectives</h2>
+                            <h2 class="heading">Objectives:</h2>
                         </div>
                         <div class="underline"></div>
 
                         <div class="mb-3">
                             <ul id="intro-text">
                                 <li>
-                                    Open, reliable and centralized datasets about Tigray.
+                                    To create and maintain open and reliable datasets on Tigray and its Diaspora.
                                 </li>
                                 <li>
-                                    Make note of significant occurrences like the Tigray Genocide in detail and
-                                    with accuracy.
+                                    Provide detailed and accurate records of critical occurrences, such as the Tigray Genocide, to preserve history and promote accountability.
                                 </li>
                                 <li>
-                                    Help to maintain and enhance the involvement of Tigrayan diaspora
-                                    individuals in
-                                    international awareness.
+                                    To help maintain and enhance the active participation of the Tigrayan Diaspora in
+                                    international advocacy and awareness efforts related to their communities.
                                 </li>
                                 <li>
-                                    Making it easier for people to understand and use data by providing
-                                    interactive dashboards, holding workshops, and creating publications.
+                                    To utilize modern technologies to gather real-time data and insights about Tigray and
+                                    its Diaspora.
                                 </li>
                                 <li>
-                                    Integrate TDR resources in education and policy by collaborating with
-                                    government
-                                    agencies, stakeholders and international organizations.
+                                    Making it easier for people to understand and use data by providing interactive dashboards, holding workshops, and creating publications.
+                                </li>
+                                <li>
+                                    Integrate TDR resources in education and policy by collaborating with government
+                                    agencies, stakeholders and international organizations. 
                                 </li>
                             </ul>
                         </div>
@@ -151,58 +156,57 @@
                         <br>
                         <div class="heading-container">
                             <span class="vertical-line"></span>
-                            <h2 class="heading">Methodology</h2>
+                            <h2 class="heading">Methodology:</h2>
                         </div>
                         <div class="underline"></div>
 
                         <div class="mb-3">
                             <p id="intro-text">
-                                TDR employs diverse data collection and analysis methods, including historical
-                                records, surveys, digital campaigns, and reports from government agencies,
-                                stakeholders, and other
-                                organizations. All data is structured, anonymized, and checked before use to be
-                                used both
-                                properly and with effect.
+                                At TDR, we employ various data collection and analysis methods, including historical
+                                records, surveys, digital campaigns, and reports from government and non-governmental
+                                agencies, as well as other organizations and dedicated individuals. All our data is structured,
+                                anonymized, and thoroughly checked before use to ensure proper and practical application.
                             </p>
 
-                            <h5 class="fw-bold text-dark pt-2"> Impact:</h5>
+                            <h5 class="fw-bold text-dark pt-2"> Impact</h5>
                             <p id="intro-text">
-                                The TDR will be a living memory of the history and resilience of Tigray, passed
-                                on through
-                                generations for the purpose of awareness, research, and education. It forms a
-                                foundation
-                                for justice, an instrument of accountability, and serves as a sign of hope.
+                                The Tigray Data Repository (TDR) will serve as a living memory of Tigray’s history and resilience, preserving its data and sharing knowledge for future generations. In this way, we will
+                                help lay the groundwork for justice, act as an instrument of accountability, and symbolize
+                                hope for the future.
                             </p>
 
-                            <h5 class="fw-bold text-dark pt-2"> Call to Action:</h5>
+                            <h5 class="fw-bold text-dark pt-2"> Call to Action: Join us in Shaping the Future</h5>
                             <p id="intro-text">
-                                Join us in this great undertaking: donate your data, volunteer skills, or
-                                financial support to
-                                our cause. Together, we can make sure Tigray’s story will never be forgotten and
-                                that its
-                                future is built on a basis of truth and resilience.
+                                Given the significant nature of this initiative, it necessitates strong institutional commitments, resources, and collaborative efforts. We strongly believe that our collective efforts
+                                and individual commitments allow us to achieve far greater outcomes. Therefore, we would
+                                be honored to have you as part of our ecosystem in achieving our goals for a better Tigray!
+                                You can help us achieve this by sharing any datasets, volunteering your skills, or providing
+                                financial support to our cause. Together, we can ensure that Tigray’s story is preserved and
+                                its future is built on truth and resilience!
                             </p>
 
                             <h5 class="fw-bold text-dark pt-2"> Contact Information:</h5>
                             <p id="intro-text">
-                                Explore, contribute, and connect: <a href="mailto:info@datagray.org"
-                                    class="brand-text-color" target="_blank">info@datagray.org</a>.
+                                Explore, contribute, and connect: <a href="mailto:info@datafortigray.org"
+                                    class="brand-text-color" target="_blank">info@datafortigray.org</a>.
                             </p>
 
                         </div>
 
-                        <div class="pt-4">
-                            <blockquote style="border-left: 10px solid #0c529cd0;">
-                                <p id="intro-text">
-                                    The Tigray Data Repository serves an important role beyond data
-                                    preservation; it
-                                    safeguards
-                                    not only data but also a community, its culture, and its heritage. Together,
-                                    let’s
-                                    unite in the
-                                    cause: Empowering Tigray with data, great knowledge for future generations!
-                                </p>
-                            </blockquote>
+                        <br>
+                        <div class="heading-container">
+                            <span class="vertical-line"></span>
+                            <h2 class="heading">Closing:</h2>
+                        </div>
+                        <div class="underline"></div>
+
+                        <div class="mb-3">
+                            <p id="intro-text">
+                                The Tigray Data Repository is a beacon of resilience and a hope for a better, informed future. As guardians of the data of Tigray and its people, we relish in preserving and sharing
+                                the history and experience of Tigrayans to empower the next generation. Together, we can
+                                stand united in our commitment to honor the past, enrich the present, and illuminate a
+                                brighter future for Tigray.
+                            </p>
                         </div>
 
                     </div>

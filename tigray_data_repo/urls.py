@@ -38,8 +38,8 @@ urlpatterns = [
     # Download tracking
     path("download/<int:item_id>/", DownloadFileView.as_view(), name="download-file"),
     path("why-tdr/", WhyTdr.as_view(), name = "why-tdr"),
-    path("blog/", BlogView.as_view(), name="blog-view"),
-    path("view-blog/<slug:pk>", ViewBlog.as_view(), name = "view-blog"),
+    path("tdr-journal/", BlogView.as_view(), name="blog-view"),
+    path("view-journal/<slug:pk>", ViewBlog.as_view(), name = "view-blog"),
     path("initiatives/", InitiativesView.as_view(), name="initiatives"),
     path("manifesto/", ManifestoView.as_view(), name = "manifesto-view"),
     path("contribute/", ContributeView.as_view(), name = "contribute-view"),

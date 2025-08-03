@@ -1,75 +1,147 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load custom_filters %}
-
+{% extends 'base.html' %} {% load static %} {% load custom_filters %} 
 {% block 'main-section' %}
 
 <section class="ftco-section ftco-no-pt">
-    <div class="container">
-        <div class="row justify-content-center py-4 mt-5">
-            <div class="col-md-1 heading-section text-center ftco-animate">
-            </div>
-        </div>
+  <div class="container">
 
-        <div class="row d-flex">
-            <div class="col-md-12 pt-4">
-                <div class="card h-100 shadow-none border-0">
-                    <!-- Card Body -->
-                    <div class="card-body d-flex flex-column">
-                        <div class="container mt-2">
-                            <p id="intro-text">The TDR is more than just a hosting site. The Tigray Data Repository serves:</p>
+    <!-- Breadcrumb Navigation -->
+      <nav aria-label="breadcrumb" class="pt-4">
+            <ol class="breadcrumb bg-transparent px-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'index' %}" class="text-decoration-none text-muted">
+                        <i class="bi bi-house-door-fill"></i> Home
+                    </a>
+                </li>
+                <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">
+                    Why TDR?
+                </li>
+            </ol>
+      </nav>
 
-                            <div class="mt-4">
-                                <div class="mb-3">
-                                    <h5 class="fw-bold text-dark d-inline">♦ A Bridge Between Generations:</h5>
-                                    <p id="intro-text" class="d-inline">TDR preserves history for Tigray, so its stories are also available to future generations.</p>
-                                </div>
-
-                                <div class="mb-3">
-                                    <h5 class="fw-bold text-dark d-inline">♦ A Resource for Advocacy and Research:</h5>
-                                    <p id="intro-text" class="d-inline">TDR contributes to education, policy-making, and disaster responses through its collection and analysis of datasets.</p>
-                                </div>
-
-                                <div class="mb-3">
-                                    <h5 class="fw-bold text-dark d-inline">♦ Accountability Tool:</h5>
-                                    <p id="intro-text" class="d-inline">The repository records hate speech, disinformation campaigns, and dehumanizing narratives that targeted Tigrayans during the active fighting of the Tigray War (2020–2022). This informs international justice investigations and accountability mechanisms.</p>
-                                </div>
-
-                                <div class="mb-3">
-                                    <h5 class="fw-bold text-dark d-inline">♦ TDR's Data Analysis Journal:</h5>
-                                    <p id="intro-text" class="d-inline">TDR's data analysis publication connects Tigray with the rest of the world through its publications and serves as a center for knowledge sharing, community engagement, innovation, and collaboration.</p>
-                                </div>
-                                <br>
-                                <div class="heading-container">
-                                    <span class="vertical-line"></span>
-                                    <h2 class="heading">Scope and Focus</h2>
-                                </div>
-                                <div class="underline"></div>
-                                <br>
-
-                                <p id="intro-text">
-                                    The historical coverage by TDR includes various types of datasets about the community, such as digital, humanitarian, socio-economic, cultural, and political data. It also focuses on important events like shifts, wars, and conflicts. The aim is to bridge the gaps that have existed between war crimes and social justice so that the coverage is complete. Since the topics cover long periods and many different aspects, the effort has been made to maintain clarity and specific details throughout the coverage.
-                                </p>
-
-                                <div class="mb-3">
-                                    <h5 class="fw-bold text-dark d-inline">♦ Project Focus:</h5>
-                                    <p id="intro-text" class="d-inline"> In the initial phase of the project, data collection will focus on the digital advocacy efforts of the Tigrayan communities living in other countries from November 2020 to November 2022. It will also focus on developing a complete profile of the Tigray Genocide victims, using the Axum Massacre as a case study. In course of time, the expansion of databases from sectors such as education, health, humanitarian affairs and many more will be facilitated in collaboration with the community and government agencies.</p>
-                                </div>
-
-                                <div class="mb-3">
-                                    <h5 class="fw-bold text-dark d-inline">♦ Tigrayan Diaspora Experience:</h5>
-                                    <p id="intro-text" class="d-inline"> The repository acknowledges the major role of the diaspora communities over several decades. Although the recent advocacy efforts are a major focus, TDR will also look into earlier historical periods, including the diaspora's response to the war on Tigray during the Derg regime and its effects.
-                                        <span class="d-block mb-4"></span>
-                                        Through investigating these major turning points, TDR strives for an understanding of Tigray's larger history and social context: 
-                                        <i class="fw-semibold">"Data for Tigray, Knowledge for Generations!"</i>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="row justify-content-center" style="margin-top: -25px">
+      <div class="col-md-1 heading-section text-center ftco-animate"></div>
     </div>
+
+    <div class="row d-flex">
+      <div class="col-md-12 pt-4">
+        <div class="card h-100 shadow-none border-0">
+          <!-- Card Body -->
+          <div class="card-body d-flex flex-column">
+            <div class="container mt-2">
+              <p id="intro-text">
+                The Tigray Data Repository is more than just a hosting site. The
+                TDR serves as:
+              </p>
+
+              <div class="mt-4">
+                <div class="mb-3">
+                  <h5 class="fw-bold text-dark d-inline">
+                    ♦ A Bridge Between Generations:
+                  </h5>
+                  <p id="intro-text" class="d-inline">
+                    TDR preserves Tigray’s history through data, ensuring that
+                    its stories remain accessible to future generations.
+                  </p>
+                </div>
+
+                <div class="mb-3">
+                  <h5 class="fw-bold text-dark d-inline">
+                    ♦ A Tool for Advocacy and Research:
+                  </h5>
+                  <p id="intro-text" class="d-inline">
+                    TDR contributes to advocacy, education, policymaking, and
+                    disaster response by collecting and analyzing data about the
+                    Tigrayan communities, locally and in the Diaspora.
+                  </p>
+                </div>
+
+                <div class="mb-3">
+                  <h5 class="fw-bold text-dark d-inline">
+                    ♦ An accountability Tool:
+                  </h5>
+                  <p id="intro-text" class="d-inline">
+                    During the Tigray war, TDR documented the hate speech,
+                    disinformation campaigns, and dehumanizing narratives that
+                    targeted Tigrayans. Our records provide transparency for
+                    international justice investigations and accountability
+                    mechanisms.
+                  </p>
+                </div>
+
+                <div class="mb-3">
+                  <h5 class="fw-bold text-dark d-inline">
+                    ♦ TDR’s Data Analysis Journal:
+                  </h5>
+                  <p id="intro-text" class="d-inline">
+                    The TDR journal is committed to connecting Tigray with the
+                    global community by disseminating research findings from our
+                    extensive datasets. We are an essential platform for
+                    publishing special issues, with each publication
+                    highlighting the data we have meticulously archived in our
+                    repository. Our aspiration, as outlined in our motto:
+                    <i class="brand-text-color"
+                      >“Data for Tigray, Knowledge for Generations!”</i
+                    >
+                    is to create a long-lasting impact by sharing knowledge and
+                    collaborating for insights.
+                  </p>
+                </div>
+                <br />
+                <div class="heading-container">
+                  <span class="vertical-line"></span>
+                  <h2 class="heading">
+                    Scope and Focus: Preserving Tigray’s History and Practices
+                  </h2>
+                </div>
+                <div class="underline"></div>
+                <br />
+
+                <p id="intro-text">
+                  The scope of TDR encompasses a broad range of data documenting
+                  various aspects of the Tigrayan communities, such as their
+                  digital, humanitarian, socio-economic, cultural, and
+                  historical progress. Consequently, we highlight significant
+                  events such as the wars and genocides faced by the people of
+                  Tigray, archiving the complex interplay between war crimes and
+                  the community’s struggle for social justice. Thus, by
+                  recognizing Tigray’s vast history, including positive and
+                  traumatic experiences, our repository aims to ensure
+                  comprehensive coverage and impactful documentation of Tigray’s
+                  evolution.
+                </p>
+
+                <div class="mb-3">
+                  <p id="intro-text" class="d-inline">
+                  <span class="fw-bold text-dark d-inline" style="font-size: 1.15rem;">Project Focus:</span>
+                    In the initial phase of the project, data collection will
+                    focus on the digital advocacy efforts of the Tigrayan
+                    communities living in other countries from November 2020 to
+                    November 2022. It will also focus on developing a complete
+                    profile of the Tigray Genocide victims, using the Axum
+                    Massacre as a case study. In course of time, the expansion
+                    of databases from sectors such as education, health,
+                    humanitarian affairs and many more will be facilitated in
+                    collaboration with the community and government agencies.
+                  </p>
+                </div>
+
+                <div class="mb-3">
+                  <p id="intro-text" class="d-inline">
+                  <span class="fw-bold text-dark d-inline" style="font-size: 1.15rem;">Tigrayan Diaspora Experience:</span>
+                     For the longest time, the Tigrayan communities in the
+                        Diaspora have played a significant role in international advocacy and in supporting the rebuilding efforts of the people of Tigray. As such, a key part of TDR’s mission is to examine
+                        earlier historical periods, including the Diaspora’s response to the war in Tigray during the
+                        Derg regime (1974-1991) and its effects. While our main focus will be on the recent advocacy efforts of the Diaspora communities, this historical perspective is crucial for understanding the broader context of their contributions. The interventions and efforts played by the
+                        Diaspora communities on various stages are a testimony to their devotion and resilience to
+                        creating a better Tigray.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 {% endblock %}

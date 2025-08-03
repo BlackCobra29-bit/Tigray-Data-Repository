@@ -2,183 +2,350 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Tigray Data Repository</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- SEO Meta Description -->
+    <meta
+      name="description"
+      content="The Tigray Data Repository (TDR) is an online, open-source repository that documents Tigray’s history and the experiences of Tigrayan communities in Tigray and the Diaspora."
+    />
+    <meta
+      name="keywords"
+      content="Tigray, Tigray data, Tigrayan diaspora, Tigray history, data repository, open source archive, African data, contribute data, Tigray digital archive, community data platform, TDR journal, historical records of Tigray, Tigrayan studies, Ethiopia conflict data, humanitarian data Tigray, African diaspora archives, indigenous data sovereignty, Tigray war research, data for justice, documenting Tigray, academic data sharing, community-driven data, Tigray cultural heritage, East Africa data repository, refugee data records"
+    />
+    <meta name="author" content="Tigray Data Repository Team" />
+    <meta name="robots" content="index, follow" />
+    <!-- Open Graph (for Facebook, LinkedIn) -->
+    <meta
+      property="og:title"
+      content="Data for Tigray | Tigray Data Repository (TDR)"
+    />
+    <meta
+      property="og:description"
+      content="The Tigray Data Repository (TDR) is an online, open-source repository that documents Tigray’s history and the experiences of Tigrayan communities in Tigray and the Diaspora."
+    />
+    <meta
+      property="og:image"
+      content="{% static 'img/tigray_data_repo.jpg' %}"
+    />
+    <meta property="og:url" content="https://datafortigray.org" />
+    <meta property="og:type" content="website" />
 
-<head>
-  <title>Tigray Data Repository</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Data for Tigray | Tigray Data Repository (TDR)"
+    />
+    <meta
+      name="twitter:description"
+      content="The Tigray Data Repository (TDR) is an online, open-source repository that documents Tigray’s history and the experiences of Tigrayan communities in Tigray and the Diaspora."
+    />
+    <meta
+      name="twitter:image"
+      content="{% static 'img/tigray_data_repo.jpg' %}' %}"
+    />
 
-  <link rel="stylesheet" href="{% static 'admin_static/css/adminlte.min.css' %}" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.2/gsap.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="{% static 'admin_static/css/adminlte.min.css' %}"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.2/gsap.min.js"></script>
 
-  <link rel="shortcut icon" href="{% static 'img/tigray data repo.jpg' %}" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'img/tigray_data_repo.jpg' %}"
+      type="image/x-icon"
+    />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="stylesheet" href="{% static 'css/animate.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <script type="module" src="https://unpkg.com/theme-toggle@0.1.5/dist/theme-toggle.js"
-    crossorigin="anonymous"></script>
-  <link rel="stylesheet" type="text/css"
-    href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css" />
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script
+      type="module"
+      src="https://unpkg.com/theme-toggle@0.1.5/dist/theme-toggle.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css"
+    />
+  </head>
 
-<body data-spy="scroll" data-target=".site-navbar-target bg-dark" data-offset="300"
-  data-theme="{{ request.session.theme|default:'light' }}">
-  <nav class="navbar navbar-expand-lg navbar-light bg-white site-navbar-target" id="ftco-navbar">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}" target="_blank">
-      <img src="{% static 'img/tigray data repo.jpg' %}" 
-           alt="Tigray Data Repository Logo" 
-           class="img-fluid d-inline-block align-top"
-           style="max-height: 44px; width: auto;">
-    </a>
+  <body
+    data-spy="scroll"
+    data-target=".site-navbar-target bg-dark"
+    data-offset="300"
+    data-theme="{{ request.session.theme|default:'light' }}"
+  >
+    <nav
+  class="navbar navbar-expand-lg navbar-light bg-white site-navbar-target sticky-top shadow-sm"
+  id="ftco-navbar"
+  style="z-index: 1030"
+>
+      <div class="container d-flex align-items-center justify-content-start">
+        <!-- Logo on the far left -->
+        <a
+          class="navbar-brand d-flex align-items-center me-4"
+          href="{% url 'index' %}"
+          target="_blank"
+        >
+          <img
+            src="{% static 'img/tigray_data_repo.jpg' %}"
+            alt="Tigray Data Repository Logo"
+            class="img-fluid d-inline-block align-top"
+            style="max-height: 44px; width: auto"
+          />
+        </a>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
-      aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Navbar toggler for mobile -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#ftco-nav"
+          aria-controls="ftco-nav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse justify-content-end" id="ftco-nav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a href="{% url 'index' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'index' %}active fw-bold{% endif %}">
-            <i class="bi bi-bank"></i> Home
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{% url 'why-tdr' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'why-tdr' %}active fw-bold{% endif %}">
-            <i class="bi bi-globe"></i> Why TDR?
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{% url 'blog-view' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'blog-view' %}active fw-bold{% endif %}">
-            <i class="bi bi-pencil"></i> TDR Journal
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{% url 'manifesto-view' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'manifesto-view' %}active fw-bold{% endif %}">
-            <i class="bi bi-clipboard2-data"></i> Manifesto
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{% url 'contribute-view' %}" class="nav-link text-dark {% if request.resolver_match.url_name == 'contribute-view' %}active fw-bold{% endif %}">
-            <i class="bi bi-database"></i> Contribute
-          </a>
-        </li>
-        <li class="nav-item d-flex align-items-center">
-          <a href="#projects-section" class="nav-link px-2 text-dark" id="themeToggleLink">
-            <theme-toggle storable="true" width="20" theme="light"></theme-toggle>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+        <!-- UL Links next to the logo -->
+        <div class="collapse navbar-collapse" id="ftco-nav">
+          <ul class="navbar-nav d-flex align-items-center">
+            <li class="nav-item">
+              <a
+                href="{% url 'index' %}"
+                class="nav-link text-dark {% if request.resolver_match.url_name == 'index' %}active fw-bold{% endif %}"
+              >
+                <i class="bi bi-bank"></i> Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="{% url 'why-tdr' %}"
+                class="nav-link text-dark {% if request.resolver_match.url_name == 'why-tdr' %}active fw-bold{% endif %}"
+              >
+                <i class="bi bi-globe"></i> Why TDR?
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="{% url 'blog-view' %}"
+                class="nav-link text-dark {% if request.resolver_match.url_name == 'blog-view' %}active fw-bold{% endif %}"
+              >
+                <i class="bi bi-pencil"></i> TDR Journal
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="{% url 'manifesto-view' %}"
+                class="nav-link text-dark {% if request.resolver_match.url_name == 'manifesto-view' %}active fw-bold{% endif %}"
+              >
+                <i class="bi bi-clipboard2-data"></i> Manifesto
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="{% url 'contribute-view' %}"
+                class="nav-link text-dark {% if request.resolver_match.url_name == 'contribute-view' %}active fw-bold{% endif %}"
+              >
+                <i class="bi bi-database"></i> Contribute
+              </a>
+            </li>
+          </ul>
 
+          <!-- Theme toggle aligned right -->
+          <ul class="navbar-nav ms-auto d-flex align-items-center">
+            <li class="nav-item">
+              <a href="#" class="nav-link px-2 text-dark" id="themeToggleLink">
+                <theme-toggle
+                  storable="true"
+                  width="20"
+                  theme="light"
+                ></theme-toggle>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
     {% block 'main-section' %} {% endblock %}
 
-  <footer class="ftco-footer ftco-section" style="border-top: 1px solid #dee2e6; margin-top: 50px">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <p style="color: #6a7695">
-            <br />
-            <b class="text-sm">Copyright ©
-              <script>
-                document.write(new Date().getFullYear());
-              </script>
-              Tigray Data Repository. <br />
-              <a style="color: #141516; font-size: 17px;" href="https://x.com/datafortigray" target="_blank"><i class="bi bi-twitter-x"></i></a>
-              <a style="color: #045aa5; font-size: 17px;" class="ms-2" href="https://www.linkedin.com/company/tigray-data-repository" target="_blank"><i class="bi bi-linkedin"></i></a>
-              <a style="color: #d92f2f; font-size: 17px;" class="ms-2" href="https://www.instagram.com/datafortigray" target="_blank"><i class="bi bi-instagram"></i></a>
-            </b>
-          </p>
+    <footer
+      class="ftco-footer ftco-section"
+      style="border-top: 1px solid #dee2e6; margin-top: 50px"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p style="color: #6a7695">
+              <br />
+              <b class="text-sm"
+                >Copyright ©
+                <script>
+                  document.write(new Date().getFullYear());
+                </script>
+                Tigray Data Repository. <br />
+                <a
+                  style="color: #141516; font-size: 17px"
+                  href="https://x.com/datafortigray"
+                  target="_blank"
+                  ><i class="bi bi-twitter-x"></i
+                ></a>
+                <a
+                  style="color: #045aa5; font-size: 17px"
+                  class="ms-2"
+                  href="https://www.linkedin.com/company/tigray-data-repository"
+                  target="_blank"
+                  ><i class="bi bi-linkedin"></i
+                ></a>
+                <a
+                  style="color: #d92f2f; font-size: 17px"
+                  class="ms-2"
+                  href="https://www.instagram.com/datafortigray"
+                  target="_blank"
+                  ><i class="bi bi-instagram"></i
+                ></a>
+              </b>
+            </p>
+          </div>
         </div>
       </div>
+    </footer>
+
+    <div id="ftco-loader" class="show fullscreen">
+      <svg class="circular" width="48px" height="48px">
+        <circle
+          class="path-bg"
+          cx="24"
+          cy="24"
+          r="22"
+          fill="none"
+          stroke-width="4"
+          stroke="#eeeeee"
+        />
+        <circle
+          class="path"
+          cx="24"
+          cy="24"
+          r="22"
+          fill="none"
+          stroke-width="4"
+          stroke-miterlimit="10"
+          stroke="#F96D00"
+        />
+      </svg>
     </div>
-  </footer>
 
-  <div id="ftco-loader" class="show fullscreen">
-    <svg class="circular" width="48px" height="48px">
-      <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-        stroke="#F96D00" />
-    </svg>
-  </div>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
+    <script src="{% static 'js/scrollax.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/expandable_table.js' %}"></script>
 
-  <script src="{% static 'js/jquery.min.js' %}"></script>
-  <script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
-  <script src="{% static 'js/popper.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
-  <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-  <script src="{% static 'js/jquery.stellar.min.js' %}"></script>
-  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-  <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-  <script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
-  <script src="{% static 'js/scrollax.min.js' %}"></script>
-  <script src="{% static 'js/main.js' %}"></script>
-  <script src="{% static 'js/expandable_table.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"
+    ></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
 
-  <script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+      .dataTables_filter {
+        display: none;
+      }
+    </style>
 
-  <style>
-    .dataTables_filter {
-      display: none;
-    }
-  </style>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll(".toggle-icon").forEach(function (toggleIcon) {
-        toggleIcon.addEventListener("click", function () {
-          let target = document.querySelector(this.getAttribute("data-bs-target"));
-          target.addEventListener("shown.bs.collapse", () => {
-            this.classList.remove("fa-angle-right");
-            this.classList.add("fa-angle-down");
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .querySelectorAll(".toggle-icon")
+          .forEach(function (toggleIcon) {
+            toggleIcon.addEventListener("click", function () {
+              let target = document.querySelector(
+                this.getAttribute("data-bs-target")
+              );
+              target.addEventListener("shown.bs.collapse", () => {
+                this.classList.remove("fa-angle-right");
+                this.classList.add("fa-angle-down");
+              });
+              target.addEventListener("hidden.bs.collapse", () => {
+                this.classList.remove("fa-angle-down");
+                this.classList.add("fa-angle-right");
+              });
+            });
           });
-          target.addEventListener("hidden.bs.collapse", () => {
-            this.classList.remove("fa-angle-down");
-            this.classList.add("fa-angle-right");
-          });
-        });
       });
-    });
-  </script>
+    </script>
 
-  <script>
-    document.body.addEventListener('htmx:afterSwap', function (event) {
-      htmx.process(event.detail.target);
-      gsap.from("#slideFromLeft", { x: -300, opacity: 0, duration: 1 });
-      gsap.from("#slideFromRight", { x: 300, opacity: 0, duration: 1 });
-    });
-  </script>
+    <script>
+      document.body.addEventListener("htmx:afterSwap", function (event) {
+        htmx.process(event.detail.target);
+        gsap.from("#slideFromLeft", { x: -300, opacity: 0, duration: 1 });
+        gsap.from("#slideFromRight", { x: 300, opacity: 0, duration: 1 });
+      });
+    </script>
 
-  <style>
-    .nav-link:hover,
-    .dropdown-item:hover {
-      cursor: pointer;
-    }
-  </style>
-</body>
-
+    <style>
+      .nav-link:hover,
+      .dropdown-item:hover {
+        cursor: pointer;
+      }
+    </style>
+  </body>
 </html>
