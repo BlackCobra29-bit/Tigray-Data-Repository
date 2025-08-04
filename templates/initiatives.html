@@ -321,44 +321,58 @@
         doughnutChart.render();
 
         // Pyramid Chart (Type)
-        const moveToLast = ['Social Movement', 'Other']; // Correct order: 'Other' will be last
-        const reorderedPyramidData = [
-            ...pyramidData.filter(item => !moveToLast.includes(item.label)),
-            ...moveToLast.map(label => pyramidData.find(item => item.label === label)).filter(Boolean)
-        ];
 
-        const totalPyramidValue = reorderedPyramidData.reduce((total, data) => total + data.y, 0);
+// Move 'Social Movement' and 'Other' to the end
+const moveToLast = ['Social Movement', 'Other'];
+const reorderedPyramidData = [
+    ...pyramidData.filter(item => !moveToLast.includes(item.label)),
+    ...moveToLast.map(label => pyramidData.find(item => item.label === label)).filter(Boolean)
+];
 
-        const pyramidChart = new CanvasJS.Chart("pyramid-chart", {
-            animationEnabled: true,
-            exportEnabled: true,
-            theme: "light2",
-            axisY: { title: "Number of Responses", gridThickness: 0 },
-            axisX: { title: "Type of Initiatives or Organizations" },
-            data: [{
-                type: "column",
-                showInLegend: true,
-                legendText: "{label}",
-                toolTipContent: "<strong style='color:{color}'>{label}</strong>: {y} ({percent}%)",
-                indexLabel: "{y}",
-                indexLabelFontSize: 14,
-                dataPoints: reorderedPyramidData.map(item => ({
-                    label: item.label,
-                    y: item.y,
-                    percent: ((item.y / totalPyramidValue) * 100).toFixed(2),
-                    color:
-                        item.label === "Advocacy Group" ? "#8ec5ea" :
-                        item.label === "Community Service Organisation (CSO)" ? "#e69b81" :
-                        item.label === "Other" ? "#b49fcc" :
-                        undefined
-                }))
-            }]
-        });
+// Calculate total responses
+const totalPyramidValue = reorderedPyramidData.reduce((total, data) => total + data.y, 0);
 
-        pyramidChart.render();
+// Add percentage to each item
+reorderedPyramidData.forEach(item => {
+    item.yPercent = ((item.y / totalPyramidValue) * 100).toFixed(2);
+});
 
+// Render chart
+const pyramidChart = new CanvasJS.Chart("pyramid-chart", {
+    animationEnabled: true,
+    exportEnabled: true,
+    theme: "light2",
+    axisY: {
+        title: "Number of Responses",
+        gridThickness: 0
+    },
+    axisX: {
+        title: "Type of Initiatives or Organizations",
+        labelAngle: -20  // Optional: tilt labels if too crowded
+    },
+    legend: {
+        verticalAlign: "top"
+    },
+    data: [{
+        type: "column",
+        showInLegend: false,  // Only one series, so no need for multiple legend entries
+        indexLabelFontSize: 14,
+        toolTipContent: "<strong style='color:{color}'>{label}</strong>: {y} ({yPercent}%)",
+        dataPoints: reorderedPyramidData.map(item => ({
+            label: item.label,
+            y: item.y,
+            yPercent: item.yPercent,
+            color:
+                item.label === "Advocacy Group" ? "#8ec5ea" :
+                item.label === "Community Service Organisation (CSO)" ? "#e69b81" :
+                item.label === "Other" ? "#b49fcc" :
+                undefined
+        }))
+    }]
+});
 
-        
+pyramidChart.render();
+      
     }
 
     // Run on initial page load

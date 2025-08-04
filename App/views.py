@@ -32,6 +32,9 @@ class IndexView(TemplateView):
         
         context["repository_groups"] = []
         
+        # Define file extensions to filter
+        excel_extensions = [".xls", ".xlsx", ".xlsm", ".xlsb", ".csv"]
+        
         # Count variables
         total_repository_items = 0
         parent_repositories_count = repository_groups.count()
@@ -61,10 +64,13 @@ class IndexView(TemplateView):
                     download_count = download_counter.download_count
                 except DownloadCounter.DoesNotExist:
                     download_count = 0
-                
+
+                # Extract file extension (in lowercase)
+                ext = os.path.splitext(item.file.name)[1].lower()
+
+                # Include only if Excel or CSV
                 file_data = {
                     "id": item.id,
-                    "title": item.title,
                     "file_name": os.path.basename(item.file.name),
                     "file_url": item.file.url,
                     "uploaded_at": item.uploaded_at,
@@ -73,7 +79,8 @@ class IndexView(TemplateView):
                 }
                 
                 group_data["repository_items"].append(file_data)
-                total_repository_items += 1
+                if ext in excel_extensions:
+                    total_repository_items += 1
             
             # Get subfolders for this group
             for subfolder in group.subfolders.all():
@@ -92,6 +99,8 @@ class IndexView(TemplateView):
                 )
                 
                 for item in repository_items:
+                    # Extract file extension and check if it's Excel/CSV
+                    ext = os.path.splitext(item.file.name)[1].lower()
                     # Get download count for this item
                     download_count = 0
                     try:
@@ -99,19 +108,19 @@ class IndexView(TemplateView):
                         download_count = download_counter.download_count
                     except DownloadCounter.DoesNotExist:
                         download_count = 0
-                    
+
                     file_data = {
                         "id": item.id,
-                        "title": item.title,
                         "file_name": os.path.basename(item.file.name),
                         "file_url": item.file.url,
                         "uploaded_at": item.uploaded_at,
                         "file_size": item.file.size if item.file else 0,
                         "download_count": download_count,
                     }
-                    
+
                     subfolder_data["repository_items"].append(file_data)
-                    total_repository_items += 1
+                    if ext in excel_extensions:
+                        total_repository_items += 1
                 
                 group_data["subfolders"].append(subfolder_data)
             

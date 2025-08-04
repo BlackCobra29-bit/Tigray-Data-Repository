@@ -75,13 +75,11 @@ class RepositoryItem(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True, blank=True)
     parent = GenericForeignKey('content_type', 'object_id')
-
-    title = models.CharField(max_length=255)
     file = models.FileField(upload_to='repository_items/', validators=[validate_file_type])
     uploaded_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.title
+        return self.file.name
 
     def get_download_count(self):
         """Get the download count for this item"""
@@ -91,7 +89,7 @@ class RepositoryItem(models.Model):
             return 0
 
     class Meta:
-        ordering = ["-id"]
+        ordering = ["id"]
         verbose_name_plural = "Repository Datasets"
 
 class DownloadCounter(models.Model):

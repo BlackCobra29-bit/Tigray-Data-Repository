@@ -1,6 +1,7 @@
 from django import template
 from django.utils.html import strip_tags
 import os
+import re
 
 register = template.Library()
 
@@ -77,4 +78,12 @@ def get_file_icon(file_name):
         return {'icon': 'fa fa-file-word', 'color': '#0d6efd'}  # Document blue
     
     else:
-        return {'icon': 'fa fa-file', 'color': '#666'}          # Default gray
+        return {'icon': 'fa fa-file', 'color': '#666'}          # Default 
+    
+@register.filter
+def normalize_readme(value):
+    """
+    Converts 'README_randomstring.txt' to 'README.txt'
+    Only affects files that match the pattern.
+    """
+    return re.sub(r'^README.*\.txt$', 'README.txt', value)

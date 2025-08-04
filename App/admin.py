@@ -55,7 +55,7 @@ class RepositoryItemAdminForm(forms.ModelForm):
 
     class Meta:
         model = RepositoryItem
-        fields = ['parent_choice', 'title', 'file']
+        fields = ['parent_choice', 'file', "uploaded_at"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -91,6 +91,6 @@ class RepositoryItemAdminForm(forms.ModelForm):
     
 class RepositoryItemAdmin(admin.ModelAdmin):
     form = RepositoryItemAdminForm
-    list_display = ['title', 'parent', 'file', 'uploaded_at']
+    list_display = ['uploaded_at', 'parent', 'file',]
 
 admin.site.register(RepositoryItem, RepositoryItemAdmin)

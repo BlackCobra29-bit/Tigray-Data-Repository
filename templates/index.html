@@ -117,7 +117,7 @@
                                                                                     {% with file_icon=item.file_name|get_file_icon %}
                                                                                     <i class="{{ file_icon.icon }} me-2" aria-hidden="true" style="color: {{ file_icon.color }};"></i>
                                                                                     {% endwith %}                                                                             
-                                                                                    {{ item.title }}
+                                                                                    {{ item.file_name|normalize_readme  }}
                                                                                         <div class="float-right d-flex align-items-center">
                                                                                                 {% if item.download_count > 0 %}
                                                                                                 <span class="badge badge-secondary me-2" style="font-size: 0.8em;">
@@ -155,7 +155,7 @@
                                                                     {% with file_icon=item.file_name|get_file_icon %}
                                                                     <i class="{{ file_icon.icon }} me-2" aria-hidden="true" style="color: {{ file_icon.color }};"></i>
                                                                     {% endwith %}
-                                                                    {{ item.title }}
+                                                                    {{ item.file_name|normalize_readme }}
                                                                     <div class="float-right d-flex align-items-center">
                                                                         {% if item.download_count > 0 %}
                                                                         <span class="badge badge-secondary me-2" style="font-size: 0.8em;">
