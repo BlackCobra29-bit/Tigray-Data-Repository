@@ -4,7 +4,6 @@ from django.contrib.contenttypes.models import ContentType
 
 from .models import RepositoryGroup
 from .models import RepositoryItem
-from .models import DownloadCounter
 from .models import InitiativesModel
 from .models import Blog
 from .models import SubFolder

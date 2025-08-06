@@ -5,6 +5,8 @@ import re
 
 register = template.Library()
 
+EXCEL_EXTENSIONS = {'.xls', '.xlsx', '.xlsm', '.xlsb', '.csv'}
+
 @register.filter
 def basename(value):
     
@@ -87,3 +89,28 @@ def normalize_readme(value):
     Only affects files that match the pattern.
     """
     return re.sub(r'^README.*\.txt$', 'README.txt', value)
+
+@register.filter(name='is_excel_file')
+def is_excel_file(filename):
+    """
+    Return True if `filename` has an extension in EXCEL_EXTENSIONS.
+    Works if `filename` is a FileField/FilePath or plain string.
+    Case-insensitive and safe for filenames without extension or None.
+    """
+    if not filename:
+        return False
+
+    # If given a FileField/File instance, try to get the name attribute
+    if hasattr(filename, 'name'):
+        filename = filename.name
+
+    # Extract extension and normalize
+    _, ext = os.path.splitext(str(filename))
+    return ext.lower() in EXCEL_EXTENSIONS
+
+@register.filter
+def get_item(dictionary, key):
+    """Template filter to get a dictionary item by key."""
+    if isinstance(dictionary, dict):
+        return dictionary.get(key, "")
+    return ""

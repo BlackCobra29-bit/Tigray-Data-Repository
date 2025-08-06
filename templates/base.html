@@ -343,10 +343,27 @@
       });
     </script>
 
+    <!-- View file datatable -->
+    <script>
+      (function() {
+        $(document).ready(function() {
+          $('#excelTable').DataTable({
+            responsive: true,
+            lengthChange: true,
+            searching: false,
+            autoWidth: false,
+          });
+        });
+      })();
+    </script>
+
     <style>
       .nav-link:hover,
       .dropdown-item:hover {
         cursor: pointer;
+      }
+      .dataTables_length{
+        display: none;
       }
     </style>
   </body>

@@ -133,6 +133,48 @@ class DownloadCounter(models.Model):
     class Meta:
         ordering = ["-download_count", "-last_downloaded_at"]
         verbose_name_plural = "Download Counters"
+        
+class ViewCounter(models.Model):
+    repository_item = models.OneToOneField(
+        RepositoryItem, 
+        on_delete=models.CASCADE, 
+        related_name='view_counter',
+        help_text="The repository item being tracked for views."
+    )
+    view_count = models.PositiveIntegerField(
+        default=0,
+        help_text="Number of times this file has been viewed."
+    )
+    first_viewed_at = models.DateTimeField(
+        null=True, 
+        blank=True,
+        help_text="Timestamp of the first view."
+    )
+    last_viewed_at = models.DateTimeField(
+        null=True, 
+        blank=True,
+        help_text="Timestamp of the most recent view."
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Views for {self.repository_item.title}: {self.view_count}"
+
+    def increment_view(self):
+        """Increment the view count and update timestamps"""
+        self.view_count += 1
+        now = timezone.now()
+        
+        if not self.first_viewed_at:
+            self.first_viewed_at = now
+        
+        self.last_viewed_at = now
+        self.save()
+
+    class Meta:
+        ordering = ["-view_count", "-last_viewed_at"]
+        verbose_name_plural = "View Counters"
 
 class InitiativesModel(models.Model):
     INITIATIVE_ORIGIN_CHOICES = [

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'stripe',
     'django_summernote',
+    'django.contrib.humanize',
     'App'
 ]
 

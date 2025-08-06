@@ -9,6 +9,9 @@ import os
 from django.http.response import HttpResponse as HttpResponse
 from folium import Map, Marker
 from folium.plugins import Fullscreen
+import pandas as pd
+from django.utils.safestring import mark_safe
+from django.conf import settings
 
 # Third-Party Imports
 from django.views import View
@@ -18,7 +21,7 @@ from django.db.models.functions import ExtractYear
 from django.views.generic import TemplateView
 from django.shortcuts import redirect, render, get_object_or_404
 # Local Application Imports
-from .models import RepositoryGroup, RepositoryItem, InitiativesModel, Blog, SubFolder, DownloadCounter
+from .models import RepositoryGroup, RepositoryItem, InitiativesModel, Blog, SubFolder, DownloadCounter, ViewCounter
 
 
 class IndexView(TemplateView):
@@ -130,6 +133,115 @@ class IndexView(TemplateView):
         context["parent_repositories_count"] = parent_repositories_count
         context["total_repository_items"] = total_repository_items
         
+        return context
+    
+class FileView(TemplateView):
+    template_name = "file_view.html"
+
+    def get_context_data(self, **kwargs):
+        
+        context = super().get_context_data(**kwargs)
+        file_id = kwargs.get("pk")
+        item = get_object_or_404(RepositoryItem, pk=file_id)
+        
+        # Get or create view counter for this item
+        view_counter, created = ViewCounter.objects.get_or_create(
+            repository_item=item,
+            defaults={'view_count': 0}
+        )
+        
+        # Increment the view count
+        view_counter.increment_view()
+        # Get the download count for this item
+        try:
+            view_counter = item.view_counter
+            view_count = view_counter.view_count
+        except ViewCounter.DoesNotExist:
+            view_count = 0
+
+        context["item"] = item
+        context["view_count"] = view_count
+        context["file_name"] = os.path.basename(item.file.name)
+        context["file_url"] = item.file.url
+
+        file_path = None
+        file_like = None
+        try:
+            if hasattr(item.file, "path"):
+                file_path = item.file.path
+        except Exception:
+            file_path = None
+
+        try:
+            if not file_path:
+                file_like = item.file.open("rb")
+        except Exception:
+            file_like = None
+
+        name_lower = item.file.name.lower()
+        ext = name_lower.split(".")[-1] if "." in name_lower else ""
+
+        try:
+            if ext in ("xls", "xlsx", "xlsm", "xlsb"):
+                if file_path:
+                    df = pd.read_excel(file_path)
+                elif file_like:
+                    df = pd.read_excel(file_like)
+                else:
+                    raise RuntimeError("No accessible file path or file object to read Excel.")
+            elif ext == "csv":
+                if file_path:
+                    df = pd.read_csv(file_path)
+                elif file_like:
+                    file_like.seek(0)
+                    df = pd.read_csv(file_like)
+                else:
+                    raise RuntimeError("No accessible file path or file object to read CSV.")
+            else:
+                raise ValueError(f"Unsupported file format: {ext}")
+        except Exception as e:
+            try:
+                if file_like:
+                    file_like.close()
+            except Exception:
+                pass
+            context["error"] = f"Could not read file: {str(e)}"
+            return context
+
+        try:
+            if file_like:
+                file_like.close()
+        except Exception:
+            pass
+
+        rows, cols = df.shape
+        total_cells = int(df.size)
+        total_unique = int(df.nunique(dropna=True).sum())
+        dtypes = {col: str(dtype) for col, dtype in df.dtypes.items()}
+
+        preview_rows = 5
+        preview_df = df.head(preview_rows).fillna("")
+
+        try:
+            preview_df = preview_df.astype(str)
+        except Exception:
+            preview_df = preview_df.applymap(lambda x: "" if pd.isna(x) else str(x))
+
+        preview_records = preview_df.to_dict(orient="records")
+        preview_columns = list(preview_df.columns)
+
+        context.update({
+            "rows": rows,
+            "cols": cols,
+            "total_cells": total_cells,
+            "total_unique": total_unique,
+            "dtypes": dtypes,
+            "preview_records": preview_records,
+            "preview_columns": preview_columns,
+            "preview_rows_shown": min(preview_rows, rows),
+            "file_name": os.path.basename(item.file.name),  # only the filename
+        })
+
         return context
 
 class DownloadFileView(View):

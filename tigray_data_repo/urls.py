@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 from App.views import (
     # User page url map
     IndexView,
+    FileView,
     WhyTdr,
     BlogView,
     ViewBlog,
@@ -35,7 +36,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
     path("", IndexView.as_view(), name="index"),
-    # Download tracking
+    path("repository/file/<int:pk>/", FileView.as_view(), name="file_view"),
     path("download/<int:item_id>/", DownloadFileView.as_view(), name="download-file"),
     path("why-tdr/", WhyTdr.as_view(), name = "why-tdr"),
     path("tdr-journal/", BlogView.as_view(), name="blog-view"),
